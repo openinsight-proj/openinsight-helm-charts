@@ -7,13 +7,12 @@ reimplement opentelemetry-demo-webstore's adservice with nacos registry and sent
 
 # set up
 ```shell
-docker build adservice-springcloud:latest .
 docker run -p 8081:8081 \
 -p 8999:8999 \
 -p 9555:9555 \
 -e OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
 -e NACOS_SERVER=localhost:8848 \
-adservice-springcloud:latest
+ghcr.io/openinsight-proj/adservice-springcloud:latest
 ```
 
 # curl

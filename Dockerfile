@@ -1,4 +1,4 @@
-FROM openjdk:11-slim-buster AS builder
+FROM openjdk:11.0.15 AS builder
 
 WORKDIR /app/
 
