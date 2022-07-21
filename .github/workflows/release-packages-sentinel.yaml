@@ -8,7 +8,7 @@ name: release-packages-sentinel.yaml
 on:
   push:
     branches:
-      - sentinel
+      - 'sentinel/**'
 
 env:
   REGISTRY: ghcr.io
@@ -52,5 +52,5 @@ jobs:
           context: ./sentinel
           push: true
           platforms: linux/amd64,linux/arm64/v8
-          tags: sentinel-1.8.4
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
