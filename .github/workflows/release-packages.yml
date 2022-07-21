@@ -8,7 +8,7 @@ name: release-packages
 on:
   push:
     branches:
-      - 'release/**'
+      - 'adservice/**'
 
 env:
   REGISTRY: ghcr.io
