@@ -22,7 +22,7 @@ spec:
           imagePullPolicy: {{ .Values.global.image.pullPolicy }}
           env:
             - name: MODE
-              value: {{ .Values.nacos.configMap.mode }}
+              value: {{ .Values.nacos.env.mode }}
           ports:
             - name: http
               containerPort: {{.Values.nacos.service.port}}

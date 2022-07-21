@@ -101,7 +101,7 @@ nacos:
     grpcPort1: 9848
     grpcPort2: 9849
 
-  configMap:
+  env:
     #模式 cluster/standalone
     mode: standalone
 
@@ -120,5 +120,33 @@ nacos:
 
 sentinel:
   enabled: true
+  version: 1.8.4
+  replicaCount: 1
+  image:
+    repository: ghcr.io/openinsight-proj/adservice-springcloud
+    tag: "sentinel-v1.8.4"
 
+  nameOverride: "sentinel-server"
+  fullnameOverride: "sentinel-server"
+
+  service:
+    type: NodePort
+    httpNodePort: 30924
+    port: 34001
+
+  env:
+    #模式 cluster/standalone
+    javaopts: "-Dserver.port=34001 -Dcsp.sentinel.dashboard.server=localhost:34001 -Dproject.name=sentinel-dashboard"
+
+  resources:
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment tkubhe following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    limits:
+      cpu: 100m
+      memory: 200Mi
+    requests:
+      cpu: 100m
+      memory: 200Mi
 
