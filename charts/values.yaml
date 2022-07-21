@@ -1,0 +1,124 @@
+global:
+  image:
+    pullPolicy: IfNotPresent
+
+adservice:
+  enabled: true
+  version: 0.0.1
+  # Default values for opentelemetry-demo-webstore.
+  # This is a YAML-formatted file.
+  # Declare variables to be passed into your templates.
+
+  replicaCount: 1
+
+  image:
+    repository: ghcr.io/openinsight-proj/adservice-springcloud
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: latest
+
+  imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: ""
+
+  env:
+    otelResourceAttrubutes: service.name=adservice
+    otelExporter: http://otel-collector.opentelemetry-demo.svc.local:4317
+    nacos_server: nacos-server.opentelemetry-demo.svc.local:8848
+    sentinel_server: sentinel-server.opentelemetry-demo.svc.local:34001
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: false
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+
+  podAnnotations: {}
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  service:
+    type: NodePort
+    grpcPort: 9555
+    httpPort: 8001
+
+  ingress:
+    enabled: false
+
+  resources: 
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    limits:
+      cpu: 100m
+      memory: 200Mi
+    requests:
+      cpu: 100m
+      memory: 200Mi
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+nacos:
+  enabled: true
+  version: 2.1.0
+  replicaCount: 1
+  image:
+    repository: nacos/nacos-server
+    tag: "v2.1.0-slim"
+
+  nameOverride: "nacos-server"
+  fullnameOverride: "nacos-server"
+
+  service:
+    type: NodePort
+    httpNodePort: 30903
+    grpcNodePort1: 30914
+    grpcNodePort2: 30915
+    port: 8848
+    grpcPort1: 9848
+    grpcPort2: 9849
+
+  configMap:
+    #模式 cluster/standalone
+    mode: standalone
+
+  resources:
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment tkubhe following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    limits:
+      cpu: 100m
+      memory: 200Mi
+    requests:
+      cpu: 100m
+      memory: 200Mi
+
+
+sentinel:
+  enabled: true
+
+

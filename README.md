@@ -3,7 +3,7 @@
 reimplement opentelemetry-demo-webstore's adservice with nacos registry and sentinel
 
 - [x] integrate nacos registry
-- [ ] integrate sentinel
+- [x] integrate sentinel
 
 # set up
 ```shell
@@ -12,6 +12,7 @@ docker run -p 8081:8081 \
 -p 9555:9555 \
 -e OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
 -e NACOS_SERVER=localhost:8848 \
+-e SENTINEL_SERVER=localhost:34001 \
 ghcr.io/openinsight-proj/adservice-springcloud:latest
 ```
 

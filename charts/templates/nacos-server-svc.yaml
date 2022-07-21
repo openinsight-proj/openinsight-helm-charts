@@ -1,0 +1,29 @@
+{{- if .Values.nacos.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "nacos.server.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "nacos.server.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.nacos.service.type }}
+  ports:
+    - port: {{ .Values.nacos.service.port }}
+      targetPort: {{ .Values.nacos.service.port }}
+      protocol: TCP
+      nodePort: {{.Values.nacos.service.httpNodePort}}
+      name: http
+    - port: {{.Values.nacos.service.grpcPort1}}
+      targetPort: {{.Values.nacos.service.grpcPort1}}
+      protocol: TCP
+      nodePort: {{.Values.nacos.service.grpcNodePort1}}
+      name: grpc
+    - port: {{.Values.nacos.service.grpcPort2}}
+      targetPort: {{.Values.nacos.service.grpcPort2}}
+      protocol: TCP
+      nodePort: {{.Values.nacos.service.grpcNodePort2}}
+      name: grpc2
+  selector:
+    {{- include "nacos.server.selectorLabels" . | nindent 4 }}
+  {{- end }}

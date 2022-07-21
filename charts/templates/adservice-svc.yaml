@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "adservice.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "adservice.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.adservice.service.type }}
+  ports:
+    - port: {{ .Values.adservice.service.grpcPort }}
+      targetPort: {{ .Values.adservice.service.grpcPort }}
+      protocol: TCP
+      name: grpc
+    - port: {{ .Values.adservice.service.httpPort }}
+      targetPort: {{ .Values.adservice.service.httpPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "adservice.selectorLabels" . | nindent 4 }}

@@ -20,4 +20,5 @@ EXPOSE 9555
 ENV OTEL_EXPORTER_OTLP_TRACES_ENDPOINT http://localhost:4317
 ENV OTEL_RESOURCE_ATTRIBUTES service.name=adservice-springcloud
 ENV NACOS_SERVER=localhost:8848
+ENV SENTINEL_SERVER=localhost:34001
 ENTRYPOINT java -javaagent:opentelemetry-javaagent.jar -jar adservice-springcloud-1.0-SNAPSHOT.jar
