@@ -34,50 +34,6 @@ spring:
     sentinel:
       transport:
         dashboard: ${SENTINEL_SERVER}
-      nacos-group-id: SENTINEL_GROUP
-      nacos-namespce: DEV-CONFIG
-      data-type: json
-      datasource:
-        flow:
-          nacos:
-            server-addr: ${NACOS_SERVER}
-            dataId: ${spring.application.name}-flow-rules
-            groupId: ${spring.cloud.sentinel.nacos-group-id}
-            namespace: ${spring.cloud.sentinel.nacos-namespce}
-            data-type: ${spring.cloud.sentinel.data-type}
-            ruleType: flow
-        degrade:
-          nacos:
-            server-addr: ${NACOS_SERVER}
-            dataId: ${spring.application.name}-degrade-rules
-            groupId: ${spring.cloud.sentinel.nacos-group-id}
-            namespace: ${spring.cloud.sentinel.nacos-namespce}
-            data-type: ${spring.cloud.sentinel.data-type}
-            rule-type: degrade
-        system:
-          nacos:
-            server-addr: ${NACOS_SERVER}
-            dataId: ${spring.application.name}-system-rules
-            groupId: ${spring.cloud.sentinel.nacos-group-id}
-            namespace: ${spring.cloud.sentinel.nacos-namespce}
-            data-type: ${spring.cloud.sentinel.data-type}
-            rule-type: system
-        authority:
-          nacos:
-            server-addr: ${NACOS_SERVER}
-            dataId: ${spring.application.name}-authority-rules
-            groupId: ${spring.cloud.sentinel.nacos-group-id}
-            namespace: ${spring.cloud.sentinel.nacos-namespce}
-            data-type: ${spring.cloud.sentinel.data-type}
-            rule-type: authority
-        param-flow:
-          nacos:
-            server-addr: ${NACOS_SERVER}
-            dataId: ${spring.application.name}-param-flow-rules
-            groupId: ${spring.cloud.sentinel.nacos-group-id}
-            namespace: ${spring.cloud.sentinel.nacos-namespce}
-            data-type: ${spring.cloud.sentinel.data-type}
-            rule-type: param-flow
 ---
 grpc:
   server:

@@ -16,4 +16,4 @@ spec:
       name: http
   selector:
     {{- include "sentinel.server.selectorLabels" . | nindent 4 }}
-  {{- end }}
+{{- end }}

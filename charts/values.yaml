@@ -14,17 +14,17 @@ adservice:
   image:
     repository: ghcr.io/openinsight-proj/adservice-springcloud
     # Overrides the image tag whose default is the chart appVersion.
-    tag: latest
+    tag: "adservice-v0.0.1"
 
   imagePullSecrets: []
-  nameOverride: ""
-  fullnameOverride: ""
+  nameOverride: "adservice"
+  fullnameOverride: "adservice"
 
   env:
     otelResourceAttrubutes: service.name=adservice
-    otelExporter: http://otel-collector.opentelemetry-demo.svc.local:4317
-    nacos_server: nacos-server.opentelemetry-demo.svc.local:8848
-    sentinel_server: sentinel-server.opentelemetry-demo.svc.local:34001
+    otelExporter: http://otel-collector.opentelemetry-demo.svc.cluster.local:4317
+    nacos_server: nacos-server.opentelemetry-demo.svc.cluster.local:8848
+    sentinel_server: sentinel-server.opentelemetry-demo.svc.cluster.local:34001
 
   serviceAccount:
     # Specifies whether a service account should be created
@@ -51,7 +51,7 @@ adservice:
   service:
     type: NodePort
     grpcPort: 9555
-    httpPort: 8001
+    httpPort: 8081
 
   ingress:
     enabled: false
@@ -62,8 +62,8 @@ adservice:
     # resources, such as Minikube. If you do want to specify resources, uncomment the following
     # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
     limits:
-      cpu: 100m
-      memory: 200Mi
+      cpu: 400m
+      memory: 512Mi
     requests:
       cpu: 100m
       memory: 200Mi
@@ -111,12 +111,11 @@ nacos:
     # resources, such as Minikube. If you do want to specify resources, uncomment tkubhe following
     # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
     limits:
-      cpu: 100m
-      memory: 200Mi
+      cpu: 400m
+      memory: 512Mi
     requests:
       cpu: 100m
       memory: 200Mi
-
 
 sentinel:
   enabled: true
@@ -136,7 +135,7 @@ sentinel:
 
   env:
     #模式 cluster/standalone
-    javaopts: "-Dserver.port=34001 -Dcsp.sentinel.dashboard.server=localhost:34001 -Dproject.name=sentinel-dashboard"
+    javaopts: "-Dserver.port=34001 -Dcsp.sentinel.dashboard.server=0.0.0.0:34001 -Dproject.name=sentinel-dashboard"
 
   resources:
     # We usually recommend not to specify default resources and to leave this as a conscious
@@ -144,8 +143,8 @@ sentinel:
     # resources, such as Minikube. If you do want to specify resources, uncomment tkubhe following
     # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
     limits:
-      cpu: 100m
-      memory: 200Mi
+      cpu: 400m
+      memory: 512Mi
     requests:
       cpu: 100m
       memory: 200Mi

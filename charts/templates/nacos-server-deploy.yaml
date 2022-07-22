@@ -35,4 +35,4 @@ spec:
               protocol: TCP
           resources:
             {{- toYaml .Values.nacos.resources | nindent 12 }}
-  {{- end }}
+{{- end }}

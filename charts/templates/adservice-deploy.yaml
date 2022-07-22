@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "adservice.fullname" . }}
+  name: {{ include "adservice.name" . }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "adservice.labels" . | nindent 4 }}
@@ -32,7 +32,7 @@ spec:
         - name: {{ include "adservice.fullname" . }}
           securityContext:
             {{- toYaml .Values.adservice.securityContext | nindent 12 }}
-          image: "{{ .Values.global.image.repository }}:{{ .Values.adservice.image.tag }}"
+          image: "{{ .Values.adservice.image.repository }}:{{ .Values.adservice.image.tag }}"
           imagePullPolicy: {{ .Values.global.image.pullPolicy }}
           ports:
             - name: grpc
@@ -45,10 +45,20 @@ spec:
             httpGet:
               path: /
               port: http
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 120
+            successThreshold: 1
+            failureThreshold: 5
           readinessProbe:
             httpGet:
               path: /
               port: http
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 120
+            successThreshold: 1
+            failureThreshold: 5
           resources:
             {{- toYaml .Values.adservice.resources | nindent 12 }}
           env: 

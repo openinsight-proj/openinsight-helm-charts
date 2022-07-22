@@ -1,7 +1,8 @@
+{{- if .Values.adservice.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "adservice.fullname" . }}
+  name: {{ include "adservice.name" . }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "adservice.labels" . | nindent 4 }}
@@ -18,3 +19,4 @@ spec:
       name: http
   selector:
     {{- include "adservice.selectorLabels" . | nindent 4 }}
+{{- end }}

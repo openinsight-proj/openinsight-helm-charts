@@ -26,4 +26,4 @@ spec:
       name: grpc2
   selector:
     {{- include "nacos.server.selectorLabels" . | nindent 4 }}
-  {{- end }}
+{{- end }}

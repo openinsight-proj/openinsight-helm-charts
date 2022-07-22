@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: {{ include "sentinel.server.name" . }}
-          image: "{{ .Values.nacos.image.repository }}:{{ .Values.nacos.image.tag }}"
+          image: "{{ .Values.sentinel.image.repository }}:{{ .Values.sentinel.image.tag }}"
           imagePullPolicy: {{ .Values.global.image.pullPolicy }}
           env:
             - name: JAVAOPTS
