@@ -6,6 +6,8 @@ reimplement opentelemetry-demo-webstore's adservice with nacos registry and sent
 - [x] integrate sentinel
 
 # set up
+
+docker:
 ```shell
 docker run -p 8081:8081 \
 -p 8999:8999 \
@@ -14,6 +16,16 @@ docker run -p 8081:8081 \
 -e NACOS_SERVER=localhost:8848 \
 -e SENTINEL_SERVER=localhost:34001 \
 ghcr.io/openinsight-proj/adservice-springcloud:latest
+```
+
+helm
+```shell
+helm install adservice-integration ./charts -n opentelemetry-demo --create-namespace \
+--set adservice.env.otelExporter=http://otel-collector.opentelemetry-demo.svc.cluster.local:4317 \
+--set adservice.env.nacos_server=nacos-server.opentelemetry-demo.svc.cluster.local:8848 \
+--set adservice.env.sentinel_server=sentinel-server.opentelemetry-demo.svc.cluster.local:34001 \
+--set adservice.image.tag=adservice-v0.0.1 \
+--set sentinel.image.tag=sentinel-v1.8.4
 ```
 
 # curl
