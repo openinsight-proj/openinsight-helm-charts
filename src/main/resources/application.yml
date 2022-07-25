@@ -26,12 +26,13 @@ spring:
   cloud:
     nacos:
       discovery:
-        enabled: true
+        enabled: false
         server-addr: ${NACOS_SERVER}
 ---
 spring:
   cloud:
     sentinel:
+      enabled: false
       transport:
         dashboard: ${SENTINEL_SERVER}
 ---

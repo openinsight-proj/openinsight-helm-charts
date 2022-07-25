@@ -41,24 +41,6 @@ spec:
             - name: http
               containerPort: {{ .Values.adservice.service.httpPort }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-            initialDelaySeconds: 120
-            timeoutSeconds: 2
-            periodSeconds: 120
-            successThreshold: 1
-            failureThreshold: 5
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-            initialDelaySeconds: 120
-            timeoutSeconds: 2
-            periodSeconds: 120
-            successThreshold: 1
-            failureThreshold: 5
           resources:
             {{- toYaml .Values.adservice.resources | nindent 12 }}
           env: 
@@ -77,6 +59,8 @@ spec:
               value: {{ .Values.adservice.env.nacos_server }}
             - name: SENTINEL_SERVER
               value: {{ .Values.adservice.env.sentinel_server }}
+            - name: JAVAOPTS
+              value: {{ .Values.adservice.env.javaopts }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

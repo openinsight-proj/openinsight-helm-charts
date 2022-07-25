@@ -25,6 +25,7 @@ adservice:
     otelExporter: http://otel-collector.opentelemetry-demo.svc.cluster.local:4317
     nacos_server: nacos-server.opentelemetry-demo.svc.cluster.local:8848
     sentinel_server: sentinel-server.opentelemetry-demo.svc.cluster.local:34001
+    javaopts: -Dspring.cloud.nacos.discovery.enabled=true -Dspring.cloud.sentinel.enabled=true
 
   serviceAccount:
     # Specifies whether a service account should be created
