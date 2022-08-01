@@ -1,5 +1,5 @@
 apiVersion: v2
-name: otel-demo-integration
+name: opentelemetry-demo
 description: A helm chart for openTelemetry community demo application integration with other component.
 
 # A chart can be either an 'application' or a 'library' chart.
@@ -22,3 +22,9 @@ version: 0.1.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "0.0.1"
+
+dependencies:
+  - name: opentelemetry-demo
+    version: 0.1.1
+    repository: "https://open-telemetry.github.io/opentelemetry-helm-charts"
+    condition: opentelemetry-demo.enabled
