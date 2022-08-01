@@ -17,7 +17,7 @@ COPY --from=builder /app/target/adservice-springcloud-1.0-SNAPSHOT.jar ./
 RUN set -ex; \
     curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.16.0/opentelemetry-javaagent.jar;
 
-ENV OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+ENV OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317 \
     OTEL_RESOURCE_ATTRIBUTES=service.name=adservice-springcloud \
     NACOS_SERVER=localhost:8848 \
     SENTINEL_SERVER=localhost:34001 \
