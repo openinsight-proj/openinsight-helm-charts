@@ -8,18 +8,22 @@ RUN ./mvnw clean install package
 
 # -----------------------------------------------------------------------------
 
-FROM openjdk:11-slim-buster
+FROM eclipse-temurin:11-jre
+
 WORKDIR /app/
+
 COPY --from=builder /app/target/adservice-springcloud-1.0-SNAPSHOT.jar ./
-COPY --from=builder /app/agent/opentelemetry-javaagent.jar ./
 
-EXPOSE 8081
-EXPOSE 8999
-EXPOSE 9555
+RUN set -ex; \
+    curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.16.0/opentelemetry-javaagent.jar;
 
-ENV OTEL_EXPORTER_OTLP_TRACES_ENDPOINT http://localhost:4317
-ENV OTEL_RESOURCE_ATTRIBUTES service.name=adservice-springcloud
-ENV NACOS_SERVER localhost:8848
-ENV SENTINEL_SERVER localhost:34001
-ENV JAVAOPTS -Dspring.cloud.nacos.discovery.enabled=false -Dspring.cloud.sentinel.enabled=false
-ENTRYPOINT java -javaagent:opentelemetry-javaagent.jar $JAVAOPTS -jar adservice-springcloud-1.0-SNAPSHOT.jar
+ENV OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+    OTEL_RESOURCE_ATTRIBUTES=service.name=adservice-springcloud \
+    NACOS_SERVER=localhost:8848 \
+    SENTINEL_SERVER=localhost:34001 \
+    JAVA_TOOL_OPTIONS=-javaagent:opentelemetry-javaagent.jar \
+    JAVAOPTS=-Dspring.cloud.nacos.discovery.enabled=false -Dspring.cloud.sentinel.enabled=false
+
+EXPOSE 8081 8999 9555
+
+ENTRYPOINT java $JAVAOPTS -jar adservice-springcloud-1.0-SNAPSHOT.jar
