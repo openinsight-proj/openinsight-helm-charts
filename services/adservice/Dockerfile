@@ -4,7 +4,7 @@ WORKDIR /app/
 
 COPY ./ ./
 RUN chmod +x ./mvnw
-RUN ./mvnw clean install package
+RUN ./mvnw clean install package -DskipTests
 
 # -----------------------------------------------------------------------------
 

@@ -12,7 +12,7 @@ adservice:
   replicaCount: 1
 
   image:
-    repository: ghcr.io/openinsight-proj/adservice-springcloud
+    repository: ghcr.io/openinsight-proj/adservice
     # Overrides the image tag whose default is the chart appVersion.
     tag: "adservice-v0.0.1"
 
@@ -123,7 +123,7 @@ sentinel:
   version: 1.8.4
   replicaCount: 1
   image:
-    repository: ghcr.io/openinsight-proj/adservice-springcloud
+    repository: ghcr.io/openinsight-proj/sentinel
     tag: "sentinel-v1.8.4"
 
   nameOverride: "sentinel-server"
