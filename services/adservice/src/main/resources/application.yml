@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: adservice-springcloud
+server:
+  port: 8081
+management:
+  endpoint:
+    info:
+      enabled: true
+    health:
+      enabled: true
+      show-details: always
+  server:
+    port: 8999
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include:
+          - health
+          - info
+          - ping
+
+---
+spring:
+  cloud:
+    nacos:
+      discovery:
+        enabled: false
+        server-addr: ${NACOS_SERVER}
+---
+spring:
+  cloud:
+    sentinel:
+      enabled: false
+      transport:
+        dashboard: ${SENTINEL_SERVER}
+---
+grpc:
+  server:
+    port: 9555
