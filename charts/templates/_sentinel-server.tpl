@@ -35,7 +35,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Common labels
 */}}
 {{- define "sentinel.server.labels" -}}
-helm.sh/chart: {{ include "otel-demo-integration.chart" . }}
+helm.sh/chart: {{ include "opentelemetry-demo.chart" . }}
 {{ include "sentinel.server.selectorLabels" . }}
 {{- if .Values.sentinel.version }}
 app.kubernetes.io/version: {{ .Values.sentinel.version  | quote }}

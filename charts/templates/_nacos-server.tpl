@@ -35,7 +35,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Common labels
 */}}
 {{- define "nacos.server.labels" -}}
-helm.sh/chart: {{ include "otel-demo-integration.chart" . }}
+helm.sh/chart: {{ include "opentelemetry-demo.chart" . }}
 {{ include "nacos.server.selectorLabels" . }}
 {{- if .Values.nacos.version }}
 app.kubernetes.io/version: {{ .Values.nacos.version  | quote }}
