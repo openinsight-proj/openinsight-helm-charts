@@ -56,9 +56,7 @@ jobs:
           context: ./services/sentinel
           push: true
           platforms: linux/amd64,linux/arm64/v8
-          #tags: ${{ steps.meta.outputs.tags }}
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.SENTINEL_VERSION }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            SENTINEL_VERSION=${{ env.SENTINEL_VERSION }}
-
+            "SENTINEL_VERSION=${{ env.SENTINEL_VERSION }}"
