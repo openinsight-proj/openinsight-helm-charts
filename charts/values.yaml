@@ -1,6 +1,43 @@
 global:
   image:
     pullPolicy: IfNotPresent
+  env:
+    nacosServer: &nacosServer
+      name: NACOS_SERVER
+      value: nacos-server.opentelemetry-demo.svc.cluster.local:8848
+    sentinelServer: &sentinelServer
+      name: SENTINEL_SERVER
+      value: sentinel-server.opentelemetry-demo.svc.cluster.local:34001
+    otelExporterOtelEndpoint: &otelExporterOtelEndpoint
+      name: OTEL_EXPORTER_OTLP_ENDPOINT
+      value: http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317
+    otelServiceName: &otelServiceName
+      name: OTEL_SERVICE_NAME
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: 'metadata.labels[''app.kubernetes.io/component'']'
+    otelk8sNamespace: &otelk8sNamespace
+      name: OTEL_K8S_NAMESPACE
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.namespace
+    otelResourceAttrubutesNodeName: &otelResourceAttrubutesNodeName
+      name: OTEL_RESOURCE_ATTRIBUTES_NODE_NAME
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: spec.nodeName
+    otelResourceAttributesPodName: &otelResourceAttributesPodName
+      name: OTEL_RESOURCE_ATTRIBUTES_POD_NAME
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.name
+    otelResourceAttributes: &otelResourceAttributes
+      name: OTEL_RESOURCE_ATTRIBUTES
+      value: k8s.namespace.name=$(OTEL_K8S_NAMESPACE),k8s.node.name=$(OTEL_RESOURCE_ATTRIBUTES_NODE_NAME),k8s.pod.name=$(OTEL_RESOURCE_ATTRIBUTES_POD_NAME)
 
 opentelemetry-demo:
   enabled: true
@@ -34,194 +71,85 @@ opentelemetry-demo:
         - name: health-http
           value: 8999
       env:
-        - name: NACOS_SERVER
-          value: nacos-server.opentelemetry-demo.svc.cluster.local:8848
-        - name: SENTINEL_SERVER
-          value: sentinel-server.opentelemetry-demo.svc.cluster.local:34001
+        - <<: *otelExporterOtelEndpoint
+        - <<: *nacosServer
+        - <<: *sentinelServer
+        - <<: *otelServiceName
+        - <<: *otelk8sNamespace
+        - <<: *otelResourceAttrubutesNodeName
+        - <<: *otelResourceAttributesPodName
+        - <<: *otelResourceAttributes
         - name: JAVAOPTS
           value: -Dspring.cloud.nacos.discovery.enabled=true -Dspring.cloud.sentinel.enabled=true
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317
-        - name: OTEL_SERVICE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: 'metadata.labels[''app'']'
-        - name: OTEL_K8S_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        - name: OTEL_RESOURCE_ATTRIBUTES_NODE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: spec.nodeName
-        - name: OTEL_RESOURCE_ATTRIBUTES_POD_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.name
-        - name: OTEL_RESOURCE_ATTRIBUTES
-          value: k8s.namespace.name=$(OTEL_K8S_NAMESPACE),k8s.node.name=$(OTEL_RESOURCE_ATTRIBUTES_NODE_NAME),k8s.pod.name=$(OTEL_RESOURCE_ATTRIBUTES_POD_NAME)
 
     cartService:
       enabled: true
       servicePort: 8080
       env:
+        - <<: *otelExporterOtelEndpoint
+        - <<: *otelServiceName
+        - <<: *otelk8sNamespace
+        - <<: *otelResourceAttrubutesNodeName
+        - <<: *otelResourceAttributesPodName
+        - <<: *otelResourceAttributes
         - name: ASPNETCORE_URLS
           value: http://*:8080
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317
-        - name: OTEL_SERVICE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: 'metadata.labels[''app'']'
-        - name: OTEL_K8S_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        - name: OTEL_RESOURCE_ATTRIBUTES_NODE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: spec.nodeName
-        - name: OTEL_RESOURCE_ATTRIBUTES_POD_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.name
-        - name: OTEL_RESOURCE_ATTRIBUTES
-          value: k8s.namespace.name=$(OTEL_K8S_NAMESPACE),k8s.node.name=$(OTEL_RESOURCE_ATTRIBUTES_NODE_NAME),k8s.pod.name=$(OTEL_RESOURCE_ATTRIBUTES_POD_NAME)
+
 
     checkoutService:
       enabled: true
       servicePort: 8080
       env:
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317
-        - name: OTEL_SERVICE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: 'metadata.labels[''app'']'
-        - name: OTEL_K8S_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        - name: OTEL_RESOURCE_ATTRIBUTES_NODE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: spec.nodeName
-        - name: OTEL_RESOURCE_ATTRIBUTES_POD_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.name
-        - name: OTEL_RESOURCE_ATTRIBUTES
-          value: k8s.namespace.name=$(OTEL_K8S_NAMESPACE),k8s.node.name=$(OTEL_RESOURCE_ATTRIBUTES_NODE_NAME),k8s.pod.name=$(OTEL_RESOURCE_ATTRIBUTES_POD_NAME)
+        - <<: *otelExporterOtelEndpoint
+        - <<: *otelServiceName
+        - <<: *otelk8sNamespace
+        - <<: *otelResourceAttrubutesNodeName
+        - <<: *otelResourceAttributesPodName
+        - <<: *otelResourceAttributes
 
     currencyService:
       enabled: true
       servicePort: 8080
       env:
+        - <<: *otelExporterOtelEndpoint
+        - <<: *otelServiceName
+        - <<: *otelk8sNamespace
+        - <<: *otelResourceAttrubutesNodeName
+        - <<: *otelResourceAttributesPodName
+        - <<: *otelResourceAttributes
         - name: PORT
           value: '8080'
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317
-        - name: OTEL_SERVICE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: 'metadata.labels[''app'']'
-        - name: OTEL_K8S_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        - name: OTEL_RESOURCE_ATTRIBUTES_NODE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: spec.nodeName
-        - name: OTEL_RESOURCE_ATTRIBUTES_POD_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.name
-        - name: OTEL_RESOURCE_ATTRIBUTES
-          value: k8s.namespace.name=$(OTEL_K8S_NAMESPACE),k8s.node.name=$(OTEL_RESOURCE_ATTRIBUTES_NODE_NAME),k8s.pod.name=$(OTEL_RESOURCE_ATTRIBUTES_POD_NAME)
 
     emailService:
       enabled: true
       servicePort: 8080
       env:
+        - <<: *otelExporterOtelEndpoint
+        - <<: *otelServiceName
+        - <<: *otelk8sNamespace
+        - <<: *otelResourceAttrubutesNodeName
+        - <<: *otelResourceAttributesPodName
+        - <<: *otelResourceAttributes
         - name: APP_ENV
           value: production
         - name: PORT
           value: '8080'
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317
-        - name: OTEL_SERVICE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: 'metadata.labels[''app'']'
-        - name: OTEL_K8S_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        - name: OTEL_RESOURCE_ATTRIBUTES_NODE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: spec.nodeName
-        - name: OTEL_RESOURCE_ATTRIBUTES_POD_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.name
-        - name: OTEL_RESOURCE_ATTRIBUTES
-          value: k8s.namespace.name=$(OTEL_K8S_NAMESPACE),k8s.node.name=$(OTEL_RESOURCE_ATTRIBUTES_NODE_NAME),k8s.pod.name=$(OTEL_RESOURCE_ATTRIBUTES_POD_NAME)
 
     featureflagService:
       enabled: true
       env:
+        - <<: *otelExporterOtelEndpoint
+        - <<: *otelServiceName
+        - <<: *otelk8sNamespace
+        - <<: *otelResourceAttrubutesNodeName
+        - <<: *otelResourceAttributesPodName
+        - <<: *otelResourceAttributes
         - name: DATABASE_URL
           value: ecto://ffs:ffs@ffs-postgres:5432/ffs
         - name: GRPC_PORT
           value: '50053'
         - name: PORT
           value: '50052'
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317
-        - name: OTEL_SERVICE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: 'metadata.labels[''app'']'
-        - name: OTEL_K8S_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        - name: OTEL_RESOURCE_ATTRIBUTES_NODE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: spec.nodeName
-        - name: OTEL_RESOURCE_ATTRIBUTES_POD_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.name
-        - name: OTEL_RESOURCE_ATTRIBUTES
-          value: k8s.namespace.name=$(OTEL_K8S_NAMESPACE),k8s.node.name=$(OTEL_RESOURCE_ATTRIBUTES_NODE_NAME),k8s.pod.name=$(OTEL_RESOURCE_ATTRIBUTES_POD_NAME)
 
       ports:
         - name: grpc
@@ -247,184 +175,76 @@ opentelemetry-demo:
       enabled: true
       servicePort: 8080
       env:
+        - <<: *otelExporterOtelEndpoint
+        - <<: *otelServiceName
+        - <<: *otelk8sNamespace
+        - <<: *otelResourceAttrubutesNodeName
+        - <<: *otelResourceAttributesPodName
+        - <<: *otelResourceAttributes
         - name: FRONTEND_ADDR
           value: :8080
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317
-        - name: OTEL_SERVICE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: 'metadata.labels[''app'']'
-        - name: OTEL_K8S_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        - name: OTEL_RESOURCE_ATTRIBUTES_NODE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: spec.nodeName
-        - name: OTEL_RESOURCE_ATTRIBUTES_POD_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.name
-        - name: OTEL_RESOURCE_ATTRIBUTES
-          value: k8s.namespace.name=$(OTEL_K8S_NAMESPACE),k8s.node.name=$(OTEL_RESOURCE_ATTRIBUTES_NODE_NAME),k8s.pod.name=$(OTEL_RESOURCE_ATTRIBUTES_POD_NAME)
 
     loadgenerator:
       enabled: true
       env:
+        - <<: *otelExporterOtelEndpoint
+        - <<: *otelServiceName
+        - <<: *otelk8sNamespace
+        - <<: *otelResourceAttrubutesNodeName
+        - <<: *otelResourceAttributesPodName
+        - <<: *otelResourceAttributes
         - name: USERS
           value: '10'
         - name: PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION
           value: python
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317
-        - name: OTEL_SERVICE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: 'metadata.labels[''app'']'
-        - name: OTEL_K8S_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        - name: OTEL_RESOURCE_ATTRIBUTES_NODE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: spec.nodeName
-        - name: OTEL_RESOURCE_ATTRIBUTES_POD_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.name
-        - name: OTEL_RESOURCE_ATTRIBUTES
-          value: k8s.namespace.name=$(OTEL_K8S_NAMESPACE),k8s.node.name=$(OTEL_RESOURCE_ATTRIBUTES_NODE_NAME),k8s.pod.name=$(OTEL_RESOURCE_ATTRIBUTES_POD_NAME)
 
     paymentService:
       enabled: true
       servicePort: 8080
       env:
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317
-        - name: OTEL_SERVICE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: 'metadata.labels[''app'']'
-        - name: OTEL_K8S_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        - name: OTEL_RESOURCE_ATTRIBUTES_NODE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: spec.nodeName
-        - name: OTEL_RESOURCE_ATTRIBUTES_POD_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.name
-        - name: OTEL_RESOURCE_ATTRIBUTES
-          value: k8s.namespace.name=$(OTEL_K8S_NAMESPACE),k8s.node.name=$(OTEL_RESOURCE_ATTRIBUTES_NODE_NAME),k8s.pod.name=$(OTEL_RESOURCE_ATTRIBUTES_POD_NAME)
+        - <<: *otelExporterOtelEndpoint
+        - <<: *otelServiceName
+        - <<: *otelk8sNamespace
+        - <<: *otelResourceAttrubutesNodeName
+        - <<: *otelResourceAttributesPodName
+        - <<: *otelResourceAttributes
 
     productCatalogService:
       enabled: true
       servicePort: 8080
       env:
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317
-        - name: OTEL_SERVICE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: 'metadata.labels[''app'']'
-        - name: OTEL_K8S_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        - name: OTEL_RESOURCE_ATTRIBUTES_NODE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: spec.nodeName
-        - name: OTEL_RESOURCE_ATTRIBUTES_POD_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.name
-        - name: OTEL_RESOURCE_ATTRIBUTES
-          value: k8s.namespace.name=$(OTEL_K8S_NAMESPACE),k8s.node.name=$(OTEL_RESOURCE_ATTRIBUTES_NODE_NAME),k8s.pod.name=$(OTEL_RESOURCE_ATTRIBUTES_POD_NAME)
+        - <<: *otelExporterOtelEndpoint
+        - <<: *otelServiceName
+        - <<: *otelk8sNamespace
+        - <<: *otelResourceAttrubutesNodeName
+        - <<: *otelResourceAttributesPodName
+        - <<: *otelResourceAttributes
 
     recommendationService:
       enabled: true
       servicePort: 8080
       env:
+        - <<: *otelExporterOtelEndpoint
+        - <<: *otelServiceName
+        - <<: *otelk8sNamespace
+        - <<: *otelResourceAttrubutesNodeName
+        - <<: *otelResourceAttributesPodName
+        - <<: *otelResourceAttributes
         - name: OTEL_PYTHON_LOG_CORRELATION
           value: 'true'
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317
-        - name: OTEL_SERVICE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: 'metadata.labels[''app'']'
-        - name: OTEL_K8S_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        - name: OTEL_RESOURCE_ATTRIBUTES_NODE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: spec.nodeName
-        - name: OTEL_RESOURCE_ATTRIBUTES_POD_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.name
-        - name: OTEL_RESOURCE_ATTRIBUTES
-          value: k8s.namespace.name=$(OTEL_K8S_NAMESPACE),k8s.node.name=$(OTEL_RESOURCE_ATTRIBUTES_NODE_NAME),k8s.pod.name=$(OTEL_RESOURCE_ATTRIBUTES_POD_NAME)
 
     shippingService:
       enabled: true
       servicePort: 8080
       env:
+        - <<: *otelExporterOtelEndpoint
+        - <<: *otelServiceName
+        - <<: *otelk8sNamespace
+        - <<: *otelResourceAttrubutesNodeName
+        - <<: *otelResourceAttributesPodName
+        - <<: *otelResourceAttributes
         - name: PORT
           value: '8080'
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317
-        - name: OTEL_SERVICE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: 'metadata.labels[''app'']'
-        - name: OTEL_K8S_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        - name: OTEL_RESOURCE_ATTRIBUTES_NODE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: spec.nodeName
-        - name: OTEL_RESOURCE_ATTRIBUTES_POD_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.name
-        - name: OTEL_RESOURCE_ATTRIBUTES
-          value: k8s.namespace.name=$(OTEL_K8S_NAMESPACE),k8s.node.name=$(OTEL_RESOURCE_ATTRIBUTES_NODE_NAME),k8s.pod.name=$(OTEL_RESOURCE_ATTRIBUTES_POD_NAME)
 
 nacos:
   enabled: true
@@ -445,18 +265,21 @@ nacos:
     grpcPort2: 9849
   env:
     mode: standalone
+    jvmXms: 1g
+    jvmXmx: 1g
+    jvmXmn: 512m
   resources:
     limits:
-      cpu: 400m
-      memory: 512Mi
+      cpu: 1024m
+      memory: 1024Mi
     requests:
-      cpu: 100m
-      memory: 200Mi
+      cpu: 1024m
+      memory: 1024Mi
 
 sentinel:
   enabled: true
   version: 1.8.4
-  replicaCount: 1
+  replicaCount:
   image:
     repository: ghcr.m.daocloud.io/openinsight-proj/opentelemetry-demo-helm-chart/sentinel
     tag: "1.8.4"
