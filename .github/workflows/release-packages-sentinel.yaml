@@ -52,6 +52,8 @@ jobs:
 
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        env:
+          SENTINEL_VERSION: ${{ env.SENTINEL_VERSION }}
         with:
           context: ./services/sentinel
           push: true
@@ -59,6 +61,3 @@ jobs:
           #tags: ${{ steps.meta.outputs.tags }}
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.SENTINEL_VERSION }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            SENTINEL_VERSION=${{ env.SENTINEL_VERSION }}
-
