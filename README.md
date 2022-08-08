@@ -11,7 +11,7 @@ reimplement opentelemetry-demo-webstore's adservice with nacos registry and sent
 helm install my-otel-demo . -n opentelemetry-demo --create-namespace
 ```
 
-# demo-ui
+# demo-UI
 we have a NodePort type svc named otel-demo-ui, find it and enjoy the otel-demo
 
 # FAQ
