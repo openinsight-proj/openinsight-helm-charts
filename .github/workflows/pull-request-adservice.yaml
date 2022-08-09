@@ -3,23 +3,20 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: release-packages-sentinel.yaml
+name: release-packages
 
 on:
-  push:
-    branches:
-      - main
-    tags: ["v*"]
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'service/adservice/**'
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/sentinel
-  SENTINEL_VERSION: 1.8.4
+  IMAGE_NAME: ${{ github.repository }}/adservice
 
 jobs:
-  package-sentinel:
+  package-adservice-springcloud:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -53,10 +50,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
-          context: ./services/sentinel
-          push: true
+          context: ./services/adservice
+          push: ${{ github.event.pull_request.merged }}
           platforms: linux/amd64,linux/arm64/v8
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.SENTINEL_VERSION }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            "SENTINEL_VERSION=${{ env.SENTINEL_VERSION }}"

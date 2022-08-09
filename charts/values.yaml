@@ -8,36 +8,6 @@ global:
     sentinelServer: &sentinelServer
       name: SENTINEL_SERVER
       value: sentinel-server.opentelemetry-demo.svc.cluster.local:34001
-    otelExporterOtelEndpoint: &otelExporterOtelEndpoint
-      name: OTEL_EXPORTER_OTLP_ENDPOINT
-      value: http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317
-    otelServiceName: &otelServiceName
-      name: OTEL_SERVICE_NAME
-      valueFrom:
-        fieldRef:
-          apiVersion: v1
-          fieldPath: 'metadata.labels[''app.kubernetes.io/component'']'
-    otelk8sNamespace: &otelk8sNamespace
-      name: OTEL_K8S_NAMESPACE
-      valueFrom:
-        fieldRef:
-          apiVersion: v1
-          fieldPath: metadata.namespace
-    otelResourceAttrubutesNodeName: &otelResourceAttrubutesNodeName
-      name: OTEL_RESOURCE_ATTRIBUTES_NODE_NAME
-      valueFrom:
-        fieldRef:
-          apiVersion: v1
-          fieldPath: spec.nodeName
-    otelResourceAttributesPodName: &otelResourceAttributesPodName
-      name: OTEL_RESOURCE_ATTRIBUTES_POD_NAME
-      valueFrom:
-        fieldRef:
-          apiVersion: v1
-          fieldPath: metadata.name
-    otelResourceAttributes: &otelResourceAttributes
-      name: OTEL_RESOURCE_ATTRIBUTES
-      value: k8s.namespace.name=$(OTEL_K8S_NAMESPACE),k8s.node.name=$(OTEL_RESOURCE_ATTRIBUTES_NODE_NAME),k8s.pod.name=$(OTEL_RESOURCE_ATTRIBUTES_POD_NAME)
 
 opentelemetry-demo:
   enabled: true
@@ -70,14 +40,8 @@ opentelemetry-demo:
         - name: health-http
           value: 8999
       env:
-        - <<: *otelExporterOtelEndpoint
         - <<: *nacosServer
         - <<: *sentinelServer
-        - <<: *otelServiceName
-        - <<: *otelk8sNamespace
-        - <<: *otelResourceAttrubutesNodeName
-        - <<: *otelResourceAttributesPodName
-        - <<: *otelResourceAttributes
         - name: JAVAOPTS
           value: -Dspring.cloud.nacos.discovery.enabled=true -Dspring.cloud.sentinel.enabled=true
 
@@ -85,12 +49,6 @@ opentelemetry-demo:
       enabled: true
       servicePort: 8080
       env:
-        - <<: *otelExporterOtelEndpoint
-        - <<: *otelServiceName
-        - <<: *otelk8sNamespace
-        - <<: *otelResourceAttrubutesNodeName
-        - <<: *otelResourceAttributesPodName
-        - <<: *otelResourceAttributes
         - name: ASPNETCORE_URLS
           value: http://*:8080
 
@@ -98,24 +56,11 @@ opentelemetry-demo:
     checkoutService:
       enabled: true
       servicePort: 8080
-      env:
-        - <<: *otelExporterOtelEndpoint
-        - <<: *otelServiceName
-        - <<: *otelk8sNamespace
-        - <<: *otelResourceAttrubutesNodeName
-        - <<: *otelResourceAttributesPodName
-        - <<: *otelResourceAttributes
 
     currencyService:
       enabled: true
       servicePort: 8080
       env:
-        - <<: *otelExporterOtelEndpoint
-        - <<: *otelServiceName
-        - <<: *otelk8sNamespace
-        - <<: *otelResourceAttrubutesNodeName
-        - <<: *otelResourceAttributesPodName
-        - <<: *otelResourceAttributes
         - name: PORT
           value: '8080'
 
@@ -123,12 +68,6 @@ opentelemetry-demo:
       enabled: true
       servicePort: 8080
       env:
-        - <<: *otelExporterOtelEndpoint
-        - <<: *otelServiceName
-        - <<: *otelk8sNamespace
-        - <<: *otelResourceAttrubutesNodeName
-        - <<: *otelResourceAttributesPodName
-        - <<: *otelResourceAttributes
         - name: APP_ENV
           value: production
         - name: PORT
@@ -137,12 +76,6 @@ opentelemetry-demo:
     featureflagService:
       enabled: true
       env:
-        - <<: *otelExporterOtelEndpoint
-        - <<: *otelServiceName
-        - <<: *otelk8sNamespace
-        - <<: *otelResourceAttrubutesNodeName
-        - <<: *otelResourceAttributesPodName
-        - <<: *otelResourceAttributes
         - name: DATABASE_URL
           value: ecto://ffs:ffs@ffs-postgres:5432/ffs
         - name: GRPC_PORT
@@ -174,24 +107,12 @@ opentelemetry-demo:
       enabled: true
       servicePort: 8080
       env:
-        - <<: *otelExporterOtelEndpoint
-        - <<: *otelServiceName
-        - <<: *otelk8sNamespace
-        - <<: *otelResourceAttrubutesNodeName
-        - <<: *otelResourceAttributesPodName
-        - <<: *otelResourceAttributes
         - name: FRONTEND_ADDR
           value: :8080
 
     loadgenerator:
       enabled: true
       env:
-        - <<: *otelExporterOtelEndpoint
-        - <<: *otelServiceName
-        - <<: *otelk8sNamespace
-        - <<: *otelResourceAttrubutesNodeName
-        - <<: *otelResourceAttributesPodName
-        - <<: *otelResourceAttributes
         - name: USERS
           value: '10'
         - name: PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION
@@ -200,35 +121,15 @@ opentelemetry-demo:
     paymentService:
       enabled: true
       servicePort: 8080
-      env:
-        - <<: *otelExporterOtelEndpoint
-        - <<: *otelServiceName
-        - <<: *otelk8sNamespace
-        - <<: *otelResourceAttrubutesNodeName
-        - <<: *otelResourceAttributesPodName
-        - <<: *otelResourceAttributes
 
     productCatalogService:
       enabled: true
       servicePort: 8080
-      env:
-        - <<: *otelExporterOtelEndpoint
-        - <<: *otelServiceName
-        - <<: *otelk8sNamespace
-        - <<: *otelResourceAttrubutesNodeName
-        - <<: *otelResourceAttributesPodName
-        - <<: *otelResourceAttributes
 
     recommendationService:
       enabled: true
       servicePort: 8080
       env:
-        - <<: *otelExporterOtelEndpoint
-        - <<: *otelServiceName
-        - <<: *otelk8sNamespace
-        - <<: *otelResourceAttrubutesNodeName
-        - <<: *otelResourceAttributesPodName
-        - <<: *otelResourceAttributes
         - name: OTEL_PYTHON_LOG_CORRELATION
           value: 'true'
 
@@ -236,12 +137,6 @@ opentelemetry-demo:
       enabled: true
       servicePort: 8080
       env:
-        - <<: *otelExporterOtelEndpoint
-        - <<: *otelServiceName
-        - <<: *otelk8sNamespace
-        - <<: *otelResourceAttrubutesNodeName
-        - <<: *otelResourceAttributesPodName
-        - <<: *otelResourceAttributes
         - name: PORT
           value: '8080'
 
