@@ -30,7 +30,7 @@ jobs:
       - name: Helm Update
         run: |
           helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
-          helm dep up charts
+          helm dep up charts/opentelemetry-demo
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.4.0
