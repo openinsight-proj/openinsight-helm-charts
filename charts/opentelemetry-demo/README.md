@@ -1,1 +1,0 @@
-# adservice-springcloud-helm-charts
