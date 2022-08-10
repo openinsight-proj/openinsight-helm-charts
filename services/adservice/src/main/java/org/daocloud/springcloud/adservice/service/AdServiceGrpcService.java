@@ -7,6 +7,7 @@ import hipstershop.Demo.Ad;
 import hipstershop.Demo.AdRequest;
 import hipstershop.Demo.AdResponse;
 import io.grpc.StatusRuntimeException;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -44,6 +45,14 @@ public class AdServiceGrpcService extends AdServiceGrpc.AdServiceImplBase {
             span.setAttribute("app.ads.contextKeys", req.getContextKeysList().toString());
             span.setAttribute("app.ads.contextKeys.count", req.getContextKeysCount());
             logger.info("received ad request (context_words=" + req.getContextKeysList() + ")");
+
+            //throw random error
+            Random random = new Random();
+            int r = random.nextInt(100)+1;
+            if(r > 50){
+                throw new StatusRuntimeException(Status.INTERNAL.withDescription("connect Canceled randomly"));
+            }
+
             if (req.getContextKeysCount() > 0) {
                 for (int i = 0; i < req.getContextKeysCount(); i++) {
                     Collection<Ad> ads = getAdsByCategory(req.getContextKeys(i));
