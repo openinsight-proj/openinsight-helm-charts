@@ -1,1 +1,2 @@
-# adservice-springcloud-helm-charts
+# OpenTelemetry Demo Helm Chart
+
