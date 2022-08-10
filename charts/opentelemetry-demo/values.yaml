@@ -178,9 +178,6 @@ nacos:
   fullnameOverride: "nacos-server"
   service:
     type: NodePort
-    httpNodePort: 30903
-    grpcNodePort1: 30914
-    grpcNodePort2: 30915
     port: 8848
     grpcPort1: 9848
     grpcPort2: 9849
@@ -208,7 +205,6 @@ sentinel:
   fullnameOverride: "sentinel-server"
   service:
     type: NodePort
-    httpNodePort: 30924
     port: 34001
   env:
     javaopts: "-Dserver.port=34001 -Dcsp.sentinel.dashboard.server=0.0.0.0:34001 -Dproject.name=sentinel-dashboard"

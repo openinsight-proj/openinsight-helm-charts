@@ -10,9 +10,7 @@ spec:
   type: {{ .Values.sentinel.service.type }}
   ports:
     - port: {{ .Values.sentinel.service.port }}
-      targetPort: {{ .Values.sentinel.service.port }}
       protocol: TCP
-      nodePort: {{.Values.sentinel.service.httpNodePort}}
       name: http
   selector:
     {{- include "sentinel.server.selectorLabels" . | nindent 4 }}
