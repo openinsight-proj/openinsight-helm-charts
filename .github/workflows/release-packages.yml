@@ -8,10 +8,12 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/adservice
+  ADSERVICE_IMAGE_NAME: ${{ github.repository }}/adservice
+  SENTINEL_IMAGE_NAME: ${{ github.repository }}/sentinel
+  SENTINEL_VERSION: 1.8.4
 
 jobs:
-  package-adservice-springcloud:
+  package-adservice:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -40,7 +42,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.ADSERVICE_IMAGE_NAME }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
@@ -79,7 +81,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.SENTINEL_IMAGE_NAME }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
@@ -87,7 +89,7 @@ jobs:
           context: ./services/sentinel
           push: true
           platforms: linux/amd64,linux/arm64/v8
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.SENTINEL_VERSION }}
+          tags: ${{ env.REGISTRY }}/${{ env.SENTINEL_IMAGE_NAME }}:${{ env.SENTINEL_VERSION }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             "SENTINEL_VERSION=${{ env.SENTINEL_VERSION }}"
