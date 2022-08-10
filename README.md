@@ -6,9 +6,10 @@ reimplement opentelemetry-demo-webstore's adservice with nacos registry and sent
 - [x] integrate sentinel
 
 # set up
-
+helm
 ```shell
-helm install my-otel-demo . -n opentelemetry-demo --create-namespace
+helm repo add open-telemetry-projdistr https://openinsight-proj.github.io/opentelemetry-demo-helm-chart
+helm install my-otel-demo open-telemetry-projdistr/opentelemetry-demo -n opentelemetry-demo --create-namespace
 ```
 
 # demo-UI
