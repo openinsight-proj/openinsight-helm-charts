@@ -48,7 +48,7 @@ opentelemetry-demo:
 
   image:
     repository: m.daocloud.io/ghcr.io/open-telemetry/demo
-    pullSecrets: [ ]
+    pullSecrets: []
   serviceAccount: ""
 
   components:
