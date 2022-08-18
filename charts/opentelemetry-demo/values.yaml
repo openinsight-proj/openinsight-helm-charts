@@ -4,10 +4,10 @@ global:
   env:
     nacosServer: &nacosServer
       name: NACOS_SERVER
-      value: nacos-server.opentelemetry-demo.svc.cluster.local:8848
+      value: nacos-server.webstore-demo.svc.cluster.local:8848
     sentinelServer: &sentinelServer
       name: SENTINEL_SERVER
-      value: sentinel-server.opentelemetry-demo.svc.cluster.local:34001
+      value: sentinel-server.webstore-demo.svc.cluster.local:34001
 
 opentelemetry-demo:
   enabled: true
