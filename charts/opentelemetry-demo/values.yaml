@@ -75,6 +75,7 @@ opentelemetry-demo:
 
     cartService:
       enabled: true
+      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-cartservice
       servicePort: 8080
       env:
         - name: ASPNETCORE_URLS
@@ -82,10 +83,12 @@ opentelemetry-demo:
 
     checkoutService:
       enabled: true
+      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-cartservice
       servicePort: 8080
 
     currencyService:
       enabled: true
+      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-checkoutservice
       servicePort: 8080
       env:
         - name: PORT
@@ -93,6 +96,7 @@ opentelemetry-demo:
 
     emailService:
       enabled: true
+      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-emailservice
       servicePort: 8080
       env:
         - name: APP_ENV
@@ -102,6 +106,7 @@ opentelemetry-demo:
 
     featureflagService:
       enabled: true
+      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-featureflagservice
       env:
         - name: DATABASE_URL
           value: ecto://ffs:ffs@ffs-postgres:5432/ffs
@@ -132,6 +137,7 @@ opentelemetry-demo:
 
     frontend:
       enabled: true
+      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-frontend
       servicePort: 8080
       env:
         - name: FRONTEND_ADDR
@@ -139,6 +145,7 @@ opentelemetry-demo:
 
     loadgenerator:
       enabled: true
+      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-loadgenerator
       env:
         - name: USERS
           value: '10'
@@ -147,14 +154,17 @@ opentelemetry-demo:
 
     paymentService:
       enabled: true
+      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-paymentservice
       servicePort: 8080
 
     productCatalogService:
       enabled: true
+      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-productcatalogservice
       servicePort: 8080
 
     recommendationService:
       enabled: true
+      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-recommendationservice
       servicePort: 8080
       env:
         - name: OTEL_PYTHON_LOG_CORRELATION
@@ -162,6 +172,7 @@ opentelemetry-demo:
 
     shippingService:
       enabled: true
+      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-shippingservice
       servicePort: 8080
       env:
         - name: PORT
