@@ -4,10 +4,10 @@ global:
   env:
     nacosServer: &nacosServer
       name: NACOS_SERVER
-      value: nacos-server.opentelemetry-demo.svc.cluster.local:8848
+      value: nacos-server.webstore-demo.svc.cluster.local:8848
     sentinelServer: &sentinelServer
       name: SENTINEL_SERVER
-      value: sentinel-server.opentelemetry-demo.svc.cluster.local:34001
+      value: sentinel-server.webstore-demo.svc.cluster.local:34001
 
 opentelemetry-demo:
   enabled: true
@@ -21,7 +21,7 @@ opentelemetry-demo:
     enabled: true
     env:
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: 'http://your-opentelemetry-collector:4317'
+        value: 'http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317'
       - name: OTEL_SERVICE_NAME
         valueFrom:
           fieldRef:
