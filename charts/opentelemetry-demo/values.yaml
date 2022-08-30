@@ -75,7 +75,6 @@ opentelemetry-demo:
 
     cartService:
       enabled: true
-      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-cartservice
       servicePort: 8080
       env:
         - name: ASPNETCORE_URLS
@@ -83,100 +82,37 @@ opentelemetry-demo:
 
     checkoutService:
       enabled: true
-      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-cartservice
-      servicePort: 8080
 
     currencyService:
       enabled: true
-      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-checkoutservice
-      servicePort: 8080
-      env:
-        - name: PORT
-          value: '8080'
 
     emailService:
       enabled: true
-      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-emailservice
-      servicePort: 8080
-      env:
-        - name: APP_ENV
-          value: production
-        - name: PORT
-          value: '8080'
 
     featureflagService:
       enabled: true
-      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-featureflagservice
-      env:
-        - name: DATABASE_URL
-          value: ecto://ffs:ffs@ffs-postgres:5432/ffs
-        - name: GRPC_PORT
-          value: '50053'
-        - name: PORT
-          value: '50052'
-
-      ports:
-        - name: grpc
-          value: 50052
-        - name: http
-          value: 50053
 
     ffsPostgres:
       enabled: true
-      env:
-        - name: POSTGRES_DB
-          value: ffs
-        - name: POSTGRES_PASSWORD
-          value: ffs
-        - name: POSTGRES_USER
-          value: ffs
-      image: cimg/postgres:14.2
-      ports:
-        - name: postgres
-          value: 5432
 
     frontend:
       enabled: true
-      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-frontend
-      servicePort: 8080
-      env:
-        - name: FRONTEND_ADDR
-          value: :8080
 
     loadgenerator:
       enabled: true
-      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-loadgenerator
-      env:
-        - name: USERS
-          value: '10'
-        - name: PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION
-          value: python
 
     paymentService:
       enabled: true
-      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-paymentservice
-      servicePort: 8080
 
     productCatalogService:
       enabled: true
-      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-productcatalogservice
-      servicePort: 8080
 
     recommendationService:
       enabled: true
-      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-recommendationservice
-      servicePort: 8080
-      env:
-        - name: OTEL_PYTHON_LOG_CORRELATION
-          value: 'true'
+
 
     shippingService:
       enabled: true
-      image: m.daocloud.io/ghcr.io/open-telemetry/demo:v0.3.3-alpha-shippingservice
-      servicePort: 8080
-      env:
-        - name: PORT
-          value: '8080'
 
 nacos:
   enabled: true
