@@ -4,10 +4,10 @@ global:
   env:
     nacosServer: &nacosServer
       name: NACOS_SERVER
-      value: nacos-server.opentelemetry-demo.svc.cluster.local:8848
+      value: nacos-server.webstore-demo.svc.cluster.local:8848
     sentinelServer: &sentinelServer
       name: SENTINEL_SERVER
-      value: sentinel-server.opentelemetry-demo.svc.cluster.local:34001
+      value: sentinel-server.webstore-demo.svc.cluster.local:34001
 
 opentelemetry-demo:
   enabled: true
@@ -21,7 +21,7 @@ opentelemetry-demo:
     enabled: true
     env:
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: 'http://your-opentelemetry-collector:4317'
+        value: 'http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317'
       - name: OTEL_SERVICE_NAME
         valueFrom:
           fieldRef:
@@ -82,90 +82,37 @@ opentelemetry-demo:
 
     checkoutService:
       enabled: true
-      servicePort: 8080
 
     currencyService:
       enabled: true
-      servicePort: 8080
-      env:
-        - name: PORT
-          value: '8080'
 
     emailService:
       enabled: true
-      servicePort: 8080
-      env:
-        - name: APP_ENV
-          value: production
-        - name: PORT
-          value: '8080'
 
     featureflagService:
       enabled: true
-      env:
-        - name: DATABASE_URL
-          value: ecto://ffs:ffs@ffs-postgres:5432/ffs
-        - name: GRPC_PORT
-          value: '50053'
-        - name: PORT
-          value: '50052'
-
-      ports:
-        - name: grpc
-          value: 50052
-        - name: http
-          value: 50053
 
     ffsPostgres:
       enabled: true
-      env:
-        - name: POSTGRES_DB
-          value: ffs
-        - name: POSTGRES_PASSWORD
-          value: ffs
-        - name: POSTGRES_USER
-          value: ffs
-      image: cimg/postgres:14.2
-      ports:
-        - name: postgres
-          value: 5432
 
     frontend:
       enabled: true
-      servicePort: 8080
-      env:
-        - name: FRONTEND_ADDR
-          value: :8080
 
     loadgenerator:
       enabled: true
-      env:
-        - name: USERS
-          value: '10'
-        - name: PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION
-          value: python
 
     paymentService:
       enabled: true
-      servicePort: 8080
 
     productCatalogService:
       enabled: true
-      servicePort: 8080
 
     recommendationService:
       enabled: true
-      servicePort: 8080
-      env:
-        - name: OTEL_PYTHON_LOG_CORRELATION
-          value: 'true'
+
 
     shippingService:
       enabled: true
-      servicePort: 8080
-      env:
-        - name: PORT
-          value: '8080'
 
 nacos:
   enabled: true
