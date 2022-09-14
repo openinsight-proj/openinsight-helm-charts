@@ -47,16 +47,11 @@ opentelemetry-demo:
 
   image:
     repository: m.daocloud.io/ghcr.io/open-telemetry/demo
-    pullSecrets: []
-  serviceAccount: ""
 
   components:
     redis:
       enabled: true
-      image: redis:alpine
-      ports:
-        - name: redis
-          value: 6379
+      image: docker.m.daocloud.io/redis:alpine
 
     adService:
       enabled: true
@@ -67,47 +62,79 @@ opentelemetry-demo:
           value: 8081
         - name: health-http
           value: 8999
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     cartService:
       enabled: true
-      servicePort: 8080
-      env:
-        - name: ASPNETCORE_URLS
-          value: http://*:8080
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     checkoutService:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     currencyService:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     emailService:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     featureflagService:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     ffsPostgres:
       enabled: true
 
     frontend:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     loadgenerator:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     paymentService:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     productCatalogService:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     recommendationService:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
 
     shippingService:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
 nacos:
   enabled: false
