@@ -1,23 +1,28 @@
 # OpenTelemetry Demo Helm Chart
 
-# set up
+## set up
 
 _make sure insight-agent has already deployed._
-
 ```shell
 helm repo add open-telemetry-projdistr https://openinsight-proj.github.io/opentelemetry-demo-helm-chart
 helm install my-otel-demo open-telemetry-projdistr/opentelemetry-demo -n webstore-demo --create-namespace
 ```
+## uninstall
+```shell
+helm uninstall my-otel-demo -n webstore-demo
+```
 
-# demo-UI
+
+## demo-UI
 we have a NodePort type svc named otel-demo-ui, find it and enjoy the otel-demo
 
-# FAQ
+## FAQ
 
 1. How to registry adService into nacos or sentinel?
-   The adService doesn't registry any nacos or sentinel by default, if your want to enable it, use following command:
 
-_If you are using `zsh`, then you need to escape square brackets like \[0\]._
+The adService doesn't registry any nacos or sentinel by default, if your want to enable it, use following command:
+
+_If you are using `zsh`, then you need to escape square brackets like \\[0\\]._
 
 ```shell
 helm upgrade --install --create-namespace --cleanup-on-fail my-otel-demo open-telemetry-projdistr/opentelemetry-demo -n webstore-demo \
@@ -42,9 +47,10 @@ helm upgrade --install --create-namespace --cleanup-on-fail my-otel-demo open-te
 
 2. The adService will return error response randomly.
 3. How to change default traces export addr?
-   The default traces export addr is `http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317`, use following command:
+
+The default traces export addr is `http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317`, use following command:
 ```shell
 helm upgrade --install --create-namespace --cleanup-on-fail my-otel-demo open-telemetry-projdistr/opentelemetry-demo -n webstore-demo \
 --set global.autoInstrumentation.config.spec.env[0].name=OTEL_EXPORTER_OTLP_ENDPOINT \
---set global.autoInstrumentation.config.spec.env[0].value=http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317
+--set global.autoInstrumentation.config.spec.env[0].value=http://ip:4317
 ```
