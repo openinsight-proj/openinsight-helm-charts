@@ -67,13 +67,6 @@ opentelemetry-demo:
           value: 8081
         - name: health-http
           value: 8999
-      env:
-        - name: NACOS_SERVER
-          value: nacos-server.webstore-demo.svc.cluster.local:8848
-        - name: SENTINEL_SERVER
-          value: sentinel-server.webstore-demo.svc.cluster.local:34001
-        - name: JAVAOPTS
-          value: -Dspring.cloud.nacos.discovery.enabled=false -Dspring.cloud.sentinel.enabled=false
 
     cartService:
       enabled: true
