@@ -1,0 +1,3 @@
+{{- if .Values.global.autoInstrumentation.enabled -}}
+{{- toYaml .Values.global.autoInstrumentation.config }}
+{{- end }}

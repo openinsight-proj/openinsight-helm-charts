@@ -1,13 +1,38 @@
 global:
   image:
     pullPolicy: IfNotPresent
-  env:
-    nacosServer: &nacosServer
-      name: NACOS_SERVER
-      value: nacos-server.webstore-demo.svc.cluster.local:8848
-    sentinelServer: &sentinelServer
-      name: SENTINEL_SERVER
-      value: sentinel-server.webstore-demo.svc.cluster.local:34001
+  autoInstrumentation:
+    enabled: true
+    config:
+      apiVersion: opentelemetry.io/v1alpha1
+      kind: Instrumentation
+      metadata:
+        name: opentelemetry-autoinstrumentation-webstore-demo
+        namespace: webstore-demo
+      spec:
+        # https://github.com/open-telemetry/opentelemetry-operator/blob/main/docs/api.md#instrumentationspecresource
+        resource:
+          addK8sUIDAttributes: true
+        env:
+          - name: OTEL_EXPORTER_OTLP_ENDPOINT
+            value: http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317
+        sampler:
+          # Enum: always_on, always_off, traceidratio, parentbased_always_on, parentbased_always_off, parentbased_traceidratio, jaeger_remote, xray
+          type: always_on
+        java:
+          image: ghcr.m.daocloud.io/open-telemetry/opentelemetry-operator/autoinstrumentation-java:1.17.0
+          env:
+            - name: OTEL_JAVAAGENT_DEBUG
+              value: "false"
+            - name: OTEL_INSTRUMENTATION_JDBC_ENABLED
+              value: "true"
+            - name: SPLUNK_PROFILER_ENABLED
+              value: "false"
+        nodejs:
+          image: ghcr.m.daocloud.io/open-telemetry/opentelemetry-operator/autoinstrumentation-nodejs:0.31.0
+        python:
+          image: ghcr.m.daocloud.io/open-telemetry/opentelemetry-operator/autoinstrumentation-python::0.33b0
+
 
 opentelemetry-demo:
   enabled: true
@@ -18,45 +43,15 @@ opentelemetry-demo:
       enabled: false
 
   default:
-    enabled: true
-    env:
-      - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: 'http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317'
-      - name: OTEL_SERVICE_NAME
-        valueFrom:
-          fieldRef:
-            apiVersion: v1
-            fieldPath: 'metadata.labels[''app.kubernetes.io/component'']'
-      - name: OTEL_K8S_NAMESPACE
-        valueFrom:
-          fieldRef:
-            apiVersion: v1
-            fieldPath: metadata.namespace
-      - name: OTEL_K8S_NODE_NAME
-        valueFrom:
-          fieldRef:
-            apiVersion: v1
-            fieldPath: spec.nodeName
-      - name: OTEL_K8S_POD_NAME
-        valueFrom:
-          fieldRef:
-            apiVersion: v1
-            fieldPath: metadata.name
-      - name: OTEL_RESOURCE_ATTRIBUTES
-        value: service.name=$(OTEL_SERVICE_NAME),k8s.namespace.name=$(OTEL_K8S_NAMESPACE),k8s.node.name=$(OTEL_K8S_NODE_NAME),k8s.pod.name=$(OTEL_K8S_POD_NAME)
+    enabled: false
 
   image:
     repository: m.daocloud.io/ghcr.io/open-telemetry/demo
-    pullSecrets: []
-  serviceAccount: ""
 
   components:
     redis:
       enabled: true
-      image: redis:alpine
-      ports:
-        - name: redis
-          value: 6379
+      image: docker.m.daocloud.io/redis:alpine
 
     adService:
       enabled: true
@@ -67,55 +62,82 @@ opentelemetry-demo:
           value: 8081
         - name: health-http
           value: 8999
-      env:
-        - <<: *nacosServer
-        - <<: *sentinelServer
-        - name: JAVAOPTS
-          value: -Dspring.cloud.nacos.discovery.enabled=true -Dspring.cloud.sentinel.enabled=true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     cartService:
       enabled: true
-      servicePort: 8080
-      env:
-        - name: ASPNETCORE_URLS
-          value: http://*:8080
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     checkoutService:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     currencyService:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     emailService:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     featureflagService:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     ffsPostgres:
       enabled: true
 
     frontend:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     loadgenerator:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     paymentService:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     productCatalogService:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
     recommendationService:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
 
     shippingService:
       enabled: true
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        sidecar.opentelemetry.io/inject: 'false'
 
 nacos:
-  enabled: true
+  enabled: false
   version: 2.1.0
   replicaCount: 1
   image:
@@ -142,7 +164,7 @@ nacos:
       memory: 1024Mi
 
 sentinel:
-  enabled: true
+  enabled: false
   version: 1.8.4
   replicaCount:
   image:
