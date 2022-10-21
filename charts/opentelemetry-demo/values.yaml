@@ -62,6 +62,26 @@ opentelemetry-demo:
           value: 8081
         - name: health-http
           value: 8999
+      env:
+        - name: AD_SERVICE_PORT
+          value: '9555'
+        - name: NACSO_NAMESPACE_ID
+          value: ''
+        - name: NACSO_GROUP_NAME
+          value: DEFAULT_GROUP
+        - name: SKOALA_REGISTRY
+          value: nacos-cluster
+        - name: K8S_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: >-
+            k8s.namespace.name=$(K8S_NAMESPACE),k8s.node.name=$(OTEL_RESOURCE_ATTRIBUTES_NODE_NAME),k8s.pod.name=$(OTEL_RESOURCE_ATTRIBUTES_POD_NAME),k8s.pod.uid=$(OTEL_RESOURCE_ATTRIBUTES_POD_UID),skoala.registry=$(SKOALA_REGISTRY),nacos.namespaceid=$(NACSO_NAMESPACE_ID),nacos.groupname=$(NACSO_GROUP_NAME)
+        - name: JAVA_OPTS
+          value: -Dspring.cloud.nacos.config.server-addr=nacos-cluster:8848 -Dspring.application.name=adservice-springcloud -Dspring.cloud.nacos.discovery.enabled=true -Dspring.cloud.nacos.discovery.server-addr=nacos-cluster:8848 -Dspring.cloud.nacos.config.discovery.metadata.k8s_cluster_id=xxx -Dspring.cloud.nacos.config.discovery.metadata.k8s_cluster_name=xxx -Dspring.cloud.nacos.config.discovery.metadata.k8s_namespace_name=xxx -Dspring.cloud.nacos.config.discovery.metadata.k8s_workload_type=xxx -Dspring.cloud.nacos.config.discovery.metadata.k8s_workload_name=xxx -Dspring.cloud.nacos.config.discovery.metadata.k8s_service_name=xxx -Dspring.cloud.sentinel.enabled=true -Dspring.cloud.sentinel.transport.dashboard=nacos-cluster-sentinel:8998
+
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
         sidecar.opentelemetry.io/inject: 'false'
@@ -129,58 +149,8 @@ opentelemetry-demo:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
         sidecar.opentelemetry.io/inject: 'false'
 
-
     shippingService:
       enabled: true
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
         sidecar.opentelemetry.io/inject: 'false'
-
-nacos:
-  enabled: false
-  version: 2.1.0
-  replicaCount: 1
-  image:
-    repository: docker.m.daocloud.io/nacos/nacos-server
-    tag: "v2.1.0-slim"
-  nameOverride: "nacos-server"
-  fullnameOverride: "nacos-server"
-  service:
-    type: NodePort
-    port: 8848
-    grpcPort1: 9848
-    grpcPort2: 9849
-  env:
-    mode: standalone
-    jvmXms: 1g
-    jvmXmx: 1g
-    jvmXmn: 512m
-  resources:
-    limits:
-      cpu: 1024m
-      memory: 1024Mi
-    requests:
-      cpu: 1024m
-      memory: 1024Mi
-
-sentinel:
-  enabled: false
-  version: 1.8.4
-  replicaCount:
-  image:
-    repository: ghcr.m.daocloud.io/openinsight-proj/opentelemetry-demo-helm-chart/sentinel
-    tag: "1.8.4"
-  nameOverride: "sentinel-server"
-  fullnameOverride: "sentinel-server"
-  service:
-    type: NodePort
-    port: 34001
-  env:
-    javaopts: "-Dserver.port=34001 -Dcsp.sentinel.dashboard.server=0.0.0.0:34001 -Dproject.name=sentinel-dashboard"
-  resources:
-    limits:
-      cpu: 400m
-      memory: 512Mi
-    requests:
-      cpu: 100m
-      memory: 200Mi
