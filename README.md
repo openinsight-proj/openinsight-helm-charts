@@ -1,10 +1,4 @@
-# adservice-springcloud
-
-reimplement opentelemetry-demo-webstore's adservice with nacos registry and sentinel
-
-- [x] integrate nacos registry
-- [x] integrate sentinel
-
+# opentelemetry demo helm chart
 ## set up
 
 _make sure insight-agent has already deployed._
