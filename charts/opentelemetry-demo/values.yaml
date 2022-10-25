@@ -55,7 +55,7 @@ opentelemetry-demo:
 
     adService:
       enabled: true
-      image: ghcr.m.daocloud.io/openinsight-proj/opentelemetry-demo-helm-chart/adservice:v0.2.0
+      image: ghcr.m.daocloud.io/openinsight-proj/adservice:v0.2.0
       servicePort: 9555
       ports:
         - name: http
