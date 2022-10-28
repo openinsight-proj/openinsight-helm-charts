@@ -55,13 +55,15 @@ opentelemetry-demo:
 
     adService:
       enabled: true
-      image: ghcr.m.daocloud.io/openinsight-proj/adservice:v0.2.0
+      image: ghcr.m.daocloud.io/openinsight-proj/adservice:v0.3.0
       servicePort: 9555
       ports:
         - name: http
           value: 8081
         - name: health-http
           value: 8999
+        - name: sentinel-metrics
+          value: 12345
       env:
         - name: AD_SERVICE_PORT
           value: '9555'
