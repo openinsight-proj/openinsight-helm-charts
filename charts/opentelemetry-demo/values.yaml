@@ -63,7 +63,7 @@ opentelemetry-demo:
           value: 8081
         - name: health-http
           value: 8999
-        - name: sentinel-metrics
+        - name: metrics
           value: 12345
       env:
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
@@ -176,40 +176,18 @@ opentelemetry-demo:
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
 
-opentelemetry-collector:
-  nameOverride: otelcol
-  mode: deployment
-  resources:
-    limits:
-      memory: 100Mi
-  service:
-    type: ClusterIP
-  config:
-    receivers:
-      otlp:
-        protocols:
-          grpc:
-          http:
-            cors:
-              allowed_origins:
-                - "http://*"
-                - "https://*"
-    processors:
-      batch: {}
-    exporters:
-      otlp:
-        endpoint: 'insight-opentelemetry-collector.insight-system.svc.cluster.local:4317'
-        tls:
-          insecure: true
+
+  opentelemetry-collector:
+    nameOverride: otelcol
+    mode: deployment
+    image:
+      repository: docker.m.daocloud.io/otel/opentelemetry-collector-contrib
+    resources:
+      limits:
+        memory: 100Mi
     service:
-      pipelines:
-        traces:
-          receivers:
-            - otlp
-          processors:
-            - batch
-          exporters:
-            - logging
-            - otlp
-  image:
-    repository: docker.m.daocloud.io/otel/opentelemetry-collector-contrib
+      type: ClusterIP
+    config:
+      exporters:
+        otlp:
+          endpoint: 'insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317'
