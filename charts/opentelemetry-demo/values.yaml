@@ -11,9 +11,6 @@ global:
         # https://github.com/open-telemetry/opentelemetry-operator/blob/main/docs/api.md#instrumentationspecresource
         resource:
           addK8sUIDAttributes: true
-        env:
-          - name: OTEL_EXPORTER_OTLP_ENDPOINT
-            value: http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317
         sampler:
           # Enum: always_on, always_off, traceidratio, parentbased_always_on, parentbased_always_off, parentbased_traceidratio, jaeger_remote, xray
           type: always_on
@@ -35,7 +32,7 @@ opentelemetry-demo:
   enabled: true
   observability:
     otelcol:
-      enabled: false
+      enabled: true
     jaeger:
       enabled: false
 
@@ -59,9 +56,8 @@ opentelemetry-demo:
       useDefault:
         env: false
       imageOverride:
-        repository: ghcr.m.daocloud.io/openinsight-proj/opentelemetry-demo-helm-chart/adservice
-        tag: "v0.2.0"
-      servicePort: 9555
+        repository: ghcr.io/openinsight-proj/adservice
+        tag: "v0.3.2"
       ports:
         - name: http
           value: 8081
@@ -71,11 +67,11 @@ opentelemetry-demo:
           value: 12345
       env:
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: 'http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317'
+          value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
         - name: AD_SERVICE_PORT
-          value: '9555'
+          value: "8080"
         - name: NACSO_NAMESPACE_ID
-          value: 'public'
+          value: public
         - name: NACSO_GROUP_NAME
           value: DEFAULT_GROUP
         - name: SKOALA_REGISTRY
@@ -96,58 +92,124 @@ opentelemetry-demo:
 
     cartService:
       enabled: true
+      useDefault:
+        env: false
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     checkoutService:
       enabled: true
+      useDefault:
+        env: false
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     currencyService:
       enabled: true
+      useDefault:
+        env: false
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     emailService:
       enabled: true
+      useDefault:
+        env: false
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     featureflagService:
       enabled: true
+      useDefault:
+        env: false
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     ffsPostgres:
       enabled: true
+      useDefault:
+        env: false
+      imageOverride:
+        repository: "docker.m.daocloud.io/postgres"
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     frontend:
       enabled: true
+      useDefault:
+        env: false
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     loadgenerator:
       enabled: true
+      useDefault:
+        env: false
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     paymentService:
       enabled: true
+      useDefault:
+        env: false
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     productCatalogService:
       enabled: true
+      useDefault:
+        env: false
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     recommendationService:
       enabled: true
+      useDefault:
+        env: false
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     shippingService:
       enabled: true
+      useDefault:
+        env: false
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
+
+opentelemetry-collector:
+  nameOverride: otelcol
+  mode: deployment
+  resources:
+    limits:
+      memory: 100Mi
+  service:
+    type: ClusterIP
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+          http:
+            cors:
+              allowed_origins:
+                - "http://*"
+                - "https://*"
+    processors:
+      batch: {}
+    exporters:
+      otlp:
+        endpoint: 'insight-opentelemetry-collector.insight-system.svc.cluster.local:4317'
+        tls:
+          insecure: true
+    service:
+      pipelines:
+        traces:
+          receivers:
+            - otlp
+          processors:
+            - batch
+          exporters:
+            - logging
+            - otlp
+  image:
+    repository: docker.m.daocloud.io/otel/opentelemetry-collector-contrib

@@ -1,14 +1,14 @@
 apiVersion: v2
 name: opentelemetry-demo
 type: application
-version: 0.3.1
+version: 0.3.2
 description: A helm chart for openTelemetry community demo application integration with other component.
 sources:
   - https://github.com/openinsight-proj/opentelemetry-demo-helm-chart
 maintainers:
   - name: JaredTan95
   - name: Frapschen
-appVersion: "0.2.0"
+appVersion: "0.3.2"
 dependencies:
   - name: opentelemetry-demo
     version: 0.9.6
