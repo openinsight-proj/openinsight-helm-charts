@@ -2,6 +2,27 @@ apiVersion: v1
 entries:
   opentelemetry-demo:
   - apiVersion: v2
+    appVersion: 0.3.2
+    created: "2022-10-30T02:49:31.645048902Z"
+    dependencies:
+    - condition: opentelemetry-demo.enabled
+      name: opentelemetry-demo
+      repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+      version: 0.9.6
+    description: A helm chart for openTelemetry community demo application integration
+      with other component.
+    digest: 42f84c2cc93f6b9ec8c50e06c9658c04b3b52ffc17e4d24179de310a34a007c6
+    maintainers:
+    - name: JaredTan95
+    - name: Frapschen
+    name: opentelemetry-demo
+    sources:
+    - https://github.com/openinsight-proj/opentelemetry-demo-helm-chart
+    type: application
+    urls:
+    - https://github.com/openinsight-proj/opentelemetry-demo-helm-chart/releases/download/opentelemetry-demo-0.3.2/opentelemetry-demo-0.3.2.tgz
+    version: 0.3.2
+  - apiVersion: v2
     appVersion: 0.0.1
     created: "2022-10-29T04:04:16.108015722Z"
     dependencies:
@@ -243,4 +264,4 @@ entries:
     urls:
     - https://github.com/openinsight-proj/opentelemetry-demo-helm-chart/releases/download/opentelemetry-demo-0.1.0/opentelemetry-demo-0.1.0.tgz
     version: 0.1.0
-generated: "2022-10-29T04:04:16.108118621Z"
+generated: "2022-10-30T02:49:31.645135204Z"
