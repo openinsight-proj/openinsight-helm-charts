@@ -61,3 +61,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### charts
+!**/charts/**/charts/*.tgz
