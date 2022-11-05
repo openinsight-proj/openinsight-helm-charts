@@ -15,7 +15,7 @@ $ helm repo add open-insight https://openinsight-proj.github.io/openinsight-helm
 You can then run helm search repo open-insight to see the charts.
 
 ### OpenInsight
-The chart can be used to install [OpenInsight](https://github.com/openinsight-proj/openinsight) in a Kubernetes cluster. More detailed documentation can be found in [OpenInsight chart directory](./charts/openinsight-helm-chart/README.md).
+The chart can be used to install [OpenInsight](https://github.com/openinsight-proj/openinsight) in a Kubernetes cluster. More detailed documentation can be found in [OpenInsight chart directory](./charts/openinsight/README.md).
 
 ### OpenTelemetry Demo
 The chart can be used to install OpenInsight Demo in a Kubernetes cluster. More detailed documentation can be found in [OpenTelemetry Demo chart directory](./charts/opentelemetry-demo/README.md).
