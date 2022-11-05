@@ -1,16 +1,22 @@
-# opentelemetry demo helm chart
-## set up
+# OpenInsight Helm charts
 
-_make sure insight-agent has already deployed._
-```shell
-helm repo add open-telemetry-projdistr https://openinsight-proj.github.io/opentelemetry-demo-helm-chart
-helm install my-otel-demo open-telemetry-projdistr/opentelemetry-demo -n webstore-demo --create-namespace
+This repository contains [Helm](https://helm.sh/) charts for OpenTelemetry project.
+
+## Usage
+Helm must be installed to use the charts. Please refer to Helm's [documentation](https://helm.sh/docs/) to get started.
+
+Once Helm is set up properly, add the repo as follows:
+
+```bash
+$ helm repo add open-insight https://openinsight-proj.github.io/openinsight-helm-charts
 ```
-## uninstall
-```shell
-helm uninstall my-otel-demo -n webstore-demo
-```
 
+## Helm Charts
+You can then run helm search repo open-insight to see the charts.
 
-## demo-UI
-we have a NodePort type svc named otel-demo-ui, find it and enjoy the otel-demo
+### OpenInsight
+The chart can be used to install [OpenInsight](https://github.com/openinsight-proj/openinsight) in a Kubernetes cluster. More detailed documentation can be found in [OpenInsight chart directory](./charts/openinsight/README.md).
+
+### OpenTelemetry Demo
+The chart can be used to install OpenInsight Demo in a Kubernetes cluster. More detailed documentation can be found in [OpenTelemetry Demo chart directory](./charts/opentelemetry-demo/README.md).
+

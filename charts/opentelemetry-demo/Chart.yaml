@@ -4,7 +4,7 @@ type: application
 version: 0.3.2
 description: A helm chart for openTelemetry community demo application integration with other component.
 sources:
-  - https://github.com/openinsight-proj/opentelemetry-demo-helm-chart
+  - https://github.com/openinsight-proj/openinsight-helm-charts
 maintainers:
   - name: JaredTan95
   - name: Frapschen

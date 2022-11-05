@@ -1,0 +1,23 @@
+apiVersion: v2
+name: openinsight
+description: OpenInsight Helm chart for Kubernetes
+
+sources:
+  - https://github.com/openinsight-proj/openinsight-helm-charts
+
+maintainers:
+  - name: JaredTan95
+  - name: Frapschen
+
+version: 0.1.0
+appVersion: "0.0.3"
+
+dependencies:
+  - name: clickhouse
+    version: 1.0.3
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: clickhouse.enabled
+  - name: opentelemetry-collector
+    version: 0.38.0
+    repository: "https://open-telemetry.github.io/opentelemetry-helm-charts"
+    condition: opentelemetry-collector.enabled
