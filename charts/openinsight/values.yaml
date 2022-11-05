@@ -9,6 +9,11 @@ clickhouse:
     password: "changeme"
     #existingSecret: "openinsight-clickhouse"
     #existingSecretKey: "admin-password"
+  extraEnvVars:
+    - name: TZ
+      value: "UTC"
+  tls:
+    enabled: false
   initdbScripts:
     my_init_script.sh: |
        #!/bin/bash
@@ -93,6 +98,9 @@ opentelemetry-collector:
         storage:
           clickhouse:
             dsn: tcp://default:changeme@my-openinsight-clickhouse-headless:9000/otel
+            tls_setting:
+              insecure: true
+              insecure_skip_verify: true
         tracing_query:
           storage_type: clickhouse
         logging_query:
