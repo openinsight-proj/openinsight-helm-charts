@@ -1,164 +1,193 @@
 global:
-  image:
-    pullPolicy: IfNotPresent
-  env:
-    nacosServer: &nacosServer
-      name: NACOS_SERVER
-      value: nacos-server.webstore-demo.svc.cluster.local:8848
-    sentinelServer: &sentinelServer
-      name: SENTINEL_SERVER
-      value: sentinel-server.webstore-demo.svc.cluster.local:34001
+  autoInstrumentation:
+    enabled: true
+    config:
+      apiVersion: opentelemetry.io/v1alpha1
+      kind: Instrumentation
+      metadata:
+        name: opentelemetry-autoinstrumentation-webstore-demo
+        namespace: webstore-demo
+      spec:
+        # https://github.com/open-telemetry/opentelemetry-operator/blob/main/docs/api.md#instrumentationspecresource
+        resource:
+          addK8sUIDAttributes: true
+        sampler:
+          # Enum: always_on, always_off, traceidratio, parentbased_always_on, parentbased_always_off, parentbased_traceidratio, jaeger_remote, xray
+          type: always_on
+        java:
+          image: ghcr.m.daocloud.io/open-telemetry/opentelemetry-operator/autoinstrumentation-java:1.17.0
+          env:
+            - name: OTEL_JAVAAGENT_DEBUG
+              value: "false"
+            - name: OTEL_INSTRUMENTATION_JDBC_ENABLED
+              value: "true"
+            - name: SPLUNK_PROFILER_ENABLED
+              value: "false"
+        nodejs:
+          image: ghcr.m.daocloud.io/open-telemetry/opentelemetry-operator/autoinstrumentation-nodejs:0.31.0
+        python:
+          image: ghcr.m.daocloud.io/open-telemetry/opentelemetry-operator/autoinstrumentation-python::0.33b0
 
 opentelemetry-demo:
   enabled: true
   observability:
     otelcol:
-      enabled: false
+      enabled: true
     jaeger:
       enabled: false
 
   default:
-    enabled: true
-    env:
-      - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: 'http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317'
-      - name: OTEL_SERVICE_NAME
-        valueFrom:
-          fieldRef:
-            apiVersion: v1
-            fieldPath: 'metadata.labels[''app.kubernetes.io/component'']'
-      - name: OTEL_K8S_NAMESPACE
-        valueFrom:
-          fieldRef:
-            apiVersion: v1
-            fieldPath: metadata.namespace
-      - name: OTEL_K8S_NODE_NAME
-        valueFrom:
-          fieldRef:
-            apiVersion: v1
-            fieldPath: spec.nodeName
-      - name: OTEL_K8S_POD_NAME
-        valueFrom:
-          fieldRef:
-            apiVersion: v1
-            fieldPath: metadata.name
-      - name: OTEL_RESOURCE_ATTRIBUTES
-        value: service.name=$(OTEL_SERVICE_NAME),k8s.namespace.name=$(OTEL_K8S_NAMESPACE),k8s.node.name=$(OTEL_K8S_NODE_NAME),k8s.pod.name=$(OTEL_K8S_POD_NAME)
-
-  image:
-    repository: m.daocloud.io/ghcr.io/open-telemetry/demo
-    pullSecrets: []
-  serviceAccount: ""
+    image:
+      repository: docker.m.daocloud.io/otel/demo
 
   components:
     redis:
       enabled: true
-      image: redis:alpine
-      ports:
-        - name: redis
-          value: 6379
+      useDefault:
+        env: false
+
+      # Options to override the default image settings.
+      imageOverride:
+        repository: "docker.m.daocloud.io/redis"
+        tag: "alpine"
 
     adService:
       enabled: true
-      image: ghcr.m.daocloud.io/openinsight-proj/opentelemetry-demo-helm-chart/adservice:main
-      servicePort: 9555
+      useDefault:
+        env: false
+      imageOverride:
+        repository: ghcr.io/openinsight-proj/adservice
+        tag: "v0.3.2"
       ports:
         - name: http
           value: 8081
         - name: health-http
           value: 8999
+        - name: metrics
+          value: 12345
       env:
-        - <<: *nacosServer
-        - <<: *sentinelServer
-        - name: JAVAOPTS
-          value: -Dspring.cloud.nacos.discovery.enabled=true -Dspring.cloud.sentinel.enabled=true
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
+        - name: AD_SERVICE_PORT
+          value: "8080"
+        - name: NACSO_NAMESPACE_ID
+          value: public
+        - name: NACSO_GROUP_NAME
+          value: DEFAULT_GROUP
+        - name: SKOALA_REGISTRY
+          value: nacos-test
+        - name: K8S_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: >-
+            k8s.namespace.name=$(K8S_NAMESPACE),k8s.node.name=$(OTEL_RESOURCE_ATTRIBUTES_NODE_NAME),k8s.pod.name=$(OTEL_RESOURCE_ATTRIBUTES_POD_NAME),k8s.pod.uid=$(OTEL_RESOURCE_ATTRIBUTES_POD_UID),skoala.registry=$(SKOALA_REGISTRY),nacos.namespaceid=$(NACSO_NAMESPACE_ID),nacos.groupname=$(NACSO_GROUP_NAME)
+        - name: JAVA_OPTS
+          value: -javaagent:./jmx_prometheus_javaagent-0.17.0.jar=12345:./prometheus-jmx-config.yaml -Dspring.cloud.nacos.discovery.enabled=false -Dspring.cloud.sentinel.enabled=false -Dspring.cloud.nacos.config.server-addr=nacos-test.skoala-test:8848 -Dspring.application.name=adservice-springcloud -Dspring.cloud.nacos.discovery.server-addr=nacos-test.skoala-test:8848 -Dspring.cloud.nacos.discovery.metadata.k8s_cluster_id=xxx -Dspring.cloud.nacos.discovery.metadata.k8s_cluster_name=skoala-dev -Dspring.cloud.nacos.discovery.metadata.k8s_namespace_name=skoala-test -Dspring.cloud.nacos.discovery.metadata.k8s_workload_type=deployment -Dspring.cloud.nacos.discovery.metadata.k8s_workload_name=adservice-springcloud -Dspring.cloud.nacos.discovery.metadata.k8s_service_name=adservice-springcloud -Dspring.cloud.nacos.discovery.metadata.k8s_pod_name=${HOSTNAME} -Dspring.cloud.sentinel.enabled=false -Dspring.cloud.sentinel.transport.dashboard=nacos-test-sentinel.skoala-test:8080
+
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     cartService:
       enabled: true
-      servicePort: 8080
-      env:
-        - name: ASPNETCORE_URLS
-          value: http://*:8080
+      useDefault:
+        env: false
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     checkoutService:
       enabled: true
+      useDefault:
+        env: false
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     currencyService:
       enabled: true
+      useDefault:
+        env: false
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     emailService:
       enabled: true
+      useDefault:
+        env: false
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     featureflagService:
       enabled: true
+      useDefault:
+        env: false
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     ffsPostgres:
       enabled: true
+      useDefault:
+        env: false
+      imageOverride:
+        repository: "docker.m.daocloud.io/postgres"
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     frontend:
       enabled: true
+      useDefault:
+        env: false
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     loadgenerator:
       enabled: true
+      useDefault:
+        env: false
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     paymentService:
       enabled: true
+      useDefault:
+        env: false
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     productCatalogService:
       enabled: true
+      useDefault:
+        env: false
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     recommendationService:
       enabled: true
-
+      useDefault:
+        env: false
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     shippingService:
       enabled: true
+      useDefault:
+        env: false
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
 
-nacos:
-  enabled: true
-  version: 2.1.0
-  replicaCount: 1
-  image:
-    repository: docker.m.daocloud.io/nacos/nacos-server
-    tag: "v2.1.0-slim"
-  nameOverride: "nacos-server"
-  fullnameOverride: "nacos-server"
-  service:
-    type: NodePort
-    port: 8848
-    grpcPort1: 9848
-    grpcPort2: 9849
-  env:
-    mode: standalone
-    jvmXms: 1g
-    jvmXmx: 1g
-    jvmXmn: 512m
-  resources:
-    limits:
-      cpu: 1024m
-      memory: 1024Mi
-    requests:
-      cpu: 1024m
-      memory: 1024Mi
 
-sentinel:
-  enabled: true
-  version: 1.8.4
-  replicaCount:
-  image:
-    repository: ghcr.m.daocloud.io/openinsight-proj/opentelemetry-demo-helm-chart/sentinel
-    tag: "1.8.4"
-  nameOverride: "sentinel-server"
-  fullnameOverride: "sentinel-server"
-  service:
-    type: NodePort
-    port: 34001
-  env:
-    javaopts: "-Dserver.port=34001 -Dcsp.sentinel.dashboard.server=0.0.0.0:34001 -Dproject.name=sentinel-dashboard"
-  resources:
-    limits:
-      cpu: 400m
-      memory: 512Mi
-    requests:
-      cpu: 100m
-      memory: 200Mi
+  opentelemetry-collector:
+    nameOverride: otelcol
+    mode: deployment
+    image:
+      repository: docker.m.daocloud.io/otel/opentelemetry-collector-contrib
+    resources:
+      limits:
+        memory: 100Mi
+    service:
+      type: ClusterIP
+    config:
+      exporters:
+        otlp:
+          endpoint: 'insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317'

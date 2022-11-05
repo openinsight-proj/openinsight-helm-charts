@@ -10,6 +10,11 @@ Once Helm is set up properly, add the repo as follows:
 ```bash
 $ helm repo add open-insight https://openinsight-proj.github.io/openinsight-helm-charts
 ```
+## uninstall
+```shell
+helm uninstall my-otel-demo -n webstore-demo
+```
+
 
 ## Helm Charts
 You can then run helm search repo open-insight to see the charts.
