@@ -1,18 +1,22 @@
-# adservice-springcloud
+# OpenInsight Helm charts
 
-reimplement opentelemetry-demo-webstore's adservice with nacos registry and sentinel
+This repository contains [Helm](https://helm.sh/) charts for OpenTelemetry project.
 
-- [x] integrate nacos registry
-- [x] integrate sentinel
+## Usage
+Helm must be installed to use the charts. Please refer to Helm's [documentation](https://helm.sh/docs/) to get started.
 
-# set up
-helm
-```shell
-helm repo add open-telemetry-projdistr https://openinsight-proj.github.io/opentelemetry-demo-helm-chart
-helm install my-otel-demo open-telemetry-projdistr/opentelemetry-demo -n webstore-demo --create-namespace
+Once Helm is set up properly, add the repo as follows:
+
+```bash
+$ helm repo add open-insight https://openinsight-proj.github.io/openinsight-helm-charts
 ```
 
-# demo-UI
-we have a NodePort type svc named otel-demo-ui, find it and enjoy the otel-demo
+## Helm Charts
+You can then run helm search repo open-insight to see the charts.
 
-# FAQ
+### OpenInsight
+The chart can be used to install [OpenInsight](https://github.com/openinsight-proj/openinsight) in a Kubernetes cluster. More detailed documentation can be found in [OpenInsight chart directory](./charts/openinsight-helm-chart/README.md).
+
+### OpenTelemetry Demo
+The chart can be used to install OpenInsight Demo in a Kubernetes cluster. More detailed documentation can be found in [OpenTelemetry Demo chart directory](./charts/opentelemetry-demo/README.md).
+

@@ -1,0 +1,233 @@
+# Default values for openinsight-helm-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+clickhouse:
+  enabled: true
+  auth:
+    username: default
+    password: "changeme"
+    #existingSecret: "openinsight-clickhouse"
+    #existingSecretKey: "admin-password"
+  initdbScripts:
+    my_init_script.sh: |
+       #!/bin/bash
+       set -e
+
+       clickhouse client -u default --password='changeme' -n <<-EOSQL
+         CREATE DATABASE otel;
+       EOSQL
+
+opentelemetry-collector:
+  enabled: true
+  mode: "deployment"
+  image:
+    # If you want to use the core image `otel/opentelemetry-collector`, you also need to change `command.name` value to `otelcol`.
+    repository: ghcr.io/openinsight-proj/openinsight
+    pullPolicy: IfNotPresent
+    tag: "v0.62.1"
+  presets:
+    # Configures the collector to collect logs.
+    # Adds the filelog receiver to the logs pipeline
+    # and adds the necessary volumes and volume mounts.
+    # Best used with mode = daemonset.
+    logsCollection:
+      enabled: false
+      includeCollectorLogs: false
+    # Configures the collector to collect host metrics.
+    # Adds the hostmetrics receiver to the metrics pipeline
+    # and adds the necessary volumes and volume mounts.
+    # Best used with mode = daemonset.
+    hostMetrics:
+      enabled: false
+    # Configures the Kubernetes Processor to add Kubernetes metadata.
+    # Adds the k8sattributes processor to all the pipelines
+    # and adds the necessary rules to ClusteRole.
+    # Best used with mode = daemonset.
+    kubernetesAttributes:
+      enabled: false
+    # Configures the Kubernetes Cluster Receiver to collect cluster-level metrics.
+    # Adds the k8s_cluster receiver to the metrics pipeline
+    # and adds the necessary rules to ClusteRole.
+    # Best used with mode = deployment or statefulset.
+    clusterMetrics:
+      enabled: false
+    # Configures the collector to collect Kubelet metrics.
+    # Adds the kubeletstats receiver to the metrics pipeline
+    # and adds the necessary rules to ClusteRole.
+    # Best used with mode = daemonset.
+    kubeletMetrics:
+      enabled: false
+
+  configMap:
+    # Specifies whether a configMap should be created (true by default)
+    create: true
+  config:
+    exporters:
+      logging: {}
+      clickhouse:
+        dsn: tcp://default:changeme@my-openinsight-clickhouse-headless:9000/otel
+        logs_table_name: otel_logs
+        traces_table_name: otel_traces
+        ttl_days: 3
+        timeout: 10s
+        sending_queue:
+          queue_size: 100
+        retry_on_failure:
+          enabled: true
+          initial_interval: 5s
+          max_interval: 30s
+          max_elapsed_time: 300s
+    extensions:
+      # The health_check extension is mandatory for this chart.
+      # Without the health_check extension the collector will fail the readiness and liveliness probes.
+      # The health_check extension can be modified, but should never be removed.
+      health_check: {}
+      memory_ballast: {}
+      query:
+        protocols:
+          http:
+            endpoint: 0.0.0.0:18888
+          grpc:
+            endpoint: 0.0.0.0:18889
+        storage:
+          clickhouse:
+            dsn: tcp://default:changeme@my-openinsight-clickhouse-headless:9000/otel
+        tracing_query:
+          storage_type: clickhouse
+        logging_query:
+          storage_type: clickhouse
+        metrics_query:
+          storage_type: clickhouse
+    processors:
+      batch: {}
+      # If set to null, will be overridden with values based on k8s resource limits
+      memory_limiter: null
+    receivers:
+      jaeger:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:14250
+          thrift_http:
+            endpoint: 0.0.0.0:14268
+          thrift_compact:
+            endpoint: 0.0.0.0:6831
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+      prometheus:
+        config:
+          scrape_configs:
+            - job_name: opentelemetry-collector
+              scrape_interval: 10s
+              static_configs:
+                - targets:
+                    - ${MY_POD_IP}:8888
+      zipkin:
+        endpoint: 0.0.0.0:9411
+    service:
+      telemetry:
+        metrics:
+          address: 0.0.0.0:8888
+      extensions:
+        - health_check
+        - memory_ballast
+        - query
+      pipelines:
+        logs:
+          exporters:
+            - logging
+            - clickhouse
+          processors:
+            - memory_limiter
+            - batch
+          receivers:
+            - otlp
+        metrics:
+          exporters:
+            - logging
+          processors:
+            - memory_limiter
+            - batch
+          receivers:
+            - otlp
+            - prometheus
+        traces:
+          exporters:
+            - logging
+            - clickhouse
+          processors:
+            - memory_limiter
+            - batch
+          receivers:
+            - otlp
+            - jaeger
+            - zipkin
+  ports:
+    query-http:
+      enabled: true
+      containerPort: 18888
+      servicePort: 18888
+      hostPort: 18888
+      protocol: TCP
+    query-grpc:
+      enabled: true
+      containerPort: 18889
+      servicePort: 18889
+      hostPort: 18889
+      protocol: TCP
+    otlp:
+      enabled: true
+      containerPort: 4317
+      servicePort: 4317
+      hostPort: 4317
+      protocol: TCP
+    otlp-http:
+      enabled: true
+      containerPort: 4318
+      servicePort: 4318
+      hostPort: 4318
+      protocol: TCP
+    jaeger-compact:
+      enabled: true
+      containerPort: 6831
+      servicePort: 6831
+      hostPort: 6831
+      protocol: UDP
+    jaeger-thrift:
+      enabled: true
+      containerPort: 14268
+      servicePort: 14268
+      hostPort: 14268
+      protocol: TCP
+    jaeger-grpc:
+      enabled: true
+      containerPort: 14250
+      servicePort: 14250
+      hostPort: 14250
+      protocol: TCP
+    zipkin:
+      enabled: true
+      containerPort: 9411
+      servicePort: 9411
+      hostPort: 9411
+      protocol: TCP
+    metrics:
+      # The metrics port is disabled by default. However you need to enable the port
+      # in order to use the ServiceMonitor (serviceMonitor.enabled) or PodMonitor (podMonitor.enabled).
+      enabled: false
+      containerPort: 8888
+      servicePort: 8888
+      protocol: TCP
+
+  # Resource limits & requests. Update according to your own use case as these values might be too low for a typical deployment.
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+
+  service:
+    type: NodePort
