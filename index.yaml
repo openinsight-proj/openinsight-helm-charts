@@ -1,6 +1,51 @@
 apiVersion: v1
 entries:
+  openinsight:
+  - apiVersion: v2
+    appVersion: 0.0.3
+    created: "2022-11-07T03:20:09.162765413Z"
+    dependencies:
+    - condition: clickhouse.enabled
+      name: clickhouse
+      repository: https://charts.bitnami.com/bitnami
+      version: 1.0.3
+    - condition: opentelemetry-collector.enabled
+      name: opentelemetry-collector
+      repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+      version: 0.38.0
+    description: OpenInsight Helm chart for Kubernetes
+    digest: e9443b967e384a66ab28c1368b8967d825d3e9819ba3790cd8bb54c17026f56b
+    maintainers:
+    - name: JaredTan95
+    - name: Frapschen
+    name: openinsight
+    sources:
+    - https://github.com/openinsight-proj/openinsight-helm-charts
+    urls:
+    - https://github.com/openinsight-proj/openinsight-helm-charts/releases/download/openinsight-0.1.1/openinsight-0.1.1.tgz
+    version: 0.1.1
   opentelemetry-demo:
+  - apiVersion: v2
+    appVersion: 0.3.2
+    created: "2022-11-07T03:20:09.318752028Z"
+    dependencies:
+    - condition: opentelemetry-demo.enabled
+      name: opentelemetry-demo
+      repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+      version: 0.9.6
+    description: A helm chart for openTelemetry community demo application integration
+      with other component.
+    digest: 3daafc0214ceef1f939d1e14c0e1d0c19eaf875987c58f5b498914e3ed479093
+    maintainers:
+    - name: JaredTan95
+    - name: Frapschen
+    name: opentelemetry-demo
+    sources:
+    - https://github.com/openinsight-proj/openinsight-helm-charts
+    type: application
+    urls:
+    - https://github.com/openinsight-proj/openinsight-helm-charts/releases/download/opentelemetry-demo-0.3.3/opentelemetry-demo-0.3.3.tgz
+    version: 0.3.3
   - apiVersion: v2
     appVersion: 0.3.2
     created: "2022-10-30T02:49:31.645048902Z"
@@ -264,4 +309,4 @@ entries:
     urls:
     - https://github.com/openinsight-proj/opentelemetry-demo-helm-chart/releases/download/opentelemetry-demo-0.1.0/opentelemetry-demo-0.1.0.tgz
     version: 0.1.0
-generated: "2022-10-30T02:49:31.645135204Z"
+generated: "2022-11-07T03:20:09.318841429Z"
