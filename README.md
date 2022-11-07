@@ -8,7 +8,7 @@ Helm must be installed to use the charts. Please refer to Helm's [documentation]
 Once Helm is set up properly, add the repo as follows:
 
 ```bash
-$ helm repo add open-insight https://openinsight-proj.github.io/openinsight-helm-charts
+helm repo add open-insight https://openinsight-proj.github.io/openinsight-helm-charts
 ```
 
 ## Helm Charts
