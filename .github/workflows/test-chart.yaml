@@ -37,6 +37,13 @@ jobs:
             echo "::set-output name=changed::true"
           fi
 
+      - name: Helm Update
+        run: |
+          helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+          helm repo add bitnami https://charts.bitnami.com/bitnami    
+          helm dep up charts/openinsight
+          helm dep up charts/opentelemetry-demo
+
       - name: Run chart-testing (lint)
         run: ct lint --target-branch ${{ github.event.repository.default_branch }}
 
