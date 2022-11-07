@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'charts/opentelemetry-demo/**'
+      - 'charts/openinsight/**'
     branches:
       - main
 
