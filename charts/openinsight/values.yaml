@@ -7,8 +7,6 @@ clickhouse:
   auth:
     username: default
     password: "changeme"
-    #existingSecret: "openinsight-clickhouse"
-    #existingSecretKey: "admin-password"
   extraEnvVars:
     - name: TZ
       value: "UTC"
