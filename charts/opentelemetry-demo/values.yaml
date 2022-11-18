@@ -31,6 +31,7 @@ global:
 opentelemetry-demo:
   enabled: true
   observability:
+    # collector settings are configured in the opentelemetry-collector section.
     otelcol:
       enabled: true
     jaeger:
@@ -57,7 +58,7 @@ opentelemetry-demo:
         env: false
       imageOverride:
         repository: ghcr.io/openinsight-proj/adservice
-        tag: "v0.3.2"
+        tag: "v0.4.0"
       ports:
         - name: http
           value: 8081
