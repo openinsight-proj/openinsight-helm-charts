@@ -6,7 +6,6 @@ global:
       kind: Instrumentation
       metadata:
         name: opentelemetry-autoinstrumentation-webstore-demo
-        namespace: webstore-demo
       spec:
         # https://github.com/open-telemetry/opentelemetry-operator/blob/main/docs/api.md#instrumentationspecresource
         resource:
