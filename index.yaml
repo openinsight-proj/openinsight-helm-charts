@@ -3,6 +3,29 @@ entries:
   openinsight:
   - apiVersion: v2
     appVersion: 0.0.3
+    created: "2022-11-19T03:37:11.131387852Z"
+    dependencies:
+    - condition: clickhouse.enabled
+      name: clickhouse
+      repository: https://charts.bitnami.com/bitnami
+      version: 1.0.3
+    - condition: opentelemetry-collector.enabled
+      name: opentelemetry-collector
+      repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+      version: 0.38.0
+    description: OpenInsight Helm chart for Kubernetes
+    digest: 1cec1022b2630e6d040460caef0571b4ef998994e658142e471b670bbf723a3d
+    maintainers:
+    - name: JaredTan95
+    - name: Frapschen
+    name: openinsight
+    sources:
+    - https://github.com/openinsight-proj/openinsight-helm-charts
+    urls:
+    - https://github.com/openinsight-proj/openinsight-helm-charts/releases/download/openinsight-0.2.0/openinsight-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 0.0.3
     created: "2022-11-07T03:20:09.162765413Z"
     dependencies:
     - condition: clickhouse.enabled
@@ -351,4 +374,4 @@ entries:
     urls:
     - https://github.com/openinsight-proj/opentelemetry-demo-helm-chart/releases/download/opentelemetry-demo-0.1.0/opentelemetry-demo-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-18T13:36:37.508597273Z"
+generated: "2022-11-19T03:37:11.131452153Z"
