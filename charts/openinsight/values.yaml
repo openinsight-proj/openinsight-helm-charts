@@ -23,12 +23,13 @@ clickhouse:
 
 opentelemetry-collector:
   enabled: true
+  nameOverride: "openinsight"
   mode: "deployment"
   image:
     # If you want to use the core image `otel/opentelemetry-collector`, you also need to change `command.name` value to `otelcol`.
-    repository: ghcr.io/openinsight-proj/openinsight
+    repository: ghcr.m.daocloud.io/openinsight-proj/openinsight
     pullPolicy: IfNotPresent
-    tag: "v0.62.1"
+    tag: "b773134c29942516795a65e463a8bcd0f664cf33"
   presets:
     # Configures the collector to collect logs.
     # Adds the filelog receiver to the logs pipeline
@@ -69,9 +70,10 @@ opentelemetry-collector:
     exporters:
       logging: {}
       clickhouse:
-        dsn: tcp://default:changeme@my-openinsight-clickhouse-headless:9000/otel
-        logs_table_name: otel_logs
-        traces_table_name: otel_traces
+        dsn: tcp://default:changeme@my-openinsight-clickhouse-headless:9000/openinsight
+        logs_table_name: openinsight_logs
+        traces_table_name: openinsight_traces
+        metrics_table_name: openinsight_metrics
         ttl_days: 3
         timeout: 10s
         sending_queue:
@@ -95,8 +97,11 @@ opentelemetry-collector:
             endpoint: 0.0.0.0:18889
         storage:
           clickhouse:
-            dsn: tcp://default:changeme@my-openinsight-clickhouse-headless:9000/otel
-            tls_setting:
+            dsn: tcp://default:changeme@my-openinsight-clickhouse-headless:9000/openinsight
+            logging_table_name: openinsight_logs
+            tracing_table_name: openinsight_traces
+            metrics_table_name: openinsight_metrics
+            tls:
               insecure: true
               insecure_skip_verify: true
         tracing_query:
@@ -139,9 +144,9 @@ opentelemetry-collector:
         metrics:
           address: 0.0.0.0:8888
       extensions:
-        - health_check
         - memory_ballast
         - query
+        - health_check
       pipelines:
         logs:
           exporters:
@@ -155,6 +160,7 @@ opentelemetry-collector:
         metrics:
           exporters:
             - logging
+            - clickhouse
           processors:
             - memory_limiter
             - batch
