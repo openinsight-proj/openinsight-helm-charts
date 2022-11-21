@@ -154,7 +154,6 @@ opentelemetry-demo:
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
 
-
     loadgenerator:
       enabled: true
       useDefault:
@@ -196,8 +195,6 @@ opentelemetry-demo:
         env: false
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
-
-
 
   opentelemetry-collector:
     nameOverride: otelcol
