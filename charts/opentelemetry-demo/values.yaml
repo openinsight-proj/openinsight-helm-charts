@@ -35,6 +35,10 @@ opentelemetry-demo:
       enabled: true
     jaeger:
       enabled: false
+    prometheus:
+      enabled: false
+    grafana:
+      enabled: false
 
   default:
     image:
@@ -57,7 +61,7 @@ opentelemetry-demo:
         env: false
       imageOverride:
         repository: ghcr.io/openinsight-proj/adservice
-        tag: "v0.4.0"
+        tag: "v0.4.1"
       ports:
         - name: http
           value: 8081
@@ -65,6 +69,8 @@ opentelemetry-demo:
           value: 8999
         - name: metrics
           value: 12345
+        - name: grpc-metrics
+          value: 8888
       env:
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
@@ -141,6 +147,14 @@ opentelemetry-demo:
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
 
+    frontendProxy:
+      enabled: true
+      useDefault:
+        env: false
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+
+
     loadgenerator:
       enabled: true
       useDefault:
@@ -175,6 +189,14 @@ opentelemetry-demo:
         env: false
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
+
+    quoteService:
+      enabled: true
+      useDefault:
+        env: false
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: 'true'
+
 
 
   opentelemetry-collector:
