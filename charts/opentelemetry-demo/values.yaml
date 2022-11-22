@@ -1,6 +1,6 @@
 global:
   autoInstrumentation:
-    enabled: true
+    enabled: false
     config:
       apiVersion: opentelemetry.io/v1alpha1
       kind: Instrumentation
@@ -26,6 +26,8 @@ global:
           image: ghcr.m.daocloud.io/open-telemetry/opentelemetry-operator/autoinstrumentation-nodejs:0.31.0
         python:
           image: ghcr.m.daocloud.io/open-telemetry/opentelemetry-operator/autoinstrumentation-python::0.33b0
+  buildInRedis:
+    enabled: false
 
 opentelemetry-demo:
   enabled: true
@@ -97,11 +99,7 @@ opentelemetry-demo:
         instrumentation.opentelemetry.io/inject-sdk: 'true'
 
     cartService:
-      enabled: true
-      useDefault:
-        env: false
-      podAnnotations:
-        instrumentation.opentelemetry.io/inject-sdk: 'true'
+      enabled: false
 
     checkoutService:
       enabled: true
@@ -210,3 +208,6 @@ opentelemetry-demo:
       exporters:
         otlp:
           endpoint: 'insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317'
+
+redis_operator:
+  enabled: false

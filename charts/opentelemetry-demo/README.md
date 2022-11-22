@@ -13,4 +13,5 @@ we have a NodePort type svc named otel-demo-ui, find it and enjoy the otel-demo
 # reimplement components
 - [adservice](https://github.com/openinsight-proj/adservice#adservice-springcloud)
 
-
+# support switch redis instance
+we use build-in redis by default, if you want to use a redis create by redis-operation, your need: `--set redis_operator.enabled=true`

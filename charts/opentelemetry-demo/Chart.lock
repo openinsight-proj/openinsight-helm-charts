@@ -2,5 +2,8 @@ dependencies:
 - name: opentelemetry-demo
   repository: https://open-telemetry.github.io/opentelemetry-helm-charts
   version: 0.12.2
-digest: sha256:2374ea02240e8b793d914d14b7b40a0ff6aa4be3bf5679a821efde8f52b2dd80
-generated: "2022-11-18T13:52:24.329989+08:00"
+- name: redis-operator
+  repository: https://ot-container-kit.github.io/helm-charts
+  version: 0.11.2
+digest: sha256:13eb245afb148619719d76061148177538f61fb45f1683c752bbea92f6a29187
+generated: "2022-11-22T11:40:59.86156+08:00"
