@@ -1,4 +1,4 @@
-{{- if .Values.redis_operator.enabled -}}
+{{- if .Values.redis_resource.enabled -}}
 apiVersion: redis.redis.opstreelabs.in/v1beta1
 kind: Redis
 metadata:

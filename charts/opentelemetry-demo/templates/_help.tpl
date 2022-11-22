@@ -20,7 +20,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 redis selector
 */}}
 {{- define "redis.addr" -}}
-{{- if .Values.redis_operator.enabled -}}
+{{- if .Values.redis_resource.enabled -}}
 redis-standalone.{{ .Release.Namespace }}.svc.cluster.local:6379
 {{- else -}}
 {{ include "otel-demo.name" . }}-redis:6379

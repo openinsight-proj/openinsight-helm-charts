@@ -211,3 +211,6 @@ opentelemetry-demo:
 
 redis_operator:
   enabled: false
+
+redis_resource:
+  enabled: false
