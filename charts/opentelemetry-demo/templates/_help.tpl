@@ -16,3 +16,13 @@ app.kubernetes.io/name: {{ include "otel-demo.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
+{{/*
+redis selector
+*/}}
+{{- define "redis.addr" -}}
+{{- if .Values.redis_resource.enabled -}}
+redis-standalone.{{ .Release.Namespace }}.svc.cluster.local:6379
+{{- else -}}
+{{ include "otel-demo.name" . }}-redis:6379
+{{- end }}
+{{- end }}
