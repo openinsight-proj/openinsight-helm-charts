@@ -1,6 +1,6 @@
 global:
   autoInstrumentation:
-    enabled: false
+    enabled: true
     config:
       apiVersion: opentelemetry.io/v1alpha1
       kind: Instrumentation
@@ -26,8 +26,6 @@ global:
           image: ghcr.m.daocloud.io/open-telemetry/opentelemetry-operator/autoinstrumentation-nodejs:0.31.0
         python:
           image: ghcr.m.daocloud.io/open-telemetry/opentelemetry-operator/autoinstrumentation-python::0.33b0
-  buildInRedis:
-    enabled: false
 
 opentelemetry-demo:
   enabled: true
@@ -214,3 +212,5 @@ redis_operator:
 
 redis_resource:
   enabled: false
+  storageClassName: openebs-hostpath
+  storageSize: 1Gi
