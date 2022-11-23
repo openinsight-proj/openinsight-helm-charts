@@ -14,5 +14,6 @@ we have a NodePort type svc named otel-demo-ui, find it and enjoy the otel-demo
 - [adservice](https://github.com/openinsight-proj/adservice#adservice-springcloud)
 
 # support switch redis instance
-we use build-in redis by default, if you want to use a redis create by redis-operation, 
+we use build-in redis by default, if you want to use a redis create by redis-operation(we use
+[openebs](https://openebs.io/) as PersistentVolume, if you want to use others: `--set redis_resource.storageClassName=your-PersistentVolume` ), 
 your need: `--set redis_operator.enabled=true --set redis_resource.enabled=true`
