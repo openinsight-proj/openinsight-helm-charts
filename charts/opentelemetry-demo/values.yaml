@@ -1,6 +1,6 @@
 global:
   autoInstrumentation:
-    enabled: false
+    enabled: true
     config:
       apiVersion: opentelemetry.io/v1alpha1
       kind: Instrumentation
@@ -214,3 +214,5 @@ redis_operator:
 
 redis_resource:
   enabled: false
+  storageClassName: openebs-hostpath
+  storageSize: 1Gi
