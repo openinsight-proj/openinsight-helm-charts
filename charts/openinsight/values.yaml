@@ -18,7 +18,7 @@ clickhouse:
        set -e
 
        clickhouse client -u default --password='changeme' -n <<-EOSQL
-         CREATE DATABASE otel;
+         CREATE DATABASE openinsight;
        EOSQL
 
 opentelemetry-collector:
@@ -29,7 +29,7 @@ opentelemetry-collector:
     # If you want to use the core image `otel/opentelemetry-collector`, you also need to change `command.name` value to `otelcol`.
     repository: ghcr.m.daocloud.io/openinsight-proj/openinsight
     pullPolicy: IfNotPresent
-    tag: "b773134c29942516795a65e463a8bcd0f664cf33"
+    tag: "cb245651f8c141d6fa1118c6bbeadc9ba161a959"
   presets:
     # Configures the collector to collect logs.
     # Adds the filelog receiver to the logs pipeline
@@ -139,6 +139,8 @@ opentelemetry-collector:
                     - ${MY_POD_IP}:8888
       zipkin:
         endpoint: 0.0.0.0:9411
+      fluentforward:
+        endpoint: 0.0.0.0:8006
     service:
       telemetry:
         metrics:
@@ -157,6 +159,7 @@ opentelemetry-collector:
             - batch
           receivers:
             - otlp
+            - fluentforward
         metrics:
           exporters:
             - logging
@@ -233,6 +236,12 @@ opentelemetry-collector:
       enabled: false
       containerPort: 8888
       servicePort: 8888
+      protocol: TCP
+    fluent-forward:
+      enabled: true
+      containerPort: 8006
+      servicePort: 8006
+      hostPort: 8006
       protocol: TCP
 
   # Resource limits & requests. Update according to your own use case as these values might be too low for a typical deployment.
