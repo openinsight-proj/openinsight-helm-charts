@@ -1,3 +1,4 @@
+---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -32,5 +33,4 @@ spec:
       - webstore-demo
   selector:
     matchLabels:
-      { { - include "otel-demo.selectorLabels" . | nindent 4 } }
       app.kubernetes.io/component: adservice
