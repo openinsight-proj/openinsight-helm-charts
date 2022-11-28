@@ -63,7 +63,7 @@ opentelemetry-demo:
         env: false
       imageOverride:
         repository: ghcr.io/openinsight-proj/adservice
-        tag: "v0.4.3"
+        tag: "v0.4.6"
       ports:
         - name: http
           value: 8081
