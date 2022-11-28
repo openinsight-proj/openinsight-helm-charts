@@ -71,7 +71,7 @@ opentelemetry-demo:
           value: 8999
         - name: metrics
           value: 12345
-        - name: grpc-metrics
+        - name: http-metrics
           value: 8888
       env:
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
