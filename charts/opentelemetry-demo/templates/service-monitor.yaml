@@ -1,0 +1,36 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    operator.insight.io/managed-by: insight
+  name: otel-collector-monitor
+  namespace: webstore-demo
+spec:
+  endpoints:
+    - honorLabels: true
+      port: prometheus
+  namespaceSelector:
+    matchNames:
+      - webstore-demo
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: otelcol
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    operator.insight.io/managed-by: insight
+  name: adservice-monitor
+  namespace: webstore-demo
+spec:
+  endpoints:
+    - honorLabels: true
+      port: http-metrics
+  namespaceSelector:
+    matchNames:
+      - webstore-demo
+  selector:
+    matchLabels:
+      { { - include "otel-demo.selectorLabels" . | nindent 4 } }
+      app.kubernetes.io/component: adservice
