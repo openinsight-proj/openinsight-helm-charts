@@ -8,7 +8,7 @@ sources:
 maintainers:
   - name: JaredTan95
   - name: Frapschen
-appVersion: "0.4.7"
+appVersion: "0.4.6"
 dependencies:
   - name: opentelemetry-demo
     version: 0.12.2
