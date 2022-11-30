@@ -4,16 +4,16 @@ kind: ServiceMonitor
 metadata:
   labels:
     operator.insight.io/managed-by: insight
-  name: adservice-monitor
+  name: otelcol-monitor
 spec:
   endpoints:
     - honorLabels: true
-      port: http-metrics
+      port: prometheus
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}
   selector:
     matchLabels:
-      app.kubernetes.io/component: adservice
+      app.kubernetes.io/name: otelcol
 {{- end }}
 
