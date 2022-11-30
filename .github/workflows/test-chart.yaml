@@ -38,6 +38,12 @@ jobs:
             echo "::set-output name=changed::true"
           fi
 
+      - name: Sync dependency
+        run: |
+          helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+          helm repo add bitnami https://charts.bitnami.com/bitnami 
+          helm repo add redis https://ot-container-kit.github.io/helm-charts
+
       - name: Run chart-testing (lint)
         run: ct lint --target-branch ${{ github.event.repository.default_branch }}
 
@@ -45,13 +51,5 @@ jobs:
 #        uses: helm/kind-action@v1.4.0
 #        if: steps.list-changed.outputs.changed == 'true'
 
-#      - name: Helm Update
-#        run: |
-#          helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
-#          helm repo add bitnami https://charts.bitnami.com/bitnami
-#          helm repo add redis https://ot-container-kit.github.io/helm-charts
-#      - name: sync dependency
-#        run: helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
-#
 #      - name: Run chart-testing (install)
 #        run: ct install --target-branch ${{ github.event.repository.default_branch }}
