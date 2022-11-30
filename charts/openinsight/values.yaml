@@ -29,7 +29,7 @@ opentelemetry-collector:
     # If you want to use the core image `otel/opentelemetry-collector`, you also need to change `command.name` value to `otelcol`.
     repository: ghcr.m.daocloud.io/openinsight-proj/openinsight
     pullPolicy: IfNotPresent
-    tag: "cb245651f8c141d6fa1118c6bbeadc9ba161a959"
+    tag: "4bcfe66f65b9edf15786eafa13418b8b744af19c"
   presets:
     # Configures the collector to collect logs.
     # Adds the filelog receiver to the logs pipeline
