@@ -42,7 +42,7 @@ jobs:
             echo "::set-output name=changed::true"
           fi
 
-      - name: Sync dependency
+      - name: Add dependent repositories
         run: |
           helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
           helm repo add bitnami https://charts.bitnami.com/bitnami 
