@@ -69,6 +69,8 @@ opentelemetry-collector:
   config:
     exporters:
       logging: {}
+      prometheus:
+        endpoint: "0.0.0.0:8889"
       clickhouse:
         dsn: tcp://default:changeme@my-openinsight-clickhouse-headless:9000/openinsight
         logs_table_name: openinsight_logs
@@ -114,6 +116,17 @@ opentelemetry-collector:
       batch: {}
       # If set to null, will be overridden with values based on k8s resource limits
       memory_limiter: null
+      spanmetrics:
+        metrics_exporter: prometheus
+        latency_histogram_buckets: [2ms, 4ms, 6ms, 8ms, 10ms, 50ms, 100ms, 200ms, 500ms, 800ms, 1s, 1400ms, 2s, 5s, 10s, 15s]
+        aggregation_temporality: "AGGREGATION_TEMPORALITY_CUMULATIVE"
+        dimensions_cache_size: 4000
+      servicegraph:
+        metrics_exporter: prometheus
+        latency_histogram_buckets: [2ms, 4ms, 6ms, 8ms, 10ms, 50ms, 100ms, 200ms, 500ms, 800ms, 1s, 1400ms, 2s, 5s, 10s, 15s]
+        store:
+          ttl: 10s
+          max_items: 100000
     receivers:
       jaeger:
         protocols:
@@ -133,10 +146,20 @@ opentelemetry-collector:
         config:
           scrape_configs:
             - job_name: opentelemetry-collector
-              scrape_interval: 10s
+              scrape_interval: 5s
               static_configs:
                 - targets:
                     - ${MY_POD_IP}:8888
+            - job_name: span-metrics
+              scrape_interval: 5s
+              static_configs:
+                - targets:
+                    - ${MY_POD_IP}:8999
+      # Dummy receiver that's never used, because a pipeline is required to have one.
+      otlp/otel_metrics:
+        protocols:
+          grpc:
+            endpoint: "localhost:65535"
       zipkin:
         endpoint: 0.0.0.0:9411
       fluentforward:
@@ -160,6 +183,11 @@ opentelemetry-collector:
           receivers:
             - otlp
             - fluentforward
+        metrics/span_metrics:
+          exporters:
+            - prometheus
+          receivers:
+            - otlp/otel_metrics
         metrics:
           exporters:
             - logging
@@ -176,6 +204,8 @@ opentelemetry-collector:
             - clickhouse
           processors:
             - memory_limiter
+            - servicegraph
+            - spanmetrics
             - batch
           receivers:
             - otlp
