@@ -146,15 +146,20 @@ opentelemetry-collector:
         config:
           scrape_configs:
             - job_name: opentelemetry-collector
-              scrape_interval: 10s
+              scrape_interval: 5s
               static_configs:
                 - targets:
                     - ${MY_POD_IP}:8888
             - job_name: span-metrics
-              scrape_interval: 10s
+              scrape_interval: 5s
               static_configs:
                 - targets:
                     - ${MY_POD_IP}:8999
+      # Dummy receiver that's never used, because a pipeline is required to have one.
+      otlp/otel_metrics:
+        protocols:
+          grpc:
+            endpoint: "localhost:65535"
       zipkin:
         endpoint: 0.0.0.0:9411
       fluentforward:
@@ -178,6 +183,11 @@ opentelemetry-collector:
           receivers:
             - otlp
             - fluentforward
+        metrics/span_metrics:
+          exporters:
+            - prometheus
+          receivers:
+            - otlp/otel_metrics
         metrics:
           exporters:
             - logging
