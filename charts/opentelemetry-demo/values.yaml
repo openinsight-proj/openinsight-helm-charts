@@ -1,37 +1,3 @@
-global:
-  autoInstrumentation:
-    enabled: true
-    config:
-      apiVersion: opentelemetry.io/v1alpha1
-      kind: Instrumentation
-      metadata:
-        name: opentelemetry-autoinstrumentation-webstore-demo
-      spec:
-        # https://github.com/open-telemetry/opentelemetry-operator/blob/main/docs/api.md#instrumentationspecresource
-        resource:
-          addK8sUIDAttributes: true
-        sampler:
-          # Enum: always_on, always_off, traceidratio, parentbased_always_on, parentbased_always_off, parentbased_traceidratio, jaeger_remote, xray
-          type: always_on
-        java:
-          image: ghcr.m.daocloud.io/open-telemetry/opentelemetry-operator/autoinstrumentation-java:1.17.0
-          env:
-            - name: OTEL_JAVAAGENT_DEBUG
-              value: "false"
-            - name: OTEL_INSTRUMENTATION_JDBC_ENABLED
-              value: "true"
-            - name: SPLUNK_PROFILER_ENABLED
-              value: "false"
-        nodejs:
-          image: ghcr.m.daocloud.io/open-telemetry/opentelemetry-operator/autoinstrumentation-nodejs:0.31.0
-        python:
-          image: ghcr.m.daocloud.io/open-telemetry/opentelemetry-operator/autoinstrumentation-python::0.33b0
-  serviceMonitor:
-    otelcol:
-      enabled: true
-    adservice:
-      enabled: true
-
 opentelemetry-demo:
   enabled: true
   observability:
@@ -101,7 +67,7 @@ opentelemetry-demo:
         limits:
           memory: 1Gi
       podAnnotations:
-        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
 
     cartService:
       enabled: false
@@ -111,28 +77,28 @@ opentelemetry-demo:
       useDefault:
         env: false
       podAnnotations:
-        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
 
     currencyService:
       enabled: true
       useDefault:
         env: false
       podAnnotations:
-        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
 
     emailService:
       enabled: true
       useDefault:
         env: false
       podAnnotations:
-        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
 
     featureflagService:
       enabled: true
       useDefault:
         env: false
       podAnnotations:
-        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
 
     ffsPostgres:
       enabled: true
@@ -141,14 +107,14 @@ opentelemetry-demo:
       imageOverride:
         repository: "docker.m.daocloud.io/postgres"
       podAnnotations:
-        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
 
     frontend:
       enabled: true
       useDefault:
         env: false
       podAnnotations:
-        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
 
     frontendProxy:
       enabled: true
@@ -158,49 +124,49 @@ opentelemetry-demo:
         limits:
           memory: 100Mi
       podAnnotations:
-        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
 
     loadgenerator:
       enabled: true
       useDefault:
         env: false
       podAnnotations:
-        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
 
     paymentService:
       enabled: true
       useDefault:
         env: false
       podAnnotations:
-        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
 
     productCatalogService:
       enabled: true
       useDefault:
         env: false
       podAnnotations:
-        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
 
     recommendationService:
       enabled: true
       useDefault:
         env: false
       podAnnotations:
-        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
 
     shippingService:
       enabled: true
       useDefault:
         env: false
       podAnnotations:
-        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
 
     quoteService:
       enabled: true
       useDefault:
         env: false
       podAnnotations:
-        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
 
   opentelemetry-collector:
     nameOverride: otelcol
