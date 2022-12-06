@@ -18,7 +18,7 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/name: {{ .Release.Name }}
       annotations:
-        instrumentation.opentelemetry.io/inject-sdk: 'true'
+        instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
     spec:
       containers:
         - name: cartservice
