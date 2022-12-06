@@ -1,5 +1,7 @@
 # OpenTelemetry Demo Helm Chart
 
+This chart is an extension of official [OpenTelemetry Demo](https://github.com/open-telemetry/opentelemetry-demo) and official [OpenTelemetry Demo Chart](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-demo)
+
 ## Set up
 
 ```shell
