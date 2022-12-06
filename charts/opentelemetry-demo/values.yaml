@@ -1,3 +1,10 @@
+global:
+  serviceMonitor:
+    otelcol:
+      enabled: true
+    adservice:
+      enabled: true
+
 opentelemetry-demo:
   enabled: true
   observability:
