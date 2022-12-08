@@ -1,4 +1,4 @@
-name: Lint Charts
+name: Lint Charts (OpenInsight)
 
 on:
   pull_request:
