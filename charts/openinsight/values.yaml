@@ -4,6 +4,18 @@
 
 clickhouse:
   enabled: true
+  zookeeper:
+    enabled: true
+    replicaCount: 5
+  shards: 5
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 1024Mi
+    limits:
+      cpu: 2000m
+      memory: 2048Mi
   auth:
     username: default
     password: "changeme"
