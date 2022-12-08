@@ -21,4 +21,4 @@ jobs:
           create-kind-cluster: "false"
 
       - name: Run chart-testing (lint)
-        run: ct lint --target-branch main
+        run: ct lint --target-branch main --chart-dirs charts/openinsight
