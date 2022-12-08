@@ -6,6 +6,8 @@ on:
       - 'charts/opentelemetry-demo/**'
     branches:
       - main
+env:
+  CT_CHART_DIRS: charts/opentelemetry-demo
 
 jobs:
   lint-test:
