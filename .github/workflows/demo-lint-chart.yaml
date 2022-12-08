@@ -2,6 +2,8 @@ name: Lint Charts
 
 on:
   pull_request:
+    paths:
+      - 'charts/opentelemetry-demo/**'
     branches:
       - main
 
