@@ -3,6 +3,29 @@ entries:
   openinsight:
   - apiVersion: v2
     appVersion: 0.0.3
+    created: "2022-12-28T06:20:33.781584169Z"
+    dependencies:
+    - condition: clickhouse.enabled
+      name: clickhouse
+      repository: https://charts.bitnami.com/bitnami
+      version: 1.0.3
+    - condition: opentelemetry-collector.enabled
+      name: opentelemetry-collector
+      repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+      version: 0.38.0
+    description: OpenInsight Helm chart for Kubernetes
+    digest: 1f17d56800363a2127f6d0f4bed7326708798ecf076810893392ed667559005d
+    maintainers:
+    - name: JaredTan95
+    - name: Frapschen
+    name: openinsight
+    sources:
+    - https://github.com/openinsight-proj/openinsight-helm-charts
+    urls:
+    - https://github.com/openinsight-proj/openinsight-helm-charts/releases/download/openinsight-0.2.7/openinsight-0.2.7.tgz
+    version: 0.2.7
+  - apiVersion: v2
+    appVersion: 0.0.3
     created: "2022-12-05T03:16:05.400896464Z"
     dependencies:
     - condition: clickhouse.enabled
@@ -140,6 +163,31 @@ entries:
     - https://github.com/openinsight-proj/openinsight-helm-charts/releases/download/openinsight-0.1.1/openinsight-0.1.1.tgz
     version: 0.1.1
   opentelemetry-demo:
+  - apiVersion: v2
+    appVersion: 0.4.6
+    created: "2022-12-28T06:20:33.905213396Z"
+    dependencies:
+    - condition: opentelemetry-demo.enabled
+      name: opentelemetry-demo
+      repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+      version: 0.12.2
+    - condition: redis_operator.enabled
+      name: redis-operator
+      repository: https://ot-container-kit.github.io/helm-charts
+      version: 0.11.2
+    description: A helm chart for openTelemetry community demo application integration
+      with other component.
+    digest: 65d07c72767a7d796d5e137c0eaab1af8526d6642b76baf8430c4627b008cc7f
+    maintainers:
+    - name: JaredTan95
+    - name: Frapschen
+    name: opentelemetry-demo
+    sources:
+    - https://github.com/openinsight-proj/openinsight-helm-charts
+    type: application
+    urls:
+    - https://github.com/openinsight-proj/openinsight-helm-charts/releases/download/opentelemetry-demo-0.5.1/opentelemetry-demo-0.5.1.tgz
+    version: 0.5.1
   - apiVersion: v2
     appVersion: 0.4.6
     created: "2022-12-06T01:35:13.311582712Z"
@@ -762,4 +810,4 @@ entries:
     urls:
     - https://github.com/openinsight-proj/opentelemetry-demo-helm-chart/releases/download/opentelemetry-demo-0.1.0/opentelemetry-demo-0.1.0.tgz
     version: 0.1.0
-generated: "2022-12-06T01:35:13.311969912Z"
+generated: "2022-12-28T06:20:33.9054384Z"
