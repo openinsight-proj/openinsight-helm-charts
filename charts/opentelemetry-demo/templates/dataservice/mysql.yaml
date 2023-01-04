@@ -1,0 +1,42 @@
+{{- if .Values.extensions.mysql.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "otel-demo.name" . }}-mysql
+  labels:
+    {{- include "otel-demo.labels" . | nindent 4 }}
+spec:
+  ports:
+  - port: 3306
+  selector:
+    {{- include "otel-demo.selectorLabels" . | nindent 4 }}
+    app: mysql
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "otel-demo.name" . }}-mysql
+  labels:
+    {{- include "otel-demo.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql:8.0.31
+        name: mysql
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          value: otel
+        ports:
+        - containerPort: 3306
+          name: mysql
+{{- end }}
