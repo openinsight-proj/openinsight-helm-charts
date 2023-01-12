@@ -40,6 +40,10 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: metadata.namespace
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
+            - name: MYSQL_HOST
+              value: '{{ include "otel-demo.name" . }}-mysql'
             {{- with .Values.extensions.dataservice.env }}
             {{- . | toYaml | nindent 12 }}
             {{- end }}
