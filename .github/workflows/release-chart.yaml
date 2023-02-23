@@ -41,7 +41,12 @@ jobs:
         run: |
           helm registry login $DAOCLOUD_COMMUNITY_REGISTRY_URL --username $DAOCLOUD_COMMUNITY_REGISTRY_USERNAME --password $DAOCLOUD_COMMUNITY_REGISTRY_PASSWORD
 
-      - name: Release Helm Chart and Publish to DaoCloud Community Chart Repo
+      - name: Release Helm Chart
+        uses: helm/chart-releaser-action@v1.4.0
+        env:
+          CR_TOKEN: "${{ secrets.ACTIONS_TOKEN }}"
+
+      - name: Release to DaoCloud Community Chart Repo
         uses: helm/chart-releaser-action@v2
         env:
           CR_TOKEN: "${{ secrets.ACTIONS_TOKEN }}"
