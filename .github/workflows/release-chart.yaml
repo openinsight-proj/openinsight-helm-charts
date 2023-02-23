@@ -42,16 +42,14 @@ jobs:
           helm registry login $DAOCLOUD_COMMUNITY_REGISTRY_URL --username $DAOCLOUD_COMMUNITY_REGISTRY_USERNAME --password $DAOCLOUD_COMMUNITY_REGISTRY_PASSWORD
 
       - name: Release Helm Chart
-        uses: helm/chart-releaser-action@v1.4.0
+        uses: helm/chart-releaser-action@v1.5.0
         env:
           CR_TOKEN: "${{ secrets.ACTIONS_TOKEN }}"
 
       - name: Release to DaoCloud Community Chart Repo
-        uses: helm/chart-releaser-action@v2
+        uses: helm/chart-releaser-action@v1.5.0
         env:
           CR_TOKEN: "${{ secrets.ACTIONS_TOKEN }}"
         with:
-          chart: opentelemetry-demo
-          charts_repo: chartrepo/community
-          extra_args: "--destination $DAOCLOUD_COMMUNITY_REGISTRY_URL"
+          charts_repo_url: $DAOCLOUD_COMMUNITY_REGISTRY_URL
 
