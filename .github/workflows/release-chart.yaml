@@ -36,6 +36,7 @@ jobs:
       - name: Add DaoCloud Registry
         env:
           DAOCLOUD_COMMUNITY_REGISTRY_URL: release.daocloud.io
+          HELM_EXPERIMENTAL_OCI: 1
         run: |
           helm registry login $DAOCLOUD_COMMUNITY_REGISTRY_URL --username ${{ secrets.DAOCLOUD_REGISTRY_USERNAME }} --password ${{ secrets.DAOCLOUD_REGISTRY_PASSWORD }}
 
