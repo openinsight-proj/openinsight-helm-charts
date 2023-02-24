@@ -33,22 +33,22 @@ jobs:
           helm dep up charts/openinsight
           helm dep up charts/opentelemetry-demo
 
-      - name: Add DaoCloud Registry
-        env:
-          DAOCLOUD_COMMUNITY_REGISTRY_URL: release.daocloud.io
-          HELM_EXPERIMENTAL_OCI: 1
-        run: |
-          helm registry login $DAOCLOUD_COMMUNITY_REGISTRY_URL --username ${{ secrets.DAOCLOUD_REGISTRY_USERNAME }} --password ${{ secrets.DAOCLOUD_REGISTRY_PASSWORD }}
-
       - name: Release Helm Chart
         uses: helm/chart-releaser-action@v1.5.0
         env:
           CR_TOKEN: "${{ secrets.ACTIONS_TOKEN }}"
+          
+#       - name: Add DaoCloud Registry
+#         env:
+#           DAOCLOUD_COMMUNITY_REGISTRY_URL: release.daocloud.io
+#           HELM_EXPERIMENTAL_OCI: 1
+#         run: |
+#           helm registry login $DAOCLOUD_COMMUNITY_REGISTRY_URL --username ${{ secrets.DAOCLOUD_REGISTRY_USERNAME }} --password ${{ secrets.DAOCLOUD_REGISTRY_PASSWORD }}
 
-      - name: Release to DaoCloud Community Chart Repo
-        uses: helm/chart-releaser-action@v1.5.0
-        env:
-          CR_TOKEN: "${{ secrets.ACTIONS_TOKEN }}"
-        with:
-          charts_repo_url: $DAOCLOUD_COMMUNITY_REGISTRY_URL
+#       - name: Release to DaoCloud Community Chart Repo
+#         uses: helm/chart-releaser-action@v1.5.0
+#         env:
+#           CR_TOKEN: "${{ secrets.ACTIONS_TOKEN }}"
+#         with:
+#           charts_repo_url: $DAOCLOUD_COMMUNITY_REGISTRY_URL
 
