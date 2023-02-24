@@ -36,10 +36,8 @@ jobs:
       - name: Add DaoCloud Registry
         env:
           DAOCLOUD_COMMUNITY_REGISTRY_URL: release.daocloud.io
-          DAOCLOUD_COMMUNITY_REGISTRY_USERNAME: ${{ secrets.DAOCLOUD_REGISTRY_USERNAME }}
-          DAOCLOUD_COMMUNITY_REGISTRY_PASSWORD: ${{ secrets.DAOCLOUD_REGISTRY_PASSWORD }}
         run: |
-          helm registry login $DAOCLOUD_COMMUNITY_REGISTRY_URL --username $DAOCLOUD_COMMUNITY_REGISTRY_USERNAME --password $DAOCLOUD_COMMUNITY_REGISTRY_PASSWORD
+          helm registry login $DAOCLOUD_COMMUNITY_REGISTRY_URL --username ${{ secrets.DAOCLOUD_REGISTRY_USERNAME }} --password${{ secrets.DAOCLOUD_REGISTRY_PASSWORD }}
 
       - name: Release Helm Chart
         uses: helm/chart-releaser-action@v1.5.0
