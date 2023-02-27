@@ -39,6 +39,7 @@ jobs:
           DAOCLOUD_REGISTRY_USERNAME: ${{ secrets.DAOCLOUD_REGISTRY_USERNAME }}
           DAOCLOUD_REGISTRY_PASSWORD: ${{ secrets.DAOCLOUD_REGISTRY_PASSWORD }}
           DAOCLOUD_COMMUNITY_REPO_URL: release.daocloud.io/chartrepo/community
+          HELM_EXPERIMENTAL_OCI: 1
         run: |
           helm registry login $DAOCLOUD_REGISTRY_URL --username $DAOCLOUD_REGISTRY_USERNAME --password $DAOCLOUD_REGISTRY_PASSWORD
 
