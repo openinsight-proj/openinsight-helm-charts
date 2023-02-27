@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: cartservice
-          image: 'docker.m.daocloud.io/otel/demo:v1.1.0-cartservice'
+          image: 'ghcr.io/openinsight-proj/demo:v1.3.2-cartservice'
           ports:
             - name: service
               containerPort: 8080

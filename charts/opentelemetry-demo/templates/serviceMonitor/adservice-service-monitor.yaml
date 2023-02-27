@@ -9,6 +9,8 @@ spec:
   endpoints:
     - honorLabels: true
       port: http-metrics
+    - honorLabels: true
+      port: jvm-metrics
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}
