@@ -2,6 +2,8 @@ name: Release Charts
 
 on:
   push:
+    paths:
+      - 'charts/opentelemetry-demo/**'
     tags: ["v*"]
 
 jobs:
@@ -28,7 +30,7 @@ jobs:
       - name: Add dependent repositories
         run: |
           helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
-          helm repo add bitnami https://charts.bitnami.com/bitnami    
+          helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo add redis https://ot-container-kit.github.io/helm-charts
           helm dep up charts/openinsight
           helm dep up charts/opentelemetry-demo

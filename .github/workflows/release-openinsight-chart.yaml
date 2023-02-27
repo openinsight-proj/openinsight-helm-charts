@@ -1,0 +1,59 @@
+name: Release Charts
+
+on:
+  push:
+    paths:
+      - 'charts/openinsight/**'
+    tags: ["v*"]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_VERSION: "${{ github.event.release.tag_name }}"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3.1
+        with:
+          version: v3.4.1
+
+      - name: Add dependent repositories
+        run: |
+          helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo add redis https://ot-container-kit.github.io/helm-charts
+          helm dep up charts/openinsight
+          helm dep up charts/opentelemetry-demo
+
+      - name: Add DaoCloud Registry
+        env:
+          DAOCLOUD_REGISTRY_URL: release.daocloud.io
+          DAOCLOUD_REGISTRY_USERNAME: ${{ secrets.DAOCLOUD_REGISTRY_USERNAME }}
+          DAOCLOUD_REGISTRY_PASSWORD: ${{ secrets.DAOCLOUD_REGISTRY_PASSWORD }}
+          DAOCLOUD_COMMUNITY_REPO_URL: release.daocloud.io/chartrepo/community
+          HELM_EXPERIMENTAL_OCI: 1
+        run: |
+          helm registry login $DAOCLOUD_REGISTRY_URL --username $DAOCLOUD_REGISTRY_USERNAME --password $DAOCLOUD_REGISTRY_PASSWORD
+
+      - name: Release to DaoCloud Community Chart Repo
+        run: |
+          helm repo add daocloud-community $DAOCLOUD_COMMUNITY_REPO_URL
+          helm package charts/opentelemetry-demo -d ./ --version ${{ env.RELEASE_VERSION }}
+          helm cm-push ./opentelemetry-demo-$CHART_VERSION.tgz daocloud-community -v $CHART_VERSION -u $DAOCLOUD_REGISTRY_USERNAME -p $DAOCLOUD_REGISTRY_PASSWORD
+
+      - name: Release Helm Chart
+        uses: helm/chart-releaser-action@v1.5.0
+        env:
+          CR_TOKEN: "${{ secrets.ACTIONS_TOKEN }}"
+
+
