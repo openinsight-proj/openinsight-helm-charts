@@ -24,16 +24,14 @@ spec:
         - name: dataservice
           image: "{{ .Values.extensions.dataservice.image.repository }}:{{ .Values.extensions.dataservice.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.extensions.dataservice.image.pullPolicy }}
+          {{- if .Values.extensions.dataservice.ports }}
           ports:
-            - name: http
-              containerPort: 8082
-              protocol: TCP
-            - name: health-http
-              containerPort: 8999
-              protocol: TCP
-            - name: http-metrics
-              containerPort: 8888
-              protocol: TCP
+          {{- range $port := .Values.extensions.dataservice.ports }}
+          - name: {{ $port.name}}
+            containerPort: {{ $port.containerPort }}
+            protocol: {{ $port.protocol }}
+          {{- end }}
+          {{- end }}
           env:
             - name: K8S_NAMESPACE
               valueFrom:
@@ -59,20 +57,16 @@ metadata:
   labels:
     {{- include "otel-demo.labels" . | nindent 4 }}
 spec:
-  type: ClusterIP
+  type: {{ .Values.extensions.dataservice.servcie.type | default "ClusterIP" }}
+  {{- if .Values.extensions.dataservice.ports }}
   ports:
-    - name: http
-      port: 8082
-      protocol: TCP
-      targetPort: 8082
-    - name: health-http
-      port: 8999
-      targetPort: 8999
-      protocol: TCP
-    - name: http-metrics
-      port: 8888
-      targetPort: 8888
-      protocol: TCP
+  {{- range $port := .Values.extensions.dataservice.ports }}
+  - name: {{ $port.name}}
+    port: {{ $port.containerPort }}
+    protocol: {{ $port.protocol }}
+    targetPort: {{ $port.containerPort }}
+  {{- end }}
+  {{- end }}
   selector:
     {{- include "otel-demo.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: dataservice

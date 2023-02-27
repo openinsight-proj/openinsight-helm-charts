@@ -1,0 +1,18 @@
+{{- if .Values.global.serviceMonitor.kafka.enabled -}}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    operator.insight.io/managed-by: insight
+  name: kafka-monitor
+spec:
+  endpoints:
+    - honorLabels: true
+      port: jvm-metrics
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: kafka
+{{- end }}
