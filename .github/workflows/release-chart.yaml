@@ -33,22 +33,26 @@ jobs:
           helm dep up charts/openinsight
           helm dep up charts/opentelemetry-demo
 
+      - name: Add DaoCloud Registry
+        env:
+          DAOCLOUD_REGISTRY_URL: release.daocloud.io
+          DAOCLOUD_REGISTRY_USERNAME: ${{ secrets.DAOCLOUD_REGISTRY_USERNAME }}
+          DAOCLOUD_REGISTRY_PASSWORD: ${{ secrets.DAOCLOUD_REGISTRY_PASSWORD }}
+          DAOCLOUD_COMMUNITY_REPO_URL: release.daocloud.io/chartrepo/community
+        run: |
+          helm registry login $DAOCLOUD_REGISTRY_URL --username $DAOCLOUD_REGISTRY_USERNAME --password $DAOCLOUD_REGISTRY_PASSWORD
+
+      - name: Release to DaoCloud Community Chart Repo
+        run: |
+          CHART_VERSION=$(echo "${GITHUB_REF}" |sed 's/.*-//g')
+          echo "Chart Version: $CHART_VERSION"
+          helm repo add daocloud-community $DAOCLOUD_COMMUNITY_REPO_URL
+          helm package charts/opentelemetry-demo -d ./ --version $CHART_VERSION
+          helm cm-push ./opentelemetry-demo-$CHART_VERSION.tgz daocloud-community -v $CHART_VERSION -u $DAOCLOUD_REGISTRY_USERNAME -p $DAOCLOUD_REGISTRY_PASSWORD
+
       - name: Release Helm Chart
         uses: helm/chart-releaser-action@v1.5.0
         env:
           CR_TOKEN: "${{ secrets.ACTIONS_TOKEN }}"
-          
-#       - name: Add DaoCloud Registry
-#         env:
-#           DAOCLOUD_COMMUNITY_REGISTRY_URL: release.daocloud.io
-#           HELM_EXPERIMENTAL_OCI: 1
-#         run: |
-#           helm registry login $DAOCLOUD_COMMUNITY_REGISTRY_URL --username ${{ secrets.DAOCLOUD_REGISTRY_USERNAME }} --password ${{ secrets.DAOCLOUD_REGISTRY_PASSWORD }}
 
-#       - name: Release to DaoCloud Community Chart Repo
-#         uses: helm/chart-releaser-action@v1.5.0
-#         env:
-#           CR_TOKEN: "${{ secrets.ACTIONS_TOKEN }}"
-#         with:
-#           charts_repo_url: $DAOCLOUD_COMMUNITY_REGISTRY_URL
 
