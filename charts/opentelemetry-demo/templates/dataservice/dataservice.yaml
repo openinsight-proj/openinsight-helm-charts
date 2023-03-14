@@ -17,8 +17,11 @@ spec:
         app.kubernetes.io/component: dataservice
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/name: {{ .Release.Name }}
+      {{- if .Values.extensions.dataservice.podAnnotations }}
       annotations:
-        instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
+        {{- toYaml .Values.extensions.dataservice.podAnnotations | nindent 8 }}
+      {{- end }}
+      annotations:
     spec:
       containers:
         - name: dataservice
