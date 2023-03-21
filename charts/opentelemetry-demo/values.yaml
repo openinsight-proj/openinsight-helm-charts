@@ -48,7 +48,9 @@ extensions:
         value: "-Dotel.metrics.exporter=prometheus -Dotel.exporter.prometheus.port=9464 -Dspring.extraAdLabel=Daocloud -Dspring.matrixRow=200 -Dmeter.port=8888 -Dspring.cloud.nacos.discovery.enabled=false -Dspring.cloud.nacos.config.enabled=false -Dspring.cloud.sentinel.enabled=false -Dspring.cloud.nacos.config.server-addr=nacos-test.skoala-test:8848 -Dspring.application.name=adservice-springcloud -Dspring.cloud.nacos.discovery.server-addr=nacos-test.skoala-test:8848 -Dspring.cloud.nacos.discovery.namespace=$(NACOS_NAMESPACE_ID) -Dspring.cloud.nacos.discovery.group=$(NACOS_GROUP_NAME) -Dspring.cloud.nacos.discovery.metadata.k8s_cluster_id=xxx -Dspring.cloud.nacos.discovery.metadata.k8s_cluster_name=skoala-dev -Dspring.cloud.nacos.discovery.metadata.k8s_namespace_name=skoala-test -Dspring.cloud.nacos.discovery.metadata.k8s_workload_type=deployment -Dspring.cloud.nacos.discovery.metadata.k8s_workload_name=adservice-springcloud -Dspring.cloud.nacos.discovery.metadata.k8s_service_name=adservice-springcloud -Dspring.cloud.nacos.discovery.metadata.k8s_pod_name=$(HOSTNAME) -Dspring.cloud.sentinel.enabled=false -Dspring.cloud.sentinel.transport.dashboard=nacos-test-sentinel.skoala-test:8080"
     podAnnotations:
       instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
-      prometheus.io/scrape: "true"
+      insight.opentelemetry.io/metric-scrape: "true"
+      insight.opentelemetry.io/metric-path: "/"
+      insight.opentelemetry.io/metric-port: "9464"
 opentelemetry-demo:
   enabled: true
   observability:
@@ -132,7 +134,9 @@ opentelemetry-demo:
           memory: 1Gi
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
-        prometheus.io/scrape: "true"
+        insight.opentelemetry.io/metric-scrape: "true"
+        insight.opentelemetry.io/metric-path: "/"
+        insight.opentelemetry.io/metric-port: "9464"
     cartService:
       enabled: false
 
