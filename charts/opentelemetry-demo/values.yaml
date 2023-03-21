@@ -136,7 +136,7 @@ opentelemetry-demo:
         instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
         insight.opentelemetry.io/metric-scrape: "true"
         insight.opentelemetry.io/metric-path: "/"
-        insight.opentelemetry.io/metric-port: "9464"
+        insight.opentelemetry.io/metric-port: "12345"
     cartService:
       enabled: false
 

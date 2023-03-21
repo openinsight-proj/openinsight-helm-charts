@@ -29,7 +29,7 @@ spec:
         app: mysql
     spec:
       containers:
-      - image: mysql:8.0.31
+      - image: docker.m.daocloud.io/mysql:8.0.31
         name: mysql
         env:
           # Use secret in real usage

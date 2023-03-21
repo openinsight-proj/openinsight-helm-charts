@@ -21,7 +21,6 @@ spec:
       annotations:
         {{- toYaml .Values.extensions.dataservice.podAnnotations | nindent 8 }}
       {{- end }}
-      annotations:
     spec:
       containers:
         - name: dataservice
