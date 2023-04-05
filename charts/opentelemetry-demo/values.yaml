@@ -9,10 +9,12 @@ global:
     kafka:
       enabled: true
 
-
 extensions:
   mysql:
     enabled: true
+    # Options to override the default image settings.
+    imageOverride:
+      repository: "docker.m.daocloud.io/mysql"
   dataservice:
     enabled: true
     image:
