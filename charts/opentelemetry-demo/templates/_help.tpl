@@ -12,7 +12,11 @@ Create chart name and version as used by the chart label.
 Selector labels
 */}}
 {{- define "otel-demo-ui.selectorLabels" -}}
+{{- if .name }}
+app.kubernetes.io/name: {{ include "otel-demo.name" . }}-{{ .name }}
+{{- else }}
 app.kubernetes.io/name: {{ include "otel-demo.name" . }}
+{{- end }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
