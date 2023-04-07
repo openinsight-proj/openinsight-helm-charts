@@ -398,13 +398,13 @@ opentelemetry-demo:
           value: "-Xmx400M -Xms400M"
         - name: KAFKA_OPTS
           value: "-javaagent:/tmp/opentelemetry-javaagent.jar -Dotel.metrics.exporter=prometheus -Dotel.exporter.prometheus.port=9464 -Dotel.jmx.target.system=kafka-broker"
+      podAnnotations:
+        instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
 
+    # this component is redefined in /template/redis.yaml
+    # we can control redis instance created by CRD or yaml
     redis:
-      enabled: true
-      useDefault:
-        env: true
-      imageOverride:
-        repository: "docker.m.daocloud.io/redis"
+      enabled: false
 
   opentelemetry-collector:
     enabled: false
