@@ -1,48 +1,56 @@
-{{- if .Values.redis_resource.enabled -}}
-apiVersion: redis.redis.opstreelabs.in/v1beta1
-kind: Redis
+{{- if not .Values.redis_resource.enabled -}}
+---
+apiVersion: v1
+kind: Service
 metadata:
-  name: redis-standalone
+  name: {{ .Release.Name }}-redis
+  labels:
+    opentelemetry.io/name: {{ .Release.Name }}-redis
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: {{ .Release.Name }}-redis
 spec:
-  kubernetesConfig:
-    image: quay.m.daocloud.io/opstree/redis:v7.0.5
-    imagePullPolicy: IfNotPresent
-    resources:
-      requests:
-        cpu: 101m
-        memory: 128Mi
-      limits:
-        cpu: 101m
-        memory: 128Mi
-  redisExporter:
-    enabled: false
-    image: quay.io/opstree/redis-exporter:v1.44.0
-    imagePullPolicy: Always
-    resources:
-      requests:
-        cpu: 100m
-        memory: 128Mi
-      limits:
-        cpu: 100m
-        memory: 128Mi
-  readinessProbe:
-    failureThreshold: 5
-    initialDelaySeconds: 15
-    periodSeconds: 15
-    successThreshold: 1
-    timeoutSeconds: 5
-  livenessProbe:
-    failureThreshold: 5
-    initialDelaySeconds: 15
-    periodSeconds: 15
-    successThreshold: 1
-    timeoutSeconds: 5
-  storage:
-    volumeClaimTemplate:
-      spec:
-        storageClassName: {{ .Values.redis_resource.storageClassName }}
-        accessModes: ["ReadWriteOnce"]
-        resources:
-          requests:
-            storage: {{ .Values.redis_resource.storageSize }}
+  type: ClusterIP
+  ports:
+    - port: 6379
+      name: redis
+      targetPort: 6379
+  selector:
+    opentelemetry.io/name: {{ .Release.Name }}-redis
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-redis
+  labels:
+    opentelemetry.io/name: {{ .Release.Name }}-redis
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: {{ .Release.Name }}-redis
+spec:
+  selector:
+    matchLabels:
+      opentelemetry.io/name: {{ .Release.Name }}-redis
+  template:
+    metadata:
+      labels:
+        opentelemetry.io/name: {{ .Release.Name }}-redis
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: redis
+        app.kubernetes.io/name: {{ .Release.Name }}-redis
+    spec:
+      containers:
+        - name: redis
+          image: 'docker.m.daocloud.io/redis:alpine'
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 6379
+              name: redis
+          resources:
+            limits:
+              memory: 20Mi
+          securityContext:
+            runAsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 999
 {{- end }}

@@ -22,4 +22,8 @@ The chart can be used to install [OpenInsight](https://github.com/openinsight-pr
 
 ### OpenTelemetry Demo
 
-The chart can be used to install OpenInsight Demo in a Kubernetes cluster. More detailed documentation can be found in [OpenTelemetry Demo chart directory](./charts/opentelemetry-demo/README.md).
+The chart can be used to install OpenTelemetry Demo in a Kubernetes cluster. More detailed documentation can be found in [OpenTelemetry Demo chart directory](./charts/opentelemetry-demo/README.md).
+
+### OpenTelemetry Demo Lite
+
+The chart can be used to install OpenTelemetry Demo in a Kubernetes cluster. More detailed documentation can be found in [OpenTelemetry Demo chart directory](./charts/opentelemetry-demo-lite/README.md).
