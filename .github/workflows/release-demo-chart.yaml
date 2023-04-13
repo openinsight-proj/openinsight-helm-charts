@@ -47,16 +47,18 @@ jobs:
           DAOCLOUD_REGISTRY_URL: release.daocloud.io
           DAOCLOUD_REGISTRY_USERNAME: ${{ secrets.DAOCLOUD_REGISTRY_USERNAME }}
           DAOCLOUD_REGISTRY_PASSWORD: ${{ secrets.DAOCLOUD_REGISTRY_PASSWORD }}
-          DAOCLOUD_COMMUNITY_REPO_URL: release.daocloud.io/chartrepo/community
           HELM_EXPERIMENTAL_OCI: 1
         run: |
           helm registry login $DAOCLOUD_REGISTRY_URL --username $DAOCLOUD_REGISTRY_USERNAME --password $DAOCLOUD_REGISTRY_PASSWORD
 
       - name: Release to DaoCloud Community Chart Repo
+        env:
+          DAOCLOUD_REGISTRY_USERNAME: ${{ secrets.DAOCLOUD_REGISTRY_USERNAME }}
+          DAOCLOUD_REGISTRY_PASSWORD: ${{ secrets.DAOCLOUD_REGISTRY_PASSWORD }}
         run: |
-          helm repo add daocloud-community ${{ env.DAOCLOUD_COMMUNITY_REPO_URL }}
-          helm package charts/opentelemetry-demo -d ./ --version ${{ env.RELEASE_VERSION }}
-          helm cm-push ./opentelemetry-demo-$CHART_VERSION.tgz daocloud-community -v $CHART_VERSION -u $DAOCLOUD_REGISTRY_USERNAME -p $DAOCLOUD_REGISTRY_PASSWORD
+          helm repo add daocloud-community https://release.daocloud.io/chartrepo/community
+          helm plugin install https://github.com/chartmuseum/helm-push
+          helm cm-push charts/opentelemetry-demo daocloud-community -u $DAOCLOUD_REGISTRY_USERNAME -p $DAOCLOUD_REGISTRY_PASSWORD
 
 
 
