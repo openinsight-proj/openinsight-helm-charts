@@ -1,19 +1,24 @@
+{{- if .Values.extensions.cartservice.enabled -}}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "otel-demo.name" . }}-cartservice
   labels:
-    {{- include "otel-demo.labels" . | nindent 4 }}
+    opentelemetry.io/name: {{ .Release.Name }}-cartservice
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: cartservice
+    app.kubernetes.io/name: {{ .Release.Name }}-cartservice
 spec:
   selector:
     matchLabels:
-          app.kubernetes.io/component: cartservice
-          app.kubernetes.io/instance: {{ .Release.Name }}
-          app.kubernetes.io/name: {{ .Release.Name }}-cartservice
+      app.kubernetes.io/component: cartservice
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/name: {{ .Release.Name }}-cartservice
   template:
     metadata:
       labels:
+        opentelemetry.io/name: {{ .Release.Name }}-cartservice
         app.kubernetes.io/component: cartservice
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/name: {{ .Release.Name }}-cartservice
@@ -39,6 +44,14 @@ spec:
           resources:
             limits:
               memory: 160Mi
+      initContainers:
+        - command:
+            - sh
+            - -c
+            - until nc -z -v -w30 {{ include "redis.addr" . }}; do echo waiting
+              for redis; sleep 2; done;
+          image: docker.m.daocloud.io/busybox:1.36.0
+          name: wait-for-redis
 ---
 apiVersion: v1
 kind: Service
@@ -54,5 +67,5 @@ spec:
       port: 8080
       targetPort: 8080
   selector:
-    {{- include "otel-demo.selectorLabels" . | nindent 4 }}
-    app.kubernetes.io/component: cartservice
+    opentelemetry.io/name: {{ .Release.Name }}-cartservice
+{{- end }}
