@@ -38,7 +38,7 @@ spec:
             - name: REDIS_ADDR
               value: '{{ include "redis.addr" . }}'
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: http://my-otel-demo-otelcol:4317
+              value: 'http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317'
             - name: CART_SERVICE_PORT
               value: '8080'
           resources:
