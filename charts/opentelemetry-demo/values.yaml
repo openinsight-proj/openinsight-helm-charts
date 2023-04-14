@@ -369,7 +369,7 @@ opentelemetry-demo:
         - name: QUOTE_SERVICE_ADDR
           value: 'http://{{ include "otel-demo.name" . }}-quoteservice:8080'
         - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-          value: "http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4318/v1/traces"
+          value: "http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317"
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
 
