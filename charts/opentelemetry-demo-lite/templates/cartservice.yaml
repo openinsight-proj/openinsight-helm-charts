@@ -1,0 +1,71 @@
+{{- if .Values.extensions.cartservice.enabled -}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "otel-demo.name" . }}-cartservice
+  labels:
+    opentelemetry.io/name: {{ .Release.Name }}-cartservice
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: cartservice
+    app.kubernetes.io/name: {{ .Release.Name }}-cartservice
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: cartservice
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/name: {{ .Release.Name }}-cartservice
+  template:
+    metadata:
+      labels:
+        opentelemetry.io/name: {{ .Release.Name }}-cartservice
+        app.kubernetes.io/component: cartservice
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/name: {{ .Release.Name }}-cartservice
+      annotations:
+        instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
+    spec:
+      containers:
+        - name: cartservice
+          image: 'ghcr.io/openinsight-proj/demo:v1.3.2-cartservice'
+          ports:
+            - name: service
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: ASPNETCORE_URLS
+              value: http://*:8080
+            - name: REDIS_ADDR
+              value: '{{ include "redis.addr" . }}'
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://my-otel-demo-otelcol:4317
+            - name: CART_SERVICE_PORT
+              value: '8080'
+          resources:
+            limits:
+              memory: 160Mi
+      initContainers:
+        - command:
+            - sh
+            - -c
+            - until nc -z -v -w30 {{ include "redis.addr" . }}; do echo waiting
+              for redis; sleep 2; done;
+          image: docker.m.daocloud.io/busybox:1.36.0
+          name: wait-for-redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "otel-demo.name" . }}-cartservice
+  labels:
+    {{- include "otel-demo.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - name: service
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    opentelemetry.io/name: {{ .Release.Name }}-cartservice
+{{- end }}

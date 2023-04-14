@@ -1,0 +1,20 @@
+apiVersion: v2
+name: opentelemetry-demo-lite
+type: application
+version: 0.0.1
+description: A helm chart for openTelemetry community demo application integration with other component(lite version).
+sources:
+  - https://github.com/openinsight-proj/openinsight-helm-charts
+maintainers:
+  - name: JaredTan95
+  - name: Frapschen
+appVersion: "v1.4.0-beta-daocloud"
+dependencies:
+  - name: opentelemetry-demo
+    version: 0.21.1
+    repository: "https://open-telemetry.github.io/opentelemetry-helm-charts"
+    condition: opentelemetry-demo.enabled
+  - name: redis-operator
+    version: 0.11.2
+    repository: "https://ot-container-kit.github.io/helm-charts"
+    condition: redis_operator.enabled
