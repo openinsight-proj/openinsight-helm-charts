@@ -1,4 +1,4 @@
-name: Lint Charts (Demo)
+name: Lint Charts (Demo lite)
 
 on:
   pull_request:
