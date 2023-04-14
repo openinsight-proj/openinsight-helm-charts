@@ -1,15 +1,15 @@
 global:
   serviceMonitor:
     adservice:
-      enabled: false
+      enabled: true
     dataservice:
-      enabled: false
+      enabled: true
 
 extensions:
   mysql:
-    enabled: false
+    enabled: true
   dataservice:
-    enabled: false
+    enabled: true
     image:
       repository: ghcr.io/openinsight-proj/demo
       tag: "v1.4.0-beta-daocloud-dataservice"
@@ -65,11 +65,8 @@ opentelemetry-demo:
     create: false
 
   components:
-    accountingService:
-      enabled: false
-
     adService:
-      enabled: false
+      enabled: true
       useDefault:
         env: false
       imageOverride:
@@ -249,7 +246,7 @@ opentelemetry-demo:
         - name: QUOTE_SERVICE_ADDR
           value: 'http://{{ include "otel-demo.name" . }}-quoteservice:8080'
         - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-          value: "http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4318/v1/traces"
+          value: "http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317"
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
 
@@ -263,6 +260,9 @@ opentelemetry-demo:
     # this component is redefined in /template/cartservice.yaml
     # cartservice deploy by /template/cartservice.yaml supports switch redis deploy style
     cartService:
+      enabled: false
+
+    accountingService:
       enabled: false
 
     currencyService:
