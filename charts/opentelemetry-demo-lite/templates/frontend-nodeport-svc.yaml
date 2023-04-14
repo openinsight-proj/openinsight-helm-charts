@@ -15,5 +15,5 @@ spec:
       port: 8080
       targetPort: 8080
   selector:
-    opentelemetry.io/name: {{ .Release.Name }}-frontendproxy
+    opentelemetry.io/name: {{ .Release.Name }}-frontend
 {{- end }}

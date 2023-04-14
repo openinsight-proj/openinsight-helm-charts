@@ -1,6 +1,7 @@
 # OpenTelemetry Demo Helm Chart
 
-This chart is an extension of official [OpenTelemetry Demo](https://github.com/open-telemetry/opentelemetry-demo) and official [OpenTelemetry Demo Chart](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-demo)
+This chart is an extension of official [OpenTelemetry Demo](https://github.com/open-telemetry/opentelemetry-demo) and 
+official [OpenTelemetry Demo Chart](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-demo)
 
 
 # Demo Architecture
@@ -21,11 +22,10 @@ shippingservice(Shipping Service):::rust
 adstore[(DataService Store<br/>&#40Mysql DB&#41)]
 
 Internet -->|HTTP| frontend
-Internet -->|HTTP| adservice
 
 loadgenerator -->|HTTP| frontend
 
-checkoutservice-v2 --->|gRPC| cartservice --> cache
+checkoutservice-v2 --->|gRPC| cartservice -->|TCP| cache
 checkoutservice-v2 --->|gRPC| productcatalogservice
 checkoutservice-v2 --->|gRPC| paymentservice
 checkoutservice-v2 -->|gRPC| shippingservice

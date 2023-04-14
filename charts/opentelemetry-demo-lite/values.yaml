@@ -4,8 +4,6 @@ global:
       enabled: false
     dataservice:
       enabled: false
-    kafka:
-      enabled: false
 
 extensions:
   mysql:
@@ -119,7 +117,7 @@ opentelemetry-demo:
     checkoutService:
       enabled: true
       imageOverride:
-        tag: "d455c0d47f24bca7d3863222f16378b1d0da68b0-checkoutservice-v2"
+        tag: "eaad6dbdbbf8dfa8b09c83b945cd09e6e68363d0-checkoutservice-v2"
       useDefault:
         env: false
       env:
@@ -138,10 +136,10 @@ opentelemetry-demo:
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
       initContainers:
-        # this is use for rewrite official chart values
+        # this is use for rewrite official initContainer
         - name: dumpy
           image: docker.m.daocloud.io/busybox:1.36.0
-          command: [ 'echo Hello World!' ]
+          command: [ 'echo', 'Hello World!' ]
 
     frontend:
       enabled: true
