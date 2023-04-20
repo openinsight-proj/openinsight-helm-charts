@@ -125,9 +125,9 @@ classDef typescript fill:#e98516,color:black;
 _前提条件：请保证 Insight agent 已经安装并就绪_
 
 ```shell
-helm repo add daocloud-community https://release.daocloud.io/chartrepo/community
+helm repo add open-insight https://openinsight-proj.github.io/openinsight-helm-charts
 
-helm install webstore-demo daocloud-community/opentelemetry-demo-lite -n webstore-demo --create-namespace
+helm install webstore-demo open-insight/opentelemetry-demo-lite -n webstore-demo --create-namespace
 ```
 
 
