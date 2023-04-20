@@ -4,14 +4,42 @@ global:
       enabled: true
     dataservice:
       enabled: true
+  opentelemetryDemo:
+    image:
+      registry: ghcr.io
+      repository: openinsight-proj/demo
+
+redis-operator:
+  enabled: false
 
 extensions:
   mysql:
     enabled: true
+    image:
+      registry: docker.m.daocloud.io
+      repository: mysql
+      tag: 8.0.31
+  redis:
+    enabled: true
+    redisCRResource:
+      enabled: false
+      redisExporterImage:
+        registry: quay.m.daocloud.io
+        repository: opstree/redis-exporter
+        tag: v1.44.0
+      image:
+        registry: quay.m.daocloud.io
+        repository: opstree/redis
+        tag: v7.0.5
+    image:
+      registry: docker.m.daocloud.io
+      repository: redis
+      tag: alpine
   dataservice:
     enabled: true
     image:
-      repository: ghcr.io/openinsight-proj/demo
+      registry: ghcr.io
+      repository: openinsight-proj/demo
       tag: "993ff3d8b4548b4da08c4fb748dced2bdd20ba43-dataservice"
       pullPolicy: Always
     servcie:
@@ -45,10 +73,12 @@ extensions:
       insight.opentelemetry.io/metric-scrape: "true"
       insight.opentelemetry.io/metric-path: "/"
       insight.opentelemetry.io/metric-port: "9464"
-  frontendNodePortSvc:
-    enabled: true
   cartservice:
     enabled: true
+    image:
+      registry: ghcr.io
+      repository: openinsight-proj/demo
+      tag: "v1.3.2-cartservice"
 
 opentelemetry-demo:
   enabled: true
@@ -139,6 +169,8 @@ opentelemetry-demo:
 
     frontend:
       enabled: true
+      imageOverride:
+        tag: "v1.4.0-beta-daocloud-frontend"
       useDefault:
         env: false
       env:
@@ -171,6 +203,8 @@ opentelemetry-demo:
 
     loadgenerator:
       enabled: true
+      imageOverride:
+        tag: "v1.4.0-beta-daocloud-loadgenerator"
       useDefault:
         env: false
       env:
@@ -195,6 +229,8 @@ opentelemetry-demo:
 
     paymentService:
       enabled: true
+      imageOverride:
+        tag: "v1.4.0-beta-daocloud-paymentservice"
       useDefault:
         env: false
       env:
@@ -207,6 +243,8 @@ opentelemetry-demo:
 
     productCatalogService:
       enabled: true
+      imageOverride:
+        tag: "v1.4.0-beta-daocloud-productcatalogservice"
       useDefault:
         env: false
       env:
@@ -221,6 +259,8 @@ opentelemetry-demo:
 
     quoteService:
       enabled: true
+      imageOverride:
+        tag: "v1.4.0-beta-daocloud-quoteservice"
       useDefault:
         env: false
       service:
@@ -237,6 +277,8 @@ opentelemetry-demo:
 
     shippingService:
       enabled: true
+      imageOverride:
+        tag: "v1.4.0-beta-daocloud-shippingservice"
       useDefault:
         env: false
       env:
@@ -248,13 +290,6 @@ opentelemetry-demo:
           value: "http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317"
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
-
-    redis:
-      enabled: true
-      useDefault:
-        env: true
-      imageOverride:
-        repository: "docker.m.daocloud.io/redis"
 
     # this component is redefined in /template/cartservice.yaml
     # cartservice deploy by /template/cartservice.yaml supports switch redis deploy style
@@ -288,6 +323,9 @@ opentelemetry-demo:
     kafka:
       enabled: false
 
+    redis:
+      enabled: false
+
   opentelemetry-collector:
     enabled: false
 
@@ -299,11 +337,3 @@ opentelemetry-demo:
 
   grafana:
     enabled: false
-
-redis_operator:
-  enabled: false
-
-redis_resource:
-  enabled: false
-  storageClassName: openebs-hostpath
-  storageSize: 1Gi

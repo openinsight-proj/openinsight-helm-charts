@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: dataservice
-          image: "{{ .Values.extensions.dataservice.image.repository }}:{{ .Values.extensions.dataservice.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.extensions.dataservice.image.registry }}/{{ .Values.extensions.dataservice.image.repository }}:{{ .Values.extensions.dataservice.image.tag }}"
           imagePullPolicy: {{ .Values.extensions.dataservice.image.pullPolicy }}
           {{- if .Values.extensions.dataservice.ports }}
           ports:

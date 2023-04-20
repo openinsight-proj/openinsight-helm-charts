@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: cartservice
-          image: 'ghcr.io/openinsight-proj/demo:v1.3.2-cartservice'
+          image: "{{ .Values.extensions.cartservice.image.registry }}/{{ .Values.extensions.cartservice.image.repository }}:{{ .Values.extensions.cartservice.image.tag }}"
           ports:
             - name: service
               containerPort: 8080
