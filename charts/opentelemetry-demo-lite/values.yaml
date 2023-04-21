@@ -23,12 +23,9 @@ global:
     sentinel:
       enabled: true
   middleware:
-    Redis:
+    redis:
       # enum: builtin or redisCR
-      deployBy: "builtin"
-
-redis-operator:
-  enabled: false
+      deployBy: "redisCR"
 
 extensions:
   mysql:
@@ -38,9 +35,7 @@ extensions:
       repository: mysql
       tag: 8.0.31
   redis:
-    enabled: true
     redisCRResource:
-      enabled: false
       redisExporterImage:
         registry: quay.m.daocloud.io
         repository: opstree/redis-exporter
@@ -97,6 +92,10 @@ extensions:
       registry: ghcr.io
       repository: openinsight-proj/demo
       tag: "v1.3.2-cartservice"
+    busyboxImage:
+      registry: docker.m.daocloud.io
+      repository: busybox
+      tag: "1.36.0"
 
 opentelemetry-demo:
   enabled: true

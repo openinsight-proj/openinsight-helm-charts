@@ -18,7 +18,3 @@ dependencies:
     version: 0.21.1
     repository: "https://open-telemetry.github.io/opentelemetry-helm-charts"
     condition: opentelemetry-demo.enabled
-  - name: redis-operator
-    version: 0.11.2
-    repository: "https://ot-container-kit.github.io/helm-charts"
-    condition: redis-operator.enabled

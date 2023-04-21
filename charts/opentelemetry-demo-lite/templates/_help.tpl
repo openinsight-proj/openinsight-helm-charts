@@ -24,11 +24,10 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 redis selector
 */}}
 {{- define "redis.addr" -}}
-{{- if .Values.extensions.redis.enabled -}}
-{{- if .Values.extensions.redis.redisCRResource.enabled -}}
-redis-standalone.{{ .Release.Namespace }}.svc.cluster.local:6379
-{{- else -}}
+
+{{- if eq .Values.global.middleware.redis.deployBy "builtin" -}}
 {{ include "otel-demo.name" . }}-redis:6379
-{{- end }}
+{{- else -}}
+redis-standalone.{{ .Release.Namespace }}.svc.cluster.local:6379
 {{- end }}
 {{- end }}
