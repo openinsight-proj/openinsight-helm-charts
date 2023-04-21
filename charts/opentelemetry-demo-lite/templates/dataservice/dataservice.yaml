@@ -15,12 +15,12 @@ spec:
   template:
     metadata:
       labels:
-        opentelemetry.io/name: {{ .Release.Name }}-cartservice
+        opentelemetry.io/name: {{ .Release.Name }}-dataservice
         app.kubernetes.io/component: dataservice
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/name: {{ .Release.Name }}-dataservice
         {{- if .Values.global.opentelemetryDemo.istioSidecar.enabled }}
-        sidecar.istio.io/inject: true
+        sidecar.istio.io/inject: "true"
         {{- end }}
       {{- if .Values.extensions.dataservice.podAnnotations }}
       annotations:
@@ -40,16 +40,13 @@ spec:
           {{- end }}
           {{- end }}
           env:
-            - name: K8S_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: metadata.namespace
-            - name: MYSQL_HOST
-              value: '{{ include "otel-demo.name" . }}-mysql'
             {{- with .Values.extensions.dataservice.env }}
             {{- . | toYaml | nindent 12 }}
             {{- end }}
+            - name: JAVA_OPTS
+              value: '{{ include "java.dataservice.opt" . }}'
+            - name: MYSQL_HOST
+              value: '{{ include "otel-demo.name" . }}-mysql'
 
           resources:
             requests:
