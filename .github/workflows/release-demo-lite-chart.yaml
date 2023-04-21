@@ -40,23 +40,23 @@ jobs:
         env:
           CR_TOKEN: "${{ secrets.ACTIONS_TOKEN }}"
 
-      - name: Add DaoCloud Registry
-        env:
-          DAOCLOUD_REGISTRY_URL: release.daocloud.io
-          DAOCLOUD_REGISTRY_USERNAME: ${{ secrets.DAOCLOUD_REGISTRY_USERNAME }}
-          DAOCLOUD_REGISTRY_PASSWORD: ${{ secrets.DAOCLOUD_REGISTRY_PASSWORD }}
-          HELM_EXPERIMENTAL_OCI: 1
-        run: |
-          helm registry login $DAOCLOUD_REGISTRY_URL --username $DAOCLOUD_REGISTRY_USERNAME --password $DAOCLOUD_REGISTRY_PASSWORD
-
-      - name: Release to DaoCloud Community Chart Repo
-        env:
-          DAOCLOUD_REGISTRY_USERNAME: ${{ secrets.DAOCLOUD_REGISTRY_USERNAME }}
-          DAOCLOUD_REGISTRY_PASSWORD: ${{ secrets.DAOCLOUD_REGISTRY_PASSWORD }}
-        run: |
-          helm repo add daocloud-community https://release.daocloud.io/chartrepo/community
-          helm plugin install https://github.com/chartmuseum/helm-push
-          helm cm-push charts/opentelemetry-demo-lite daocloud-community -u $DAOCLOUD_REGISTRY_USERNAME -p $DAOCLOUD_REGISTRY_PASSWORD
+#      - name: Add DaoCloud Registry
+#        env:
+#          DAOCLOUD_REGISTRY_URL: release.daocloud.io
+#          DAOCLOUD_REGISTRY_USERNAME: ${{ secrets.DAOCLOUD_REGISTRY_USERNAME }}
+#          DAOCLOUD_REGISTRY_PASSWORD: ${{ secrets.DAOCLOUD_REGISTRY_PASSWORD }}
+#          HELM_EXPERIMENTAL_OCI: 1
+#        run: |
+#          helm registry login $DAOCLOUD_REGISTRY_URL --username $DAOCLOUD_REGISTRY_USERNAME --password $DAOCLOUD_REGISTRY_PASSWORD
+#
+#      - name: Release to DaoCloud Community Chart Repo
+#        env:
+#          DAOCLOUD_REGISTRY_USERNAME: ${{ secrets.DAOCLOUD_REGISTRY_USERNAME }}
+#          DAOCLOUD_REGISTRY_PASSWORD: ${{ secrets.DAOCLOUD_REGISTRY_PASSWORD }}
+#        run: |
+#          helm repo add daocloud-community https://release.daocloud.io/chartrepo/community
+#          helm plugin install https://github.com/chartmuseum/helm-push
+#          helm cm-push charts/opentelemetry-demo-lite daocloud-community -u $DAOCLOUD_REGISTRY_USERNAME -p $DAOCLOUD_REGISTRY_PASSWORD
 
 
 
