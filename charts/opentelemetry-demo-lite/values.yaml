@@ -8,6 +8,10 @@ global:
     image:
       registry: ghcr.io
       repository: openinsight-proj/demo
+    busyboxImage:
+      registry: docker.m.daocloud.io
+      repository: busybox
+      tag: "1.36.0"
   observability:
     adServiceJVMEnable: true
   microservices:
