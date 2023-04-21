@@ -1013,6 +1013,35 @@ entries:
   opentelemetry-demo-lite:
   - apiVersion: v2
     appVersion: v1.4.0-beta-daocloud
+    created: "2023-04-21T05:59:26.232549411Z"
+    dependencies:
+    - condition: opentelemetry-demo.enabled
+      name: opentelemetry-demo
+      repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+      version: 0.21.1
+    - condition: redis-operator.enabled
+      name: redis-operator
+      repository: https://ot-container-kit.github.io/helm-charts
+      version: 0.11.2
+    description: A helm chart for openTelemetry community demo application integration
+      with other component(lite version).
+    digest: c0c81c71de99e4c8a486b2ddbbe35bf0aa703b15cbf740d49ebe33001c160765
+    icon: https://opentelemetry.io/img/logos/opentelemetry-logo-nav.png
+    keywords:
+    - opentelemetry
+    - webstore-demo
+    maintainers:
+    - name: JaredTan95
+    - name: Frapschen
+    name: opentelemetry-demo-lite
+    sources:
+    - https://github.com/openinsight-proj/openinsight-helm-charts
+    type: application
+    urls:
+    - https://github.com/openinsight-proj/openinsight-helm-charts/releases/download/opentelemetry-demo-lite-0.0.6/opentelemetry-demo-lite-0.0.6.tgz
+    version: 0.0.6
+  - apiVersion: v2
+    appVersion: v1.4.0-beta-daocloud
     created: "2023-04-21T03:19:49.849256422Z"
     dependencies:
     - condition: opentelemetry-demo.enabled
@@ -1138,4 +1167,4 @@ entries:
     urls:
     - https://github.com/openinsight-proj/openinsight-helm-charts/releases/download/opentelemetry-demo-lite-0.0.1/opentelemetry-demo-lite-0.0.1.tgz
     version: 0.0.1
-generated: "2023-04-21T03:19:49.849366624Z"
+generated: "2023-04-21T05:59:26.232661015Z"
