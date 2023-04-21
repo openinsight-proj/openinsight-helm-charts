@@ -1,7 +1,7 @@
 apiVersion: v2
 name: opentelemetry-demo-lite
 type: application
-version: 0.0.5
+version: 0.0.6
 icon: https://opentelemetry.io/img/logos/opentelemetry-logo-nav.png
 description: A helm chart for openTelemetry community demo application integration with other component(lite version).
 sources:
@@ -10,6 +10,9 @@ maintainers:
   - name: JaredTan95
   - name: Frapschen
 appVersion: "v1.4.0-beta-daocloud"
+keywords:
+  - opentelemetry
+  - webstore-demo
 dependencies:
   - name: opentelemetry-demo
     version: 0.21.1
