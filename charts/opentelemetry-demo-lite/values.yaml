@@ -25,7 +25,7 @@ global:
   middleware:
     redis:
       # enum: builtin or redisCR
-      deployBy: "redisCR"
+      deployBy: "builtin"
 
 extensions:
   mysql:
