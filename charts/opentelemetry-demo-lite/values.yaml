@@ -8,6 +8,24 @@ global:
     image:
       registry: ghcr.io
       repository: openinsight-proj/demo
+  observability:
+    adServiceJVMEnable: true
+  microservices:
+    nacos:
+      enabled: true
+      registryAddr: nacos-test.skoala-test:8848
+      registryInstance: test
+      registryNamespace: $(NACOS_NAMESPACE_ID)
+      registryServiceGroup: $(NACOS_GROUP_NAME)
+      registryInstanceGroup: DEFAULT
+      username: test
+      password: test
+    sentinel:
+      enabled: true
+  middleware:
+    Redis:
+      # enum: builtin or redisCR
+      deployBy: "builtin"
 
 redis-operator:
   enabled: false
@@ -161,11 +179,25 @@ opentelemetry-demo:
           value: 'http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317'
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
+      resources:
+        requests:
+          cpu: "0.2"
+          memory: 100Mi
+        limits:
+          cpu: "0.5"
+          memory: 512Mi
       initContainers:
         # this is use for rewrite official initContainer
         - name: dumpy
           image: docker.m.daocloud.io/busybox:1.36.0
           command: [ 'echo', 'Hello World!' ]
+          resources:
+            requests:
+              cpu: "0.2"
+              memory: 100Mi
+            limits:
+              cpu: "0.5"
+              memory: 512Mi
 
     frontend:
       enabled: true
@@ -200,6 +232,13 @@ opentelemetry-demo:
           value: http://localhost:4318/v1/traces             # This expects users to use `kubectl port-forward ...`
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
+      resources:
+        requests:
+          cpu: "0.2"
+          memory: 100Mi
+        limits:
+          cpu: "0.5"
+          memory: 512Mi
 
     loadgenerator:
       enabled: true
@@ -226,6 +265,13 @@ opentelemetry-demo:
           value: 'http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4318/v1/traces'
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
+      resources:
+        requests:
+          cpu: "0.2"
+          memory: 100Mi
+        limits:
+          cpu: "0.5"
+          memory: 512Mi
 
     paymentService:
       enabled: true
@@ -240,6 +286,13 @@ opentelemetry-demo:
           value: 'http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317'
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
+      resources:
+        requests:
+          cpu: "0.2"
+          memory: 100Mi
+        limits:
+          cpu: "0.5"
+          memory: 512Mi
 
     productCatalogService:
       enabled: true
@@ -256,6 +309,13 @@ opentelemetry-demo:
           value: 'http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317'
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
+      resources:
+        requests:
+          cpu: "0.2"
+          memory: 100Mi
+        limits:
+          cpu: "0.5"
+          memory: 512Mi
 
     quoteService:
       enabled: true
@@ -274,6 +334,13 @@ opentelemetry-demo:
           value: 'http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4318'
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
+      resources:
+        requests:
+          cpu: "0.2"
+          memory: 100Mi
+        limits:
+          cpu: "0.5"
+          memory: 512Mi
 
     shippingService:
       enabled: true
@@ -290,9 +357,16 @@ opentelemetry-demo:
           value: "http://insight-agent-opentelemetry-collector.insight-system.svc.cluster.local:4317"
       podAnnotations:
         instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
+      resources:
+        requests:
+          cpu: "0.2"
+          memory: 100Mi
+        limits:
+          cpu: "0.5"
+          memory: 512Mi
 
-    # this component is redefined in /template/cartservice.yaml
-    # cartservice deploy by /template/cartservice.yaml supports switch redis deploy style
+    # this component is redefined in /template/cartservice/cartservice.yaml
+    # cartservice deploy by /template/cartservice/cartservice.yaml supports switch redis deploy style
     cartService:
       enabled: false
 

@@ -42,7 +42,11 @@ spec:
             - name: CART_SERVICE_PORT
               value: '8080'
           resources:
+            requests:
+              cpu: "0.2"
+              memory: 100Mi
             limits:
+              cpu: "0.5"
               memory: 160Mi
       initContainers:
         - command:
@@ -52,6 +56,13 @@ spec:
               for redis; sleep 2; done;
           image: docker.m.daocloud.io/busybox:1.36.0
           name: wait-for-redis
+          resources:
+            requests:
+              cpu: "0.2"
+              memory: 100Mi
+            limits:
+              cpu: "0.5"
+              memory: 160Mi
 ---
 apiVersion: v1
 kind: Service
