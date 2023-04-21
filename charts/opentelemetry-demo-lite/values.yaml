@@ -10,8 +10,8 @@ global:
       repository: openinsight-proj/demo
     busyboxImage:
       registry: docker.m.daocloud.io
-      repository: busybox
-      tag: "1.36.0"
+      repository: rancher/busybox
+      tag: "1.31.1"
   observability:
     adServiceJVMEnable: true
   microservices:
@@ -36,8 +36,8 @@ extensions:
     enabled: true
     image:
       registry: docker.m.daocloud.io
-      repository: mysql
-      tag: 8.0.31
+      repository: bitnami/mysql
+      tag: 8.0
   redis:
     redisCRResource:
       redisExporterImage:
@@ -49,9 +49,9 @@ extensions:
         repository: opstree/redis
         tag: v7.0.5
     image:
-      registry: docker.m.daocloud.io
-      repository: redis
-      tag: alpine
+      registry: quay.m.daocloud.io
+      repository: opstree/redis
+      tag: "v7.0.5"
   dataservice:
     enabled: true
     image:
@@ -98,8 +98,8 @@ extensions:
       tag: "v1.3.2-cartservice"
     busyboxImage:
       registry: docker.m.daocloud.io
-      repository: busybox
-      tag: "1.36.0"
+      repository: rancher/busybox
+      tag: "1.31.1"
 
 opentelemetry-demo:
   enabled: true
@@ -192,7 +192,7 @@ opentelemetry-demo:
       initContainers:
         # this is use for rewrite official initContainer
         - name: dumpy
-          image: docker.m.daocloud.io/busybox:1.36.0
+          image: docker.m.daocloud.io/rancher/busybox:1.31.1
           command: [ 'echo', 'Hello World!' ]
           resources:
             requests:
