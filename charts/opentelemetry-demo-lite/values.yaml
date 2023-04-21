@@ -37,17 +37,17 @@ extensions:
     image:
       registry: docker.m.daocloud.io
       repository: bitnami/mysql
-      tag: 8.0
+      tag: "8.0"
   redis:
     redisCRResource:
       redisExporterImage:
         registry: quay.m.daocloud.io
         repository: opstree/redis-exporter
-        tag: v1.44.0
+        tag: "v1.44.0"
       image:
         registry: quay.m.daocloud.io
         repository: opstree/redis
-        tag: v7.0.5
+        tag: "v7.0.5"
     image:
       registry: quay.m.daocloud.io
       repository: opstree/redis
