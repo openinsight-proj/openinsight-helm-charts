@@ -54,7 +54,7 @@ spec:
             - -c
             - until nc -z -v -w30 {{ include "redis.addr" . }}; do echo waiting
               for redis; sleep 2; done;
-          image: docker.m.daocloud.io/busybox:1.36.0
+          image: "{{ .Values.extensions.cartservice.busyboxImage.registry }}/{{ .Values.extensions.cartservice.busyboxImage.repository }}:{{ .Values.extensions.cartservice.busyboxImage.tag }}"
           name: wait-for-redis
           resources:
             requests:

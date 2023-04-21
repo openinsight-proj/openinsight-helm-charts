@@ -1,7 +1,7 @@
 apiVersion: v2
 name: opentelemetry-demo-lite
 type: application
-version: 0.0.6
+version: 0.0.7
 icon: https://opentelemetry.io/img/logos/opentelemetry-logo-nav.png
 description: A helm chart for openTelemetry community demo application integration with other component(lite version).
 sources:
@@ -18,7 +18,3 @@ dependencies:
     version: 0.21.1
     repository: "https://open-telemetry.github.io/opentelemetry-helm-charts"
     condition: opentelemetry-demo.enabled
-  - name: redis-operator
-    version: 0.11.2
-    repository: "https://ot-container-kit.github.io/helm-charts"
-    condition: redis-operator.enabled
