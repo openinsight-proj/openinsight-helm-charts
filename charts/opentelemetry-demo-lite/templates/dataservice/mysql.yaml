@@ -18,7 +18,7 @@ metadata:
   labels:
     {{- include "otel-demo.labels" . | nindent 4 }}
     {{- if .Values.global.opentelemetryDemo.istioSidecar.enabled }}
-    sidecar.istio.io/inject: true
+    sidecar.istio.io/inject: "true"
     {{- end }}
 spec:
   selector:

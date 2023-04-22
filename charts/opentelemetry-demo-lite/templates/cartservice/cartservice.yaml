@@ -23,7 +23,7 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/name: {{ .Release.Name }}-cartservice
         {{- if .Values.global.opentelemetryDemo.istioSidecar.enabled }}
-        sidecar.istio.io/inject: true
+        sidecar.istio.io/inject: "true"
         {{- end }}
       annotations:
         instrumentation.opentelemetry.io/inject-sdk: "insight-system/insight-opentelemetry-autoinstrumentation"
