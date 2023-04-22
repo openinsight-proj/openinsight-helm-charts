@@ -113,16 +113,14 @@ classDef typescript fill:#e98516,color:black;
 1. 我们关闭了所有非业务组件，比如： Opentelemetry collector, Prometheus, Jaeger, Grafana等，在我们的版本中不需要用它们展示数据。
    业务的观测性数据传输路径变成了：`Components --> Insight-agent OTel collector`。
 
-2. 支持通过 Redis operator 拉起 Redis 实例。默认情况下使用官方的方式创建 Redis,
-   你可以通过 `--set redis_operator.enabled=true --set redis_resource.enabled=true` 开启 redis operator
-   并下发 Redis CR, 最后由 Redis operator 拉起 Redis 实例。（你需要`--set redis_resource.storageClassName=your-PersistentVolume`
-   指定存储卷，才能够成功启动 Redis）
-
-3. 给 Frontend 服务添加一个 NodePort SVC
+2. 支持通过 Redis operator 拉起 Redis 实例（保证 Redis operator 已经安装并正常工作）。
+   默认情况下使用官方的方式创建 Redis（`--set .global.middleware.redis.deployBy=builtin`）,
+   你可以通过 `--set .global.middleware.redis.deployBy=redisCR` 下发 Redis CR, 最后由 Redis operator 拉起 Redis 实例。
 
 ## 安装
 
-_前提条件：请保证 Insight agent 已经安装并就绪_
+_前提条件：请保证 Insight agent 已经安装并就绪(在 `--set .global.middleware.redis.deployBy=builtin` 时请求保证 Redis operator
+已经安装并正常工作)_
 
 ```shell
 helm repo add open-insight https://openinsight-proj.github.io/openinsight-helm-charts
