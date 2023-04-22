@@ -8,7 +8,9 @@ metadata:
 spec:
   endpoints:
     - honorLabels: true
-      port: http-metrics
+      port: jmx-metrics
+    - honorLabels: true
+      port: custom-metrics
     - honorLabels: true
       port: jvm-metrics
   namespaceSelector:

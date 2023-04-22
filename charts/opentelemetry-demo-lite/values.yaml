@@ -139,10 +139,10 @@ extensions:
       - name: health-http
         containerPort: 8999
         protocol: TCP
-      - name: metrics
+      - name: jmx-metrics
         containerPort: 12345
         protocol: TCP
-      - name: http-metrics
+      - name: custom-metrics
         containerPort: 8888
         protocol: TCP
       - name: jvm-metrics
