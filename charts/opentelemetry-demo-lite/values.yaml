@@ -12,6 +12,8 @@ global:
       registry: docker.m.daocloud.io
       repository: rancher/busybox
       tag: "1.31.1"
+    istioSidecar:
+      enabled: true
   observability:
     adServiceJVMEnable: true
   microservices:

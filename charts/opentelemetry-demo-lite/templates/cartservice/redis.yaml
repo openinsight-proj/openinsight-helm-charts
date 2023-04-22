@@ -21,6 +21,9 @@ spec:
         app.kubernetes.io/component: redis
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/name: {{ .Release.Name }}-redis
+        {{- if .Values.global.opentelemetryDemo.istioSidecar.enabled }}
+        sidecar.istio.io/inject: true
+        {{- end }}
     spec:
       containers:
           - name: redis

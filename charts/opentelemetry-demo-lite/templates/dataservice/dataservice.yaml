@@ -15,9 +15,13 @@ spec:
   template:
     metadata:
       labels:
+        opentelemetry.io/name: {{ .Release.Name }}-cartservice
         app.kubernetes.io/component: dataservice
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/name: {{ .Release.Name }}-dataservice
+        {{- if .Values.global.opentelemetryDemo.istioSidecar.enabled }}
+        sidecar.istio.io/inject: true
+        {{- end }}
       {{- if .Values.extensions.dataservice.podAnnotations }}
       annotations:
         {{- toYaml .Values.extensions.dataservice.podAnnotations | nindent 8 }}
