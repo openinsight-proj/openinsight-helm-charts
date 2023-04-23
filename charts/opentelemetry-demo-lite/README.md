@@ -119,7 +119,7 @@ classDef typescript fill:#e98516,color:black;
 
 ## 安装
 
-_前提条件：请保证 Insight agent 已经安装并就绪(在 `--set .global.middleware.redis.deployBy=builtin` 时请求保证 Redis operator
+_前提条件：请保证 Insight agent 已经安装并就绪(在 `--set .global.middleware.redis.deployBy=redisCR` 时请求保证 Redis operator
 已经安装并正常工作)_
 
 ```shell
