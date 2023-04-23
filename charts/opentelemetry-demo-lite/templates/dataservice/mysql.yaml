@@ -17,9 +17,6 @@ metadata:
   name: {{ include "otel-demo.name" . }}-mysql
   labels:
     {{- include "otel-demo.labels" . | nindent 4 }}
-    {{- if .Values.global.opentelemetryDemo.istioSidecar.enabled }}
-    sidecar.istio.io/inject: "true"
-    {{- end }}
 spec:
   selector:
     matchLabels:
@@ -30,6 +27,9 @@ spec:
     metadata:
       labels:
         app: mysql
+        {{- if .Values.global.opentelemetryDemo.istioSidecar.enabled }}
+        sidecar.istio.io/inject: 'true'
+        {{- end }}
     spec:
       containers:
       - image: '{{ .Values.extensions.mysql.image.registry }}/{{ .Values.extensions.mysql.image.repository }}:{{ .Values.extensions.mysql.image.tag }}'

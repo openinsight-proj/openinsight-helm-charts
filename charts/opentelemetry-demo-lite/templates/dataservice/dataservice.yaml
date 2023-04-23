@@ -20,7 +20,7 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/name: {{ .Release.Name }}-dataservice
         {{- if .Values.global.opentelemetryDemo.istioSidecar.enabled }}
-        sidecar.istio.io/inject: "true"
+        sidecar.istio.io/inject: 'true'
         {{- end }}
       {{- if .Values.extensions.dataservice.podAnnotations }}
       annotations:
