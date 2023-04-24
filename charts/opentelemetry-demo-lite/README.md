@@ -132,10 +132,9 @@ helm install webstore-demo open-insight/opentelemetry-demo-lite -n webstore-demo
 
 | 参数位置 | 参数说明|
 | -------- | ----------------- |
-|dataservice.enabled|为 true 时部署dataservice|
+|adservice.enabled|为 true 时部署adservice|
 |dataservice.enabled|为 true 时部署dataservice|
 |microservices.nacos.enabled| 改为true，将会把ad/data两个服务注册到nacos注册中心|
-|microservices.nacos.registryAddr| 请修改为集群内nacos的可解析的域名|
 |microservices.nacos.registryAddr| 请修改为集群内nacos的可解析的域名，注意要带namespace|
 |dataservice.env[][SKOALA_REGISTRY]|请修改为nacos服务的名字|
 |adservice.env[][SKOALA_REGISTRY]|请修改为nacos服务的名字|
