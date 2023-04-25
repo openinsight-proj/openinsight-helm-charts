@@ -3,9 +3,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "otel-demo.name" . }}-spring-cloud-gateway
-  labels:
-    {{- include "otel-demo.labels" . | nindent 4 }}
+  name: {{ .Release.Name }}-spring-cloud-gateway
 spec:
   selector:
     matchLabels:
@@ -29,7 +27,7 @@ spec:
                 protocol: TCP
             env:
               - name: ADSERVICE_ADDR
-                value: 'http://{{ include "otel-demo.name" . }}-adservice:8081'
+                value: 'http://{{ .Release.Name }}-adservice:8081'
               - name: AUTH_ENABLED
                 value: "false"
             resources:
@@ -41,9 +39,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "otel-demo.name" . }}-spring-cloud-gateway
-  labels:
-    {{- include "otel-demo.labels" . | nindent 4 }}
+  name: {{ .Release.Name }}-spring-cloud-gateway
 spec:
   type: {{ .Values.extensions.springCloudGateway.service.type | default "ClusterIP" }}
   ports:
