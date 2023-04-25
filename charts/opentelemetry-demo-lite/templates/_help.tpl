@@ -64,7 +64,7 @@ common java nacos opt
 
 {{- $opt = cat $opt "-Dspring.cloud.nacos.discovery.metadata.k8s_namespace_name=$(K8S_NAMESPACE)" -}}
 {{- $opt = cat $opt "-Dspring.cloud.nacos.discovery.metadata.k8s_workload_type=deployment" -}}
-{{- $opt = cat $opt "-Dspring.cloud.nacos.discovery.metadata.k8s_workload_nam=$(OTEL_SERVICE_NAME)" -}}
+{{- $opt = cat $opt "-Dspring.cloud.nacos.discovery.metadata.k8s_workload_name=$(OTEL_SERVICE_NAME)" -}}
 {{- $opt = cat $opt "-Dspring.cloud.nacos.discovery.metadata.k8s_service_name=$(OTEL_SERVICE_NAME)" -}}
 {{- $opt = cat $opt "-Dspring.cloud.nacos.discovery.metadata.k8s_pod_name=$(OTEL_RESOURCE_ATTRIBUTES_POD_NAME)" -}}
 {{- $opt -}}
