@@ -107,6 +107,8 @@ common java adservice opt bug
 {{/* check nacos is enable */}}
 {{- if .Values.global.microservices.nacos.enabled }}
 {{- $opt = cat $opt "-Dspring.dataService.enabled=true" -}}
+{{- $opt = cat $opt "-Ddata_service_name=webstore-demo-dataservice:8080" -}}
+
 {{- else }}
 {{- $opt = cat $opt "-Dspring.dataService.enabled=false" -}}
 {{- end }}
