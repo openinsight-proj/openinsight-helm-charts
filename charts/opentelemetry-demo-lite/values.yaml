@@ -133,8 +133,11 @@ extensions:
     servcie:
       type: NodePort
     ports:
-      - name: http
+      - name: http-grpc
         containerPort: 8080
+        protocol: TCP
+      - name: http-rest
+        containerPort: 8081
         protocol: TCP
       - name: health-http
         containerPort: 8999
