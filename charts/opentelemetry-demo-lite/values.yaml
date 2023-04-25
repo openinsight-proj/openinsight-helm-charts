@@ -406,6 +406,13 @@ opentelemetry-demo:
           cpu: "0.5"
           memory: 512Mi
 
+    springCloudGateway:
+      enabled: false
+      image:
+        repository: ghcr.io/openinsight-proj/demo
+        tag: "6adde5369780c1be22f148e0790a080575827aee-springCloudGateway"
+      service:
+        type: NodePort
     # this component is redefined in /template/cartservice/cartservice.yaml
     # cartservice deploy by /template/cartservice/cartservice.yaml supports switch redis deploy style
     cartService:
