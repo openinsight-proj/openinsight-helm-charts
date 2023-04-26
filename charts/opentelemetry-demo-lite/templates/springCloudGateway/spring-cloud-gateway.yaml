@@ -26,7 +26,7 @@ spec:
                 containerPort: 18080
                 protocol: TCP
             env:
-              - name: ADSERVICE_ADDR
+              - name: AD_SERVICE_ADDR
                 value: 'http://{{ .Release.Name }}-adservice:8081'
               - name: AUTH_ENABLED
                 value: "false"
@@ -44,9 +44,9 @@ spec:
   type: {{ .Values.extensions.springCloudGateway.service.type | default "ClusterIP" }}
   ports:
     - name: http
-      port: 18081
+      port: 18080
       protocol: TCP
-      targetPort: 18081
+      targetPort: 18080
   selector:
     app.kubernetes.io/name: {{ .Release.Name }}-spring-cloud-gateway
   {{- end }}
