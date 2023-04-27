@@ -30,6 +30,13 @@ global:
       deployBy: "builtin"
 
 extensions:
+  springCloudGateway:
+    enabled: false
+    image:
+      repository: ghcr.io/openinsight-proj/demo
+      tag: "eee8f84246a51693285289ab5a670d79f2b69469-spring-cloud-gateway"
+    service:
+      type: NodePort
   mysql:
     # this value is not in used, it replaces by global.microservices.nacos.enabled
     enabled: true
@@ -406,6 +413,13 @@ opentelemetry-demo:
           cpu: "0.5"
           memory: 512Mi
 
+    springCloudGateway:
+      enabled: false
+      image:
+        repository: ghcr.io/openinsight-proj/demo
+        tag: "eee8f84246a51693285289ab5a670d79f2b69469-spring-cloud-gateway"
+      service:
+        type: NodePort
     # this component is redefined in /template/cartservice/cartservice.yaml
     # cartservice deploy by /template/cartservice/cartservice.yaml supports switch redis deploy style
     cartService:
