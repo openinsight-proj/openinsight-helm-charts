@@ -417,7 +417,7 @@ opentelemetry-demo:
       enabled: false
       image:
         repository: ghcr.io/openinsight-proj/demo
-        tag: "6adde5369780c1be22f148e0790a080575827aee-springCloudGateway"
+        tag: "eee8f84246a51693285289ab5a670d79f2b69469-spring-cloud-gateway"
       service:
         type: NodePort
     # this component is redefined in /template/cartservice/cartservice.yaml
