@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
           - name: spring-cloud-gateway
-            image: "{{ .Values.extensions.springCloudGateway.image.repository }}:{{ .Values.extensions.springCloudGateway.image.tag | default .Chart.AppVersion }}"
+            image: "{{ .Values.extensions.springCloudGateway.image.registry }}/{{ .Values.extensions.springCloudGateway.image.repository }}:{{ .Values.extensions.springCloudGateway.image.tag | default .Chart.AppVersion }}"
             imagePullPolicy: Always
             ports:
               - name: http

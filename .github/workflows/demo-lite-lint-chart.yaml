@@ -1,4 +1,4 @@
-name: Lint Charts (Demo lite)
+name: Lint and Test Charts (Demo lite)
 
 on:
   pull_request:
@@ -20,5 +20,37 @@ jobs:
         with:
           create-kind-cluster: "false"
 
+      - name: Run chart-testing (list-changed)
+        id: list-changed
+        run: |
+          changed=$(ct list-changed --target-branch ${{ github.event.repository.default_branch }})
+          if [[ -n "$changed" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Run chart-testing (lint)
-        run: ct lint --target-branch main --chart-dirs charts/opentelemetry-demo-lite
+        if: steps.list-changed.outputs.changed == 'true'
+        run: ct lint --target-branch ${{ github.event.repository.default_branch }}
+
+#  e2e-test:
+#    runs-on: ubuntu-latest
+#    needs: lint-test
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#        with:
+#          fetch-depth: 0
+#      - name: Setup
+#        uses: ./.github/actions/setup
+#        with:
+#          create-kind-cluster: "true"
+#      - name: Run chart-testing (install)
+#        run: |
+#          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+#          helm repo update
+#          helm install prometheus-community/prometheus-operator-crds --generate-name \
+#          --kube-context kind-chart-testing
+#
+#          helm install charts/opentelemetry-demo-lite --generate-name \
+#          --kube-context kind-chart-testing \
+#          --debug --wait --skip-crds --timeout 30m
