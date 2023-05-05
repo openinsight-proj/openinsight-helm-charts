@@ -1,6 +1,6 @@
 # OpenInsight Helm charts
 
-This repository contains [Helm](https://helm.sh/) charts for OpenTelemetry project.
+This repository contains [Helm](https://helm.sh/) charts for OpenInsight project.
 
 ## Usage
 
@@ -19,10 +19,6 @@ You can then run helm search repo open-insight to see the charts.
 ### OpenInsight
 
 The chart can be used to install [OpenInsight](https://github.com/openinsight-proj/openinsight) in a Kubernetes cluster. More detailed documentation can be found in [OpenInsight chart directory](./charts/openinsight/README.md).
-
-### OpenTelemetry Demo
-
-The chart can be used to install OpenTelemetry Demo in a Kubernetes cluster. More detailed documentation can be found in [OpenTelemetry Demo chart directory](./charts/opentelemetry-demo/README.md).
 
 ### OpenTelemetry Demo Lite
 
