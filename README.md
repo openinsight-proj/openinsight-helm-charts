@@ -1,6 +1,6 @@
 # OpenInsight Helm charts
 
-This repository contains [Helm](https://helm.sh/) charts for OpenTelemetry project.
+This repository contains [Helm](https://helm.sh/) charts for OpenInsight project.
 
 ## Usage
 
