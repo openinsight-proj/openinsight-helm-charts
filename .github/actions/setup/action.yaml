@@ -31,5 +31,4 @@ runs:
           helm repo add bitnami https://charts.bitnami.com/bitnami 
           helm repo add redis https://ot-container-kit.github.io/helm-charts
           helm dep up charts/openinsight
-          helm dep up charts/opentelemetry-demo
           helm dep up charts/opentelemetry-demo-lite
