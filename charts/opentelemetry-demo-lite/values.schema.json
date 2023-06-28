@@ -77,7 +77,7 @@
                                         "registryNamespace": {
                                             "type": "string",
                                             "title": "Registry namespace",
-                                            "default": "public"
+                                            "default": ""
                                         },
                                         "registryServiceGroup": {
                                             "type": "string",
@@ -109,12 +109,20 @@
                                 "sentinel": {
                                     "type": "object",
                                     "title": "Sentinel settings",
+                                    "required": [
+                                        "endpoint"
+                                    ],
                                     "properties": {
                                         "enabled": {
                                             "type": "boolean",
                                             "title": "Enable sentinel",
                                             "description": "please ensure Nacos is enabled and that the parameters above are filled in correctly for the Registry. Meanwhile, Please ensure that Sentinel governance has been enabled in the same Registry.",
                                             "default": false
+                                        },
+                                        "endpoint": {
+                                            "type": "string",
+                                            "title": "Endpoint",
+                                            "default": "sentinel:8080"
                                         }
                                     }
                                 }
