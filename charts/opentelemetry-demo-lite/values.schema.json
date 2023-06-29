@@ -51,7 +51,7 @@
                                     "title": "nacos settings",
                                     "required": [
                                         "registryName",
-                                        "registryAddr",
+                                        "registryEndpoint",
                                         "registryNamespace",
                                         "registryServiceGroup",
                                         "registryInstanceGroup",
@@ -69,7 +69,7 @@
                                             "title": "Registry name",
                                             "default": "nacos"
                                         },
-                                        "registryAddr": {
+                                        "registryEndpoint": {
                                             "type": "string",
                                             "title": "Registry endpoint",
                                             "default": "nacos:8848"
