@@ -92,7 +92,7 @@
                                         "kubeMetadataClusterName": {
                                             "type": "string",
                                             "title": "Kubernetes cluster name",
-                                            "default": ""
+                                            "default": "CLUSTER_NAME"
                                         },
                                         "username": {
                                             "type": "string",
