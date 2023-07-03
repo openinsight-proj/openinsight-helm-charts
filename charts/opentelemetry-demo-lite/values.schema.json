@@ -52,7 +52,6 @@
                                     "required": [
                                         "registryName",
                                         "registryEndpoint",
-                                        "registryNamespace",
                                         "registryServiceGroup",
                                         "registryInstanceGroup",
                                         "kubeMetadataClusterName"
