@@ -19,7 +19,7 @@ global:
       registryNamespace: ""
       registryServiceGroup: "DEFAULT_GROUP"
       registryInstanceGroup: "DEFAULT"
-      kubeMetadataClusterName: ""
+      kubeMetadataClusterName: "CLUSTER_NAME"
       username: ""
       password: ""
     sentinel:
