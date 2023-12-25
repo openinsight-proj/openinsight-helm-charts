@@ -117,7 +117,7 @@ _Note：make sure Insight agent already works(If`--set .global.middleware.redis.
 operator already works)_
 
 ```shell
-helm repo add open-insight https://openinsightio.github.io/openinsight-helm-charts
+helm repo add open-insight https://openinsight-proj.github.io/openinsight-helm-charts
 
 helm install webstore-demo open-insight/opentelemetry-demo-lite -n webstore-demo --create-namespace
 ```
