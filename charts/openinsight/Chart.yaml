@@ -9,7 +9,7 @@ maintainers:
   - name: JaredTan95
   - name: Frapschen
 
-version: 0.2.7
+version: 0.2.8
 appVersion: "0.0.3"
 
 dependencies:
