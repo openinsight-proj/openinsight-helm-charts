@@ -15,6 +15,6 @@ keywords:
   - webstore-demo
 dependencies:
   - name: opentelemetry-demo
-    version: 0.22.0
+    version: 0.22.1
     repository: "https://open-telemetry.github.io/opentelemetry-helm-charts"
     condition: opentelemetry-demo.enabled
